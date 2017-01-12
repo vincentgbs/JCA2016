@@ -10,8 +10,13 @@ class userView extends view {
         $this->loadTemplate('user/footer', null, 'footer');
     }
 
-    public function home()
+    public function home($links)
     {
+        $this->loadTemplate('user/links/head');
+        foreach ($links as $link) {
+            $this->loadTemplate('user/links/link', $link);
+        }
+        $this->loadTemplate('user/links/foot');
         $this->loadTemplate('user/update');
         $this->display();
     }

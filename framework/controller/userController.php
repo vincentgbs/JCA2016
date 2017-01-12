@@ -48,7 +48,11 @@ class userController extends controller {
                 } // csrfCheck
                 echo ($this->csrf_message); return;
             }
-            $this->userView->home();
+            foreach ($this->permissions as $permission) {
+                $link = explode('/', $permission)[0];
+                $links[$link] = $link;
+            }
+            $this->userView->home($links);
         } else {
             $this->redirect('user/login', false, URL);
         }

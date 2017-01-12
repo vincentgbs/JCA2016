@@ -108,7 +108,9 @@ abstract class controller extends application {
         $this->csrf_message = 'Csrf token mismatch. Please refresh your page and try again.';
         $csrf = filter_input(INPUT_POST, 'csrf_token', FILTER_SANITIZE_STRING);
         $csrf = substr(preg_replace("/[^a-zA-Z0-9]/", '', $csrf), 0, 64);
-        return ($csrf === $_SESSION['CSRF_TOKENS'][($url ? $url : URL)]);
+        if (isset($_SESSION['CSRF_TOKENS'])) {
+            return ($csrf === $_SESSION['CSRF_TOKENS'][($url ? $url : URL)]);
+        } // else return NULL
     }
 
     public function post($var, $type=null, $len=null, $special=false)
