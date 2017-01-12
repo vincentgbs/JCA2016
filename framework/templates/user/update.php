@@ -2,7 +2,7 @@
     <input type="hidden" id="csrf_token" value="{{{@csrf_token}}}"/>
     <h3>Update Account</h3>
     <label for="password">Current Password</label>
-        <input type="password" id="password"><br>
+        <input type="password" id="password" autofocus><br>
     <label for="username">Username:</label>
         <button class="btn input_button" input="username">
             <?php echo $_SESSION['USER']->username?></button>
@@ -29,7 +29,7 @@
             $(this).hide();
         });
 
-        $('#username').keyup(function(e){
+        $('#username').keyup(function(){
             limitInput(this, 'alphanumeric');
             if ($("#username").val().length < 3) {
                 $("#username_alert").text('Your username must contain at least 3 characters.');
@@ -51,7 +51,7 @@
             }
         });
 
-        $("#email").keyup(function(e) {
+        $("#email").keyup(function() {
             var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (!regex.test($("#email").val())) {
                 $("#email_alert").text('Please enter a valid email address.');
@@ -73,7 +73,7 @@
             }
         });
 
-        $('#new_password').keyup(function(e){
+        $('#new_password').keyup(function(){
             if ($("#new_password").val().length > 0 && $("#new_password").val().length < 9) {
                 $("#new_password_alert").text('Your new password must contain at least 9 characters.');
             } else {
@@ -81,7 +81,7 @@
             }
         });
 
-        $('#confirm_password').keyup(function(e){
+        $('#confirm_password').keyup(function(){
             if ($("#confirm_password").val() != $("#new_password").val()) {
                 $("#confirm_password_alert").text('Your passwords do not match.');
             } else {

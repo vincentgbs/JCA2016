@@ -6,7 +6,7 @@
         <label for="confirm">Confirm password</label><br>
     </div> <!-- </div class="col-md-6"> -->
     <div class="col-md-6">
-        <input type="password" id="password" maxlength="99"><br>
+        <input type="password" id="password" maxlength="99" autofocus><br>
         <input type="password" id="confirm" maxlength="99"><br>
     </div> <!-- </div class="col-md-6"> -->
     <div class="row">

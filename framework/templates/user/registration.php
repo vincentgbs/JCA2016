@@ -51,7 +51,7 @@
 
     <script>
     $(document).ready(function(){
-        $('#username').keyup(function(e){
+        $('#username').keyup(function(){
             limitInput(this, 'alphanumeric');
             if ($("#username").val().length < 3) {
                 $("#username_alert").text('Your username must contain at least 3 characters.');
@@ -73,7 +73,7 @@
             }
         });
 
-        $("#email").keyup(function(e) {
+        $("#email").keyup(function() {
             function gmail(input) {
                 if (input.val().search('@') == -1) {
                     return [input.val() + '@gmail.com'];
@@ -106,7 +106,7 @@
             }
         });
 
-        $('#password').keyup(function(e){
+        $('#password').keyup(function(){
             if ($("#password").val().length < 9) {
                 $("#password_alert").text('Your password must contain at least 9 characters.');
             } else {
@@ -114,7 +114,7 @@
             }
         });
 
-        $('#confirm').keyup(function(e){
+        $('#confirm').keyup(function(){
             if ($("#confirm").val() != $("#password").val()) {
                 $("#confirm_alert").text('Your passwords do not match.');
             } else {
