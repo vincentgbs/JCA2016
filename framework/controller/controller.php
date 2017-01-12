@@ -178,6 +178,7 @@ abstract class controller extends application {
     {
         $model = $category . 'Model';
         if (isset($this->$model)) {
+            $this->settings = [];
             $settings = $this->$model->getSettings($category);
             foreach ($settings as $setting) {
                 $this->settings[$setting->setting_name] = $setting->setting_value;
