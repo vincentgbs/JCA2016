@@ -18,7 +18,15 @@ class acctController extends controller {
 
     public function home()
     {
-        echo 'Accounting controller';
+        $this->acctView->home();
+    }
+
+    public function companies()
+    {
+        if (isset($_POST['function'])) {
+            //
+        }
+        $this->acctView->companies();
     }
 
 }

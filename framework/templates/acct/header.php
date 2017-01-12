@@ -6,15 +6,16 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>User Management Module</title>
+    <title>Accounting Module</title>
 
     <link rel="stylesheet" type="text/css" href="<?php echo DOMAIN; ?>/css/library/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo DOMAIN; ?>/css/library/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo DOMAIN; ?>/css/library/1.10.12.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo DOMAIN; ?>/css/style.css">
     <link rel="stylesheet" type="text/css" href="<?php echo DOMAIN; ?>/css/cms.css">
     <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/sha256.js"></script>
     <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/1.10.12.dataTables.min.js"></script>
     <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/vanilla.js"></script>
 </head>
 
@@ -25,10 +26,7 @@
     <div id="flash_message"></div>
 
     <div class="row col-md-12">
-        <a href="/user/home"><button class="btn btn-default">Home</button></a>
-        <a href="/user/register"><button class="btn btn-default">Register</button></a>
-        <a href="/user/login"><button class="btn btn-default">Login</button></a>
-        <a href="/user/logout"><button class="btn btn-default">Logout</button></a>
-        <a href="/user/reset"><button class="btn btn-default">Reset Password</button></a>
-        <a href="/user/deactivate"><button class="btn btn-default">Deactivate</button></a>
+        <a href="/acct/home"><button class="btn btn-default">Home</button></a>
+        <a href="/acct/companies"><button class="btn btn-default">Companies</button></a>
+        <a href="/user/home"><button class="btn btn-default">User Pages</button></a>
     </div> <!-- </div class="row col-md-12"> -->
