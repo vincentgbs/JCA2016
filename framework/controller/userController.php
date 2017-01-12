@@ -26,6 +26,19 @@ class userController extends controller {
     public function home()
     {
         if ($this->check()) {
+            foreach ($this->permissions as $permission) {
+                $link = explode('/', $permission)[0];
+                $links[$link] = $link;
+            }
+            $this->userView->home($links);
+        } else {
+            $this->redirect('user/login', false, URL);
+        }
+    }
+
+    public function update()
+    {
+        if ($this->check()) {
             if (isset($_POST['password'])) {
                 if ($this->csrfCheck()) {
                     if ($_SESSION['USER']->checkPassword($this->post('password', 'a', 64))) {
@@ -48,11 +61,7 @@ class userController extends controller {
                 } // csrfCheck
                 echo ($this->csrf_message); return;
             }
-            foreach ($this->permissions as $permission) {
-                $link = explode('/', $permission)[0];
-                $links[$link] = $link;
-            }
-            $this->userView->home($links);
+            $this->userView->update();
         } else {
             $this->redirect('user/login', false, URL);
         }

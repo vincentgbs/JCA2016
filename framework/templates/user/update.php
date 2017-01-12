@@ -1,6 +1,6 @@
 <div class="row col-md-12">
     <input type="hidden" id="csrf_token" value="{{{@csrf_token}}}"/>
-    <h3>Update Information</h3>
+    <h3>Update Account</h3>
     <label for="password">Current Password</label>
         <input type="password" id="password"><br>
     <label for="username">Username:</label>
@@ -125,7 +125,7 @@
                     email: email}
                 if (new_password != '') { data['new_password'] = SHA256(new_password); }
                 $.ajax({
-                    url: "?url=user/home",
+                    url: "?url=user/update",
                     type: "POST",
                     data: data,
                     success: function(response) {

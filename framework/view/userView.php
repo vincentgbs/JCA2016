@@ -17,6 +17,11 @@ class userView extends view {
             $this->loadTemplate('user/links/link', $link);
         }
         $this->loadTemplate('user/links/foot');
+        $this->display();
+    }
+
+    public function update()
+    {
         $this->loadTemplate('user/update');
         $this->display();
     }

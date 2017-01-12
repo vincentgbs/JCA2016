@@ -26,6 +26,7 @@
 
     <div class="row col-md-12">
         <a href="/user/home"><button class="btn btn-default">Home</button></a>
+        <a href="/user/update"><button class="btn btn-default">Update Account</button></a>
         <a href="/user/register"><button class="btn btn-default">Register</button></a>
         <a href="/user/login"><button class="btn btn-default">Login</button></a>
         <a href="/user/logout"><button class="btn btn-default">Logout</button></a>
