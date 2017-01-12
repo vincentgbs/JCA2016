@@ -185,6 +185,7 @@ class userController extends controller {
 
     private function setSession($user)
     {
+        unset($user->userModel);
         $_SESSION['USER'] = $user;
         $this->refreshSession();
     }
