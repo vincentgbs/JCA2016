@@ -26,8 +26,15 @@ class userController extends controller {
     public function home()
     {
         if ($this->check()) {
-            if (isset($_POST['function'])) {
-                // update user
+            if (isset($_POST['password'])) {
+                if ($this->csrfCheck()) {
+                    if ($_SESSION['USER']->checkPassword($this->post('password', 'a', 64))) {
+                        echo ('Profile updated.'); return;
+                    } else {
+                        echo ('Incorrect password.'); return;
+                    }
+                } // csrfCheck
+                echo ($this->csrf_message); return;
             }
             $this->userView->home();
         } else {

@@ -8,7 +8,7 @@
 <div class="row col-md-12">
     <input type="hidden" id="csrf_token" value="{{{@csrf_token}}}"/>
     <h3>Update Information</h3>
-    <label for="password">Password</label>
+    <label for="password">Current Password</label>
         <input type="password" id="password"><br>
     <label for="username">Username:</label>
         <button class="btn input_button" input="username">
@@ -21,9 +21,11 @@
         <input type="text" class="hide" id="email" value="<?php echo $_SESSION['USER']->email?>">
         <span class="alert" id="email_alert"></span><br>
     <label for="new_password">New password</label>
-        <input type="password" id="new_password"><br>
+        <input type="password" id="new_password">
+        <span class="alert" id="new_password_alert"></span><br>
     <label for="confirm_password">Confirm password</label>
-        <input type="password" id="confirm_password"><br>
+        <input type="password" id="confirm_password">
+        <span class="alert" id="confirm_password_alert"></span><br>
 
     <button class="btn btn-default" id="update_button">Update</button>
 
@@ -78,16 +80,72 @@
             }
         });
 
+        $('#new_password').keyup(function(e){
+            if ($("#new_password").val().length < 9) {
+                $("#new_password_alert").text('Your new password must contain at least 9 characters.');
+            } else {
+                $("#new_password_alert").text('');
+            }
+        });
+
+        $('#confirm_password').keyup(function(e){
+            if ($("#confirm_password").val() != $("#new_password").val()) {
+                $("#confirm_password_alert").text('Your passwords do not match.');
+            } else {
+                $("#confirm_password_alert").text('');
+            }
+        });
+
         $("#update_button").on('click', function(){
+            var verify = true; var message = '';
             var password = $("#password").val();
-            var username = $("#username").val();
-            var email = $("#email").val();
-            var new_password = $("#new_password").val();
-            var confirm_password = $("#confirm_password").val();
+            if ($("#username_alert").text() == '') {
+                var username = $("#username").val();
+            } else {
+                verify = false;
+                message += $("#username_alert").text() + '<br>';
+            }
+            if ($("#email_alert").text() == '') {
+                var email = $("#email").val();
+            } else {
+                verify = false;
+                message += $("#email_alert").text() + '<br>';
+            }
+            if ($("#new_password_alert").text() == '') {
+                var new_password = $("#new_password").val();
+            } else {
+                verify = false;
+                message += $("#new_password_alert").text() + '<br>';
+            }
+            if ($("#confirm_password_alert").text() == '') {
+                var confirm_password = $("#confirm_password").val();
+            } else {
+                verify = false;
+                message += $("#confirm_password_alert").text() + '<br>';
+            }
             if (password == '') {
                 return flashMessage('You must enter your password to change any information.', 2499);
+            } else if (verify) {
+                var csrf_token = $("#csrf_token").val();
+                $.ajax({
+                    url: "?url=user/home",
+                    type: "POST",
+                    data: {
+                        csrf_token: csrf_token,
+                        password: SHA256(password),
+                        username: username,
+                        email: email,
+                        new_password: new_password
+                    },
+                    success: function(response) {
+                        flashMessage(response);
+                        if (response.trim() == 'Profile updated.') {
+                            //
+                        }
+                    } // success
+                }); // ajax
             } else {
-                console.debug(password, username, email, new_password, confirm_password);
+                flashMessage(message, 2499);
             }
         });
     });
