@@ -29,6 +29,18 @@ class userController extends controller {
             if (isset($_POST['password'])) {
                 if ($this->csrfCheck()) {
                     if ($_SESSION['USER']->checkPassword($this->post('password', 'a', 64))) {
+                        $_SESSION['USER']->username = $this->post('username', 'a', 99);
+                        $_SESSION['USER']->email = $this->post('email', 'e', 255);
+                        if (isset($_POST['new_password'])) {
+                            $_SESSION['USER']->hashPassword($this->post('new_password', 'a', 64));
+                        }
+                        $user = (object)['user_id'=>$_SESSION['USER']->user_id];
+                        $update = (object)[
+                            'username'=>$_SESSION['USER']->username,
+                            'email'=>$_SESSION['USER']->email,
+                            'password'=>$_SESSION['USER']->password,
+                        ];
+                        $this->userModel->updateUser($user, $update);
                         echo ('Profile updated.'); return;
                     } else {
                         echo ('Incorrect password.'); return;

@@ -81,7 +81,7 @@
         });
 
         $('#new_password').keyup(function(e){
-            if ($("#new_password").val().length < 9) {
+            if ($("#new_password").val().length > 0 && $("#new_password").val().length < 9) {
                 $("#new_password_alert").text('Your new password must contain at least 9 characters.');
             } else {
                 $("#new_password_alert").text('');
@@ -126,17 +126,15 @@
             if (password == '') {
                 return flashMessage('You must enter your password to change any information.', 2499);
             } else if (verify) {
-                var csrf_token = $("#csrf_token").val();
+                var data = {csrf_token: $("#csrf_token").val(),
+                    password: SHA256(password),
+                    username: username,
+                    email: email}
+                if (new_password != '') { data['new_password'] = SHA256(new_password); }
                 $.ajax({
                     url: "?url=user/home",
                     type: "POST",
-                    data: {
-                        csrf_token: csrf_token,
-                        password: SHA256(password),
-                        username: username,
-                        email: email,
-                        new_password: new_password
-                    },
+                    data: data,
                     success: function(response) {
                         flashMessage(response);
                         if (response.trim() == 'Profile updated.') {
