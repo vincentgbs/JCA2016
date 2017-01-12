@@ -1,5 +1,6 @@
 <?php
 require_once FILE . 'framework/application.php';
+include_once FILE . 'framework/controller/userController.php';
 
 abstract class controller extends application {
 
@@ -13,21 +14,23 @@ abstract class controller extends application {
 
     protected function checkSession($name='USER_SESSION_ID', $https=0, $path='/')
     {
-        session_start();
-        if (isset($_SESSION['CREATED'])) {
-            if (HTTPS === 1 && !isset($_COOKIE['USER_SESSION_ID'])) {
-                exit('<h1>You are not an a secure (https) connection</h1>');
+        if (session_id() == '') {
+            session_start();
+            if (isset($_SESSION['CREATED'])) {
+                if (HTTPS === 1 && !isset($_COOKIE['USER_SESSION_ID'])) {
+                    exit('<h1>You are not an a secure (https) connection</h1>');
+                }
+                if (time() > $_SESSION['EXPIRE'] || // session has expired
+                    $_SESSION['HTTP_USER_AGENT'] != $_SERVER['HTTP_USER_AGENT'] || // different browser
+                    $_SESSION['USER_SESSION_ID'] != $_COOKIE['USER_SESSION_ID']) { // wrong session id
+                    return $this->endSession();
+                }
+                if (time() - $_SESSION['CREATED'] > 600) {
+                    $this->refreshSession();
+                }
+            } else { // start a new session
+                return $this->startSession($name, $https);
             }
-            if (time() > $_SESSION['EXPIRE'] || // session has expired
-                $_SESSION['HTTP_USER_AGENT'] != $_SERVER['HTTP_USER_AGENT'] || // different browser
-                $_SESSION['USER_SESSION_ID'] != $_COOKIE['USER_SESSION_ID']) { // wrong session id
-                return $this->endSession();
-            }
-            if (time() - $_SESSION['CREATED'] > 600) {
-                $this->refreshSession();
-            }
-        } else { // start a new session
-            return $this->startSession($name, $https);
         }
     }
 
