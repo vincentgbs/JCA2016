@@ -131,6 +131,13 @@ class userModel extends model {
         return $this->execute($q);
     }
 
+    public function createAccess($user)
+    {
+        $q = "INSERT INTO `user_ls_access` (`user_id`, `url`)
+        VALUES ({$user->user_id}, '" . URL . "');";
+        return $this->execute($q);
+    }
+
 
 
     public function checkUsername($username)

@@ -190,6 +190,7 @@ class userController extends controller {
         } else if (in_array(URL, $this->permissions)) {
             return true;
         } else {
+            $this->userModel->createAccess($user);
             return false;
         }
     }

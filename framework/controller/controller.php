@@ -1,6 +1,5 @@
 <?php
 require_once FILE . 'framework/application.php';
-include_once FILE . 'framework/controller/userController.php';
 
 abstract class controller extends application {
 
@@ -14,6 +13,7 @@ abstract class controller extends application {
 
     protected function checkSession($name='USER_SESSION_ID', $https=0, $path='/')
     {
+        include_once FILE . 'framework/controller/userController.php';
         if (session_id() == '') {
             session_start();
             if (isset($_SESSION['CREATED'])) {
