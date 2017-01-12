@@ -23,3 +23,9 @@
         <div class="text-center bg-primary lead">Your browser does not support JavaScript!</div>
     </div>
     <div id="flash_message"></div>
+    <a href="/user/home"><button class="btn btn-default">Home</button></a>
+    <a href="/user/register"><button class="btn btn-default">Register</button></a>
+    <a href="/user/login"><button class="btn btn-default">Login</button></a>
+    <a href="/user/logout"><button class="btn btn-default">Logout</button></a>
+    <a href="/user/reset"><button class="btn btn-default">Reset Password</button></a>
+    <a href="/user/deactivate"><button class="btn btn-default">Deactivate</button></a>

@@ -8,10 +8,6 @@
         <button class="btn btn-default" id="login_button">Login</button>
         <input type="hidden" name="csrf_token" id="csrf_token" value="{{{@csrf_token}}}"/>
     </form>
-
-    <a href="/user/register"><button class="btn btn-default" id="register">Register</button></a>
-    <a href="/user/reset"><button class="btn btn-default" id="reset_link">Forgotten Password</button></a>
-
     <script>
     $(document).ready(function(){
         $("#login_button").on('click', function(){

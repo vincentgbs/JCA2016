@@ -47,7 +47,6 @@
     </div> <!-- </div class="row col-md-12"> -->
     <div class="row">
         <button class="btn btn-default" id="register_button">Register</button>
-        <a href="/user/login"><button class="btn btn-default">Login</button></a>
     </div><!-- </div class="row"> -->
 
     <script>
