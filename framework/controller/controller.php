@@ -159,7 +159,7 @@ abstract class controller extends application {
         exit;
     }
 
-    protected function flashMessage($message=false, $echo=true)
+    protected function flashMessage($message=false, $echo=false)
     {
         if ($message) {
             $_SESSION['flash_message'] = $message;
@@ -168,7 +168,7 @@ abstract class controller extends application {
             $message = (isset($_SESSION['flash_message'])?$_SESSION['flash_message']:false);
             if ($message) {
                 unset($_SESSION['flash_message']);
-                if ($echo) { echo $message; }
+                if ($echo === false) { echo $message; }
             }
             return $message;
         }

@@ -18,7 +18,7 @@ class userController extends controller {
             if ($this->checkPermissions($_SESSION['USER'])) {
                 return true;
             } else {
-                $this->flashMessage('Unauthorized access.', 'user/home');
+                $this->flashMessage('401 Authorization Error: You do not have access to this page', 'user/home');
             }
         } // else return NULL
     }
