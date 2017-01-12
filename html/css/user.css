@@ -1,0 +1,18 @@
+#google_lightbox {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vw;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    display: none;
+}
+#google_login_window {
+    margin: 1% 25%;
+    height: 10%;
+    width: 50%;
+    background-color: #FFF;
+    z-index: 2;
+    border-style: solid;
+}
