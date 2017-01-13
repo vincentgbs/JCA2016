@@ -38,9 +38,15 @@ class userView extends view {
         $this->loadTemplate('user/columns/head', 2);
         $this->loadTemplate('user/login');
         $this->loadTemplate('user/columns/middle', 2);
-        $this->loadTemplate('user/apis/google');
+        $this->loadTemplate('user/apis/google/intro');
         $this->loadTemplate('user/columns/foot', 2);
         $this->display();
+    }
+
+    public function googleLogin($data)
+    {
+        $this->loadTemplate('user/apis/google/login', $data);
+        $this->display(false);
     }
 
     public function request()
