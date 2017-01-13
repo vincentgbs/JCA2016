@@ -131,20 +131,26 @@ class userController extends controller {
                 }
             } // csrfCheck
             echo ($this->csrf_message);
-        } else if (isset($_POST['api'])) {
-            //
         }
         $this->userView->login();
     }
 
     public function api()
     {
-        $api = $this->post('api', 'a', 255);
-        switch ($api) {
-            case 'google':
-                return $this->userView->google($this->settings);
-            break;
-            default: exit;
+        if (isset($_POST['login_method'])) {
+            $login_method = $this->post('login_method', 'a', 255);
+            switch ($login_method) {
+                case 'google':
+                    //
+                break;
+            }
+        } else if (isset($_POST['api'])) {
+            $api = $this->post('api', 'a', 255);
+            switch ($api) {
+                case 'google':
+                    return $this->userView->google($this->settings);
+                break;
+            }
         }
     }
 

@@ -32,18 +32,17 @@
             var email = profile.getEmail();
 
     //         $.ajax({
-    //             url: "?url=user/googleLogin",
+    //             url: "?url=user/api",
     //             type: 'POST',
     //             data: {
-    //         email: email,
+    //                 login_method: 'google',
+    //                 email: email,
     //                 id_token: id_token,
     //                 name: name
     //             },
     //             success: function(response) {
-    //                 $("#message").html(response);
-    //                  setTimeout(function(){
-    //                      $("#google_lightbox").attr('style', 'display:none;');
-    //                  }, 4999);
+    //                  $("#google_lightbox").attr('style', 'display:none;');
+    //                  flashMessage(response, 4999);
     //             } // success
     //         }); // ajax
         }; // onSignIn
