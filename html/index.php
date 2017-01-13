@@ -47,11 +47,12 @@ if (DEBUG == 'ON' && LOG == 'ON') {
     $execution_time = number_format($time_end - $time_start, 3);
     $log = '../framework/log.txt';
     $lines = count(file($log));
-    if ($lines > 99) { $open = 'w'; }
+    if ($lines > 999) { $open = 'w'; }
     else { $open = 'a'; }
     $fp = fopen($log, $open);
     fwrite($fp, URL . ': ' . number_format(memory_get_peak_usage(1))
-        . ' bytes and '. $execution_time . ' seconds' . PHP_EOL);
+        . ' bytes and '. $execution_time . ' seconds'
+        . (isset($_SESSION['USER'])?' by '.$_SESSION['USER']->username:NULL) . PHP_EOL);
     fclose($fp);
 }
 ?>
