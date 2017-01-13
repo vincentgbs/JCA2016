@@ -135,29 +135,6 @@ class userController extends controller {
         $this->userView->login();
     }
 
-    // untested - should create user (if they don't exist) and log them in
-    private function googleLogin($token, $email)
-    {
-        $url = $this->settings['google_verify_url'] . $token;
-        $output = json_decode($this->simpleCurl($url));
-        if ($output === null) { exit('Google Authentification Error'); }
-        if ($output->aud == $this->settings['google_client_id'] && $output->email == $email) {
-            if ($output->exp <= 0) { exit('Google Authentification has expired'); }
-            $user = new user($this->userModel);
-            if ($user->checkUserExists(['email'=>$email])) {
-                $this->setSession($user);
-                echo ('Logged in.'); return;
-            } else {
-                $username = preg_replace("/[^a-zA-Z0-9]/", '', str_replace('@gmail.com', '', $email));
-                $user->registerUser($username, $email, 'no_password', false);
-                $user->checkUserExists(['email'=>$email]); // get new user_id
-                $this->userModel->createPermissions($user, [$this->settings['google_default_group']]);
-                $this->setSession($user);
-                echo ("Logged in as {$email}."); return;
-            }
-        } else { exit('Google Authentification Error'); }
-    }
-
     public function api()
     {
         if (isset($_POST['login_method'])) {
@@ -273,6 +250,28 @@ class userController extends controller {
             $this->userModel->createAccess($user);
             return false;
         }
+    }
+
+    private function googleLogin($token, $email)
+    {
+        $url = $this->settings['google_verify_url'] . $token;
+        $output = json_decode($this->simpleCurl($url));
+        if ($output === null) { exit('Google Authentification Error'); }
+        if ($output->aud == $this->settings['google_client_id'] && $output->email == $email) {
+            if ($output->exp <= 0) { exit('Google Authentification has expired'); }
+            $user = new user($this->userModel);
+            if ($user->checkUserExists(['email'=>$email])) {
+                $this->setSession($user);
+                echo ('Logged in.'); return;
+            } else {
+                $username = preg_replace("/[^a-zA-Z0-9]/", '', str_replace('@gmail.com', '', $email));
+                $user->registerUser($username, $email, 'no_password', false);
+                $user->checkUserExists(['email'=>$email]); // get new user_id
+                $this->userModel->createPermissions($user, [$this->settings['google_default_group']]);
+                $this->setSession($user);
+                echo ("Logged in as {$email}."); return;
+            }
+        } else { exit('Google Authentification Error'); }
     }
 
 }

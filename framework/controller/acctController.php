@@ -26,7 +26,15 @@ class acctController extends controller {
     public function companies()
     {
         if (isset($_POST['function'])) {
-            //
+            $function = $this->post('function', 'a', 8);
+            switch ($function) {
+                case 'create':
+                    if ($this->csrfCheck()) {
+                        //
+                    }// csrfCheck
+                    echo ($this->csrf_message); return;
+                break;
+            }
         }
         $this->acctView->companies();
     }
