@@ -1,6 +1,7 @@
 <meta name="google-signin-scope" content="profile email">
 <meta name="google-signin-client_id" content="<?php echo (isset($data['google_client_id'])?$data['google_client_id']:''); ?>">
 <script src="https://apis.google.com/js/platform.js" async defer></script>
+<input type="hidden" name="csrf_token" id="google_csrf_token" value="{{{@csrf_token}}}"/>
 
 <style>
 .close-icon {display:block;box-sizing:border-box;width:20px;height:20px;border-width:3px;border-style: solid;border-color:grey;border-radius:100%;

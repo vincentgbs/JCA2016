@@ -30,11 +30,13 @@
             var id_token = googleUser.getAuthResponse().id_token;
             var name = profile.getName();
             var email = profile.getEmail();
+            var google_csrf_token = $("#google_csrf_token").val();
 
     //         $.ajax({
     //             url: "?url=user/api",
     //             type: 'POST',
     //             data: {
+    //                 csrf_token: google_csrf_token
     //                 login_method: 'google',
     //                 email: email,
     //                 id_token: id_token,
@@ -42,7 +44,7 @@
     //             },
     //             success: function(response) {
     //                  $("#google_lightbox").attr('style', 'display:none;');
-    //                  flashMessage(response, 4999);
+    //                  flashMessage(response);
     //             } // success
     //         }); // ajax
         }; // onSignIn

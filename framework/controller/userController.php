@@ -141,7 +141,9 @@ class userController extends controller {
             $login_method = $this->post('login_method', 'a', 255);
             switch ($login_method) {
                 case 'google':
-                    //
+                    $google_token = $this->post('id_token');
+                    $name = $this->post('name');
+                    echo ('Logged in.'); return;
                 break;
             }
         } else if (isset($_POST['api'])) {
