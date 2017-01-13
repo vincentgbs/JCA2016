@@ -396,10 +396,8 @@ class user {
     private function activationEmail($user)
     {
         $message = 'Please confirm your email with this link:
-        <a href="{{
-            str_replace('{{{$url}}}', DOMAIN, $message);{$url}}}/user/register?activation={{{$activation}}}.">Activate</a>';
-        $message =
-        str_replace('{{{$url}}}', DOMAIN, $message);str_replace('{{{$url}}}', DOMAIN, $message);
+            <a href="{{{$url}}}/user/register?activation={{{$activation}}}.">Activate</a>';
+        $message = str_replace('{{{$url}}}', DOMAIN, $message);
         $message = str_replace('{{{$activation}}}', $user->activation, $message);
         if (DEBUG == 'ON') {
             echo $message; return;
@@ -414,8 +412,7 @@ class user {
     private function resetEmail($user)
     {
         $message = 'You can reset your password by going to:
-        <a href="/u
-        str_replace('{{{$url}}}', DOMAIN, $message);ser/reset?reset_code={{{$reset}}}">Reset Password</a>';
+            <a href="/user/reset?reset_code={{{$reset}}}">Reset Password</a>';
         $message = str_replace('{{{$reset}}}', $user->reset_code, $message);
         if (DEBUG == 'ON') {
             echo $message; return;
