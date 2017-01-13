@@ -135,15 +135,39 @@ class userController extends controller {
         $this->userView->login();
     }
 
+    private function googleLogin($token, $email)
+    {
+        $url = $this->settings['google_verify_url'] . $google_token;
+        $output = json_decode($this->simpleCurl($url));
+        if ($output === null) { exit('Google Authentification Error'); }
+        if ($output->aud == $this->settings['google_client_id'] && $output->email == $email) {
+            if ($output->exp <= 0) { exit('Google Authentification has expired'); }
+            $user = new user($this->userModel);
+            if ($user->checkUserExists(['email'=>$email])) {
+                $this->setSession($user);
+                echo ('Logged in.'); return;
+            } else {
+                $username = preg_replace("/[^a-zA-Z0-9]/", '', str_replace('@gmail.com', '', $email));
+                $user->registerUser($username, $email, 'no_password', false);
+                $this->userModel->createPermissions($user, [$this->settings['google_default_group']]);
+                $this->setSession($user);
+                echo ('Logged in.'); return;
+            }
+        } else { exit('Google Authentification Error'); }
+    }
+
     public function api()
     {
         if (isset($_POST['login_method'])) {
             $login_method = $this->post('login_method', 'a', 255);
             switch ($login_method) {
                 case 'google':
-                    $google_token = $this->post('id_token');
-                    $name = $this->post('name');
-                    echo ('Logged in.'); return;
+                    if ($this->csrfCheck()) {
+                        $token = $this->post('id_token', null, 255);
+                        $email = $this->post('email', 'e', 255);
+                        return $this->googleLogin($token, $email);
+                    }// csrfCheck
+                    echo ($this->csrf_message);
                 break;
             }
         } else if (isset($_POST['api'])) {
@@ -372,8 +396,10 @@ class user {
     private function activationEmail($user)
     {
         $message = 'Please confirm your email with this link:
-        <a href="{{{$url}}}/user/register?activation={{{$activation}}}.">Activate</a>';
-        $message = str_replace('{{{$url}}}', DOMAIN, $message);
+        <a href="{{
+            str_replace('{{{$url}}}', DOMAIN, $message);{$url}}}/user/register?activation={{{$activation}}}.">Activate</a>';
+        $message =
+        str_replace('{{{$url}}}', DOMAIN, $message);str_replace('{{{$url}}}', DOMAIN, $message);
         $message = str_replace('{{{$activation}}}', $user->activation, $message);
         if (DEBUG == 'ON') {
             echo $message; return;
@@ -388,7 +414,8 @@ class user {
     private function resetEmail($user)
     {
         $message = 'You can reset your password by going to:
-        <a href="/user/reset?reset_code={{{$reset}}}">Reset Password</a>';
+        <a href="/u
+        str_replace('{{{$url}}}', DOMAIN, $message);ser/reset?reset_code={{{$reset}}}">Reset Password</a>';
         $message = str_replace('{{{$reset}}}', $user->reset_code, $message);
         if (DEBUG == 'ON') {
             echo $message; return;

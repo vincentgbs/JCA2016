@@ -26,27 +26,24 @@
 
     <script>
     function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
             var id_token = googleUser.getAuthResponse().id_token;
-            var name = profile.getName();
-            var email = profile.getEmail();
+            var email = googleUser.getBasicProfile().getEmail();
             var google_csrf_token = $("#google_csrf_token").val();
 
-    //         $.ajax({
-    //             url: "?url=user/api",
-    //             type: 'POST',
-    //             data: {
-    //                 csrf_token: google_csrf_token
-    //                 login_method: 'google',
-    //                 email: email,
-    //                 id_token: id_token,
-    //                 name: name
-    //             },
-    //             success: function(response) {
-    //                  $("#google_lightbox").attr('style', 'display:none;');
-    //                  flashMessage(response);
-    //             } // success
-    //         }); // ajax
+            $.ajax({
+                url: "?url=user/api",
+                type: 'POST',
+                data: {
+                    login_method: 'google',
+                    csrf_token: google_csrf_token,
+                    email: email,
+                    id_token: id_token
+                },
+                success: function(response) {
+                     $("#google_lightbox").attr('style', 'display:none;');
+                     flashMessage(response);
+                } // success
+            }); // ajax
         }; // onSignIn
 
     $( document ).ready(function() {
