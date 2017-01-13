@@ -40,7 +40,7 @@
                     id_token: id_token
                 },
                 success: function(response) {
-                     $("#google_lightbox").attr('style', 'display:none;');
+                     $("#google_lightbox").hide();
                      flashMessage(response);
                 } // success
             }); // ajax
@@ -55,7 +55,7 @@
                     api: 'google'
                 },
                 success: function(response) {
-                    $("#google_lightbox").attr('style', 'display:block;');
+                    $("#google_lightbox").show();//attr('style', 'display:block;');
                     $("#google_login_window").html(response);
                 } // success
             }); // ajax
@@ -69,17 +69,17 @@
                     type: 'GET',
                     success: function(response) {
                         flashMessage('User has signed out.', 2499);
-                        $("#google_lightbox").attr('style', 'display:none;');
+                        $("#google_lightbox").hide();
                     } // success
                 }); // ajax
             });
         });
         $(document).on('click', "#close_lightbox", function() {
-            $("#google_lightbox").attr('style', 'display:none;');
+            $("#google_lightbox").hide();
         });
         $(document).keyup(function(e) {
             if (e.keyCode == 27) { // escape
-                $("#google_lightbox").attr('style', 'display:none;');
+                $("#google_lightbox").hide();
             }
         });
     });
