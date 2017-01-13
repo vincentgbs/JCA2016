@@ -26,6 +26,9 @@ class acctController extends controller {
         if (isset($_POST['function'])) {
             //
         }
+        // $q = 'CREATE TABLE `test` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+        // $q = 'DROP TABLE `test`;';
+        // $this->acctModel->execute($q);
         $this->acctView->companies();
     }
 
