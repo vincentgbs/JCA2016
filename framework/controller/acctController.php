@@ -29,7 +29,8 @@ class acctController extends controller {
             $function = $this->post('function', 'a', 8);
             switch ($function) {
                 case 'company_search':
-                    //
+                    $company_search = $this->post('company_search', 'a');
+                    echo json_encode(NULL); return;
                 break;
                 case 'create':
                     if ($this->csrfCheck()) {

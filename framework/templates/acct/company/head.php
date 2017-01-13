@@ -1,5 +1,6 @@
 <div class="row col-md-12">
     <div class="row col-md-12">
+        <input type="hidden" id="csrf_token" value="{{{@csrf_token}}}"/>
         <div class="col-md-4">
             <label for="company_name">Company name</label>
         </div> <!-- </div class="col-md-4"> -->
