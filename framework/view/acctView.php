@@ -16,11 +16,11 @@ class acctView extends view {
         $this->display();
     }
 
-    public function companies()
+    public function companys($companys)
     {
         $this->loadTemplate('acct/company/head');
-        foreach (range(1,9) as $i) {
-            $this->loadTemplate('acct/company/company');
+        foreach ($companys as $company) {
+            $this->loadTemplate('acct/company/company', $company);
         }
         $this->loadTemplate('acct/company/foot');
         $this->display();

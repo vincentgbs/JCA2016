@@ -23,20 +23,28 @@ class acctController extends controller {
         $this->acctView->home();
     }
 
-    public function companies()
+    public function company()
     {
         if (isset($_POST['function'])) {
             $function = $this->post('function', 'a', 8);
             switch ($function) {
+                case 'company_search':
+                    //
+                break;
                 case 'create':
                     if ($this->csrfCheck()) {
-                        //
+                        if ($this->acctModel->createCompany($this->post('company_name', 'a', 64))) {
+                            //
+                        } else {
+                            echo ('Database error creating company'); return;
+                        }
                     }// csrfCheck
                     echo ($this->csrf_message); return;
                 break;
             }
         }
-        $this->acctView->companies();
+        $companys = $this->acctModel->readCompany();
+        $this->acctView->companys($companys);
     }
 
 }

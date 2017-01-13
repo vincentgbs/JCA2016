@@ -29,9 +29,17 @@ class acctModel extends model {
         }
     }
 
-    public function readCompany($company)
+    public function readCompany($company=false)
     {
-        //
+        $q = 'SELECT * FROM `acct_ls_company`';
+        if ($company) {
+            $q .= ' WHERE';
+            foreach ($company as $key => $value) {
+                $q .= " `$key`= {$this->wrap($value)} AND";
+            }
+            $q = substr($q, 0, -4) . ';';
+        }
+        return $this->select($q);
     }
 
     public function updateCompany($company, $update)

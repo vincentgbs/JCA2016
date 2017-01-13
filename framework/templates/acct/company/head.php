@@ -5,6 +5,7 @@
         </div> <!-- </div class="col-md-4"> -->
         <div class="col-md-4">
             <input type="text" id="company_name" maxlength="99">
+            <button class="btn btn-default" id="create_company_button">Create</button>
         </div> <!-- </div class="col-md-4"> -->
         <div class="col-md-4">
              <p class="alert" id="company_name_alert"></p>
@@ -16,6 +17,7 @@
 
 <table id="company_table">
     <thead>
-        <th>TEST</th>
+        <th>Company Name</th>
+        <th>Company Data</th>
     </thead>
     <tbody>
