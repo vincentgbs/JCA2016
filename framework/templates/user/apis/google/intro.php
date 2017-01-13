@@ -1,5 +1,5 @@
 <div>
-    <h2>Google Login</h2>
+    <h3>Google Login</h3>
     <button class="btn" id="google_login">Google Login</button>
     <div id="google_lightbox"><div id="google_login_window"></div></div>
 
