@@ -89,7 +89,8 @@
             }
         });
 
-        $("#update_button").on('click', function(){
+        function updateAccount()
+        {
             var verify = true; var message = '';
             var password = $("#password").val();
             if ($("#username_alert").text() == '') {
@@ -137,6 +138,15 @@
                 }); // ajax
             } else {
                 flashMessage(message, 2499);
+            }
+        }
+
+        $("#update_button").on('click', function(){
+            updateAccount();
+        });
+        $("#username, #email, #new_password, #confirm_password").keydown(function(e){
+            if (e.keyCode == 13) { // enter
+                updateAccount();
             }
         });
     });

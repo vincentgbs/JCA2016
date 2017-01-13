@@ -17,7 +17,8 @@
 
     <script>
     $(document).ready(function(){
-        $("#reset_button").on('click', function(){
+        function resetPassword()
+        {
             var csrf_token = $("#csrf_token").val();
             var verify = true; var message = '';
             var reset_code = $("#reset_code").val();
@@ -52,6 +53,15 @@
                 }); // ajax
             } else {
                 flashMessage(message, 2499);
+            }
+        }
+
+        $("#reset_button").on('click', function(){
+            resetPassword();
+        });
+        $("#password, #confirm").keydown(function(e){
+            if (e.keyCode == 13) { // enter
+                resetPassword();
             }
         });
     });

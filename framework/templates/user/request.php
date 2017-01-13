@@ -9,7 +9,8 @@
 
     <script>
     $(document).ready(function(){
-        $("#request_button").on('click', function(){
+        function requestPassword()
+        {
             var csrf_token = $("#csrf_token").val();
             var username = $("#username").val();
             if (username != '') {
@@ -23,7 +24,16 @@
                     success: function(response){
                         flashMessage(response, 4999);
                     }
-                }); // ajax                
+                }); // ajax
+            }
+        }
+
+        $("#request_button").on('click', function(){
+            requestPassword();
+        });
+        $("#username").keydown(function(e){
+            if (e.keyCode == 13) { // enter
+                requestPassword();
             }
         });
     });

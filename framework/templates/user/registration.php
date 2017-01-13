@@ -122,7 +122,8 @@
             }
         });
 
-        $("#register_button").on('click', function(){
+        function register()
+        {
             var verify = true; var message = '';
             if ($("#username_alert").text() == '') {
                 var username = $("#username").val();
@@ -165,6 +166,15 @@
                 }); // ajax
             } else {
                 flashMessage(message, 2499);
+            }
+        }
+
+        $("#register_button").on('click', function(){
+            register()
+        });
+        $("#username, #email, #password, #confirm").keydown(function(e){
+            if (e.keyCode == 13) { // enter
+                register();
             }
         });
     });
