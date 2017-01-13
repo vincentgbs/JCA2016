@@ -135,9 +135,10 @@ class userController extends controller {
         $this->userView->login();
     }
 
+    // untested - should create user (if they don't exist) and log them in
     private function googleLogin($token, $email)
     {
-        $url = $this->settings['google_verify_url'] . $google_token;
+        $url = $this->settings['google_verify_url'] . $token;
         $output = json_decode($this->simpleCurl($url));
         if ($output === null) { exit('Google Authentification Error'); }
         if ($output->aud == $this->settings['google_client_id'] && $output->email == $email) {
@@ -149,9 +150,10 @@ class userController extends controller {
             } else {
                 $username = preg_replace("/[^a-zA-Z0-9]/", '', str_replace('@gmail.com', '', $email));
                 $user->registerUser($username, $email, 'no_password', false);
+                $user->checkUserExists(['email'=>$email]); // get new user_id
                 $this->userModel->createPermissions($user, [$this->settings['google_default_group']]);
                 $this->setSession($user);
-                echo ('Logged in.'); return;
+                echo ("Logged in as {$email}."); return;
             }
         } else { exit('Google Authentification Error'); }
     }
@@ -163,7 +165,7 @@ class userController extends controller {
             switch ($login_method) {
                 case 'google':
                     if ($this->csrfCheck()) {
-                        $token = $this->post('id_token', null, 255);
+                        $token = $this->post('id_token', null);
                         $email = $this->post('email', 'e', 255);
                         return $this->googleLogin($token, $email);
                     }// csrfCheck

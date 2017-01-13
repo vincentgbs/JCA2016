@@ -41,7 +41,7 @@
                 },
                 success: function(response) {
                      $("#google_lightbox").hide();
-                     flashMessage(response);
+                     flashMessage(response, 99999);
                 } // success
             }); // ajax
         }; // onSignIn
