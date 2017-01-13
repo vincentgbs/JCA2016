@@ -1,5 +1,5 @@
 <meta name="google-signin-scope" content="profile email">
-<meta name="google-signin-client_id" content="<?php echo (isset($data['client_id'])?$data['client_id']:''); ?>">
+<meta name="google-signin-client_id" content="<?php echo (isset($data['google_client_id'])?$data['google_client_id']:''); ?>">
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 <style>

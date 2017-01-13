@@ -43,7 +43,7 @@ class userView extends view {
         $this->display();
     }
 
-    public function googleLogin($data)
+    public function google($data)
     {
         $this->loadTemplate('user/apis/google/login', $data);
         $this->display(false);

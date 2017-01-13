@@ -50,21 +50,17 @@
 
     $( document ).ready(function() {
         $("#google_login").on('click', function() {
-            $("#google_lightbox").attr('style', 'display:block;');
-            $("#google_login_window").html('TESTING');
-            return;
-            // $.ajax({
-            //     url: "?url=user/login",
-            //     type: 'POST',
-            //     data: {
-            //         api: 'google',
-            //         csrf_token: csrf_token
-            //     }
-            //     success: function(response) {
-            //         $("#google_lightbox").attr('style', 'display:block;');
-            //         $("#google_login_window").html(response);
-            //     }
-            // });
+            $.ajax({
+                url: "?url=user/api",
+                type: "POST",
+                data: {
+                    api: 'google'
+                },
+                success: function(response) {
+                    $("#google_lightbox").attr('style', 'display:block;');
+                    $("#google_login_window").html(response);
+                } // success
+            }); // ajax
         });
 
         $(document).on('click', "#signOut", function() {
@@ -74,9 +70,10 @@
                     url: "?url=user/logout",
                     type: 'GET',
                     success: function(response) {
-                        flashMessage('User has signed out.');
-                    }
-                });
+                        flashMessage('User has signed out.', 2499);
+                        $("#google_lightbox").attr('style', 'display:none;');
+                    } // success
+                }); // ajax
             });
         });
         $(document).on('click', "#close_lightbox", function() {
