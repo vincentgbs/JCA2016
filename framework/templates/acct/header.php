@@ -12,7 +12,6 @@
     <link rel="stylesheet" type="text/css" href="<?php echo DOMAIN; ?>/css/library/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo DOMAIN; ?>/css/library/1.10.12.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo DOMAIN; ?>/css/style.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo DOMAIN; ?>/css/cms.css">
     <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/jquery-ui.min.js"></script>
     <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/1.10.12.dataTables.min.js"></script>
