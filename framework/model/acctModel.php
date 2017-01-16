@@ -14,9 +14,9 @@ class acctModel extends model {
     public function createCompany($company)
     {
         $q = "INSERT INTO `acct_ls_company` (`company`, `future_data`)
-            VALUES ({$this->wrap($company)}, NULL);";
+            VALUES ({$this->wrap($company->company)}, NULL);";
         if ($this->execute($q)) {
-            $q = "CREATE TABLE `acct_ledger_{$company}` (
+            $q = "CREATE TABLE `acct_ledger_{$company->abbreviation}` (
                 `ledger_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                 `date` date NOT NULL,
                 `account_id` int(11) NOT NULL,
@@ -35,22 +35,31 @@ class acctModel extends model {
         if ($company) {
             $q .= ' WHERE';
             foreach ($company as $key => $value) {
-                $q .= " `$key`= {$this->wrap($value)} AND";
+                $q .= " `$key` = {$this->wrap($value)} AND";
             }
             $q = substr($q, 0, -4) . ';';
         }
         return $this->select($q);
     }
 
-    public function updateCompany($company, $update)
-    {
-        //
-    }
+    // public function updateCompany($company, $update)
+    // {
+    //     $q = "UPDATE acct_ls_company SET `future_data`={$this->wrap($update->future_data)}
+    //         WHERE `company_id`={$company->company_id};";
+    //     return $this->execute($q);
+    // }
 
-    public function deleteCompany($company)
-    {
-        //
-    }
+    // public function deleteCompany($company)
+    // {
+    //     $q = 'DELETE FROM `acct_ls_company` WHERE';
+    //     foreach ($company as $key => $value) {
+    //         $q .= " `$key` = {$this->wrap($value)} AND";
+    //     }
+    //     $q = substr($q, 0, -4) . ';';
+    //     if ($this->execute($q)) {
+    //         $q = "DROP TABLE `acct_ledger_{$company->company}`";
+    //     }
+    // }
 
 }
 ?>
