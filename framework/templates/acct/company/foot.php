@@ -6,11 +6,12 @@ $(document).ready(function(){
     $("#company_table").dataTable();
 
     $('#company_name').keyup(function(){
-        limitInput(this, 'alphanumeric');
+        limitInput(this, /[^A-z0-9\ ]/g);
         if ($("#company_name").val().length > 1) {
             $.ajax({
                 url: "?url=acct/company",
                 type: "POST",
+                // dataType: "json",
                 data: {
                     function: 'company_search',
                     username_search: $("#company_name").val()

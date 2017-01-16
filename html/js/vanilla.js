@@ -22,6 +22,9 @@ function limitInput(input, limit)
         $(input).val( $(input).val().replace(/\^/g, '') );
     } else if (limit == 'words') { // includes underscores
         $(input).val( $(input).val().replace(/\W/g, '') );
+    } else {
+        $(input).val( $(input).val().replace(limit, '') );
+        // $(input).val( $(input).val().replace(/\^/g, '') );
     }
 }
 
