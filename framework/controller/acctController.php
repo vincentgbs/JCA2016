@@ -1,7 +1,5 @@
 <?php
 require_once FILE . 'framework/controller/controller.php';
-define('ACCTDBUSER', 'acct_user');
-define('ACCTDBPASS', 'password');
 
 class acctController extends controller {
 
@@ -13,7 +11,7 @@ class acctController extends controller {
             $this->flashMessage('Please log in to access this page.');
             $this->redirect('user/login', false, URL);
         } // else
-        $this->getModel('acct');
+        $this->getModel('acct', $this->userController->userModel->db);
         $this->getView('acct');
         $this->getSettings('acct');
     }
