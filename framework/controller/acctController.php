@@ -21,29 +21,10 @@ class acctController extends controller {
         $this->acctView->home();
     }
 
-    public function company()
+    public function queries()
     {
-        if (isset($_POST['function'])) {
-            $function = $this->post('function', 'a', 8);
-            switch ($function) {
-                case 'company_search':
-                    $company_search = $this->post('company_search', 'a');
-                    echo json_encode(NULL); return;
-                break;
-                case 'create':
-                    if ($this->csrfCheck()) {
-                        if ($this->acctModel->createCompany($this->post('company_name', 'a', 64))) {
-                            //
-                        } else {
-                            echo ('Database error creating company'); return;
-                        }
-                    }// csrfCheck
-                    echo ($this->csrf_message); return;
-                break;
-            }
-        }
-        $companys = $this->acctModel->readCompany();
-        $this->acctView->companys($companys);
+        $dbs = $this->acctModel->readDatabase();
+        $this->acctView->queries($dbs);
     }
 
 }

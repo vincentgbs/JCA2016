@@ -16,13 +16,13 @@ class acctView extends view {
         $this->display();
     }
 
-    public function companys($companys)
+    public function queries($dbs)
     {
-        $this->loadTemplate('acct/company/head');
-        foreach ($companys as $company) {
-            $this->loadTemplate('acct/company/company', $company);
+        $this->loadTemplate('acct/queries/head');
+        foreach ($dbs as $db) {
+            $this->loadTemplate('acct/queries/database', $db);
         }
-        $this->loadTemplate('acct/company/foot');
+        $this->loadTemplate('acct/queries/foot');
         $this->display();
     }
 
