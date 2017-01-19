@@ -28,5 +28,18 @@ class acctModel extends model {
         return $this->select($q);
     }
 
+    public function deleteDatabase($db)
+    {
+        $q = 'DELETE FROM `acct_ls_databases`';
+        if ($db) {
+            $q .= ' WHERE';
+            foreach ($db as $key => $value) {
+                $q .= " `$key` = {$this->wrap($value)} AND";
+            }
+            $q = substr($q, 0, -4) . ';';
+        }
+        return $this->execute($q);
+    }
+
 }
 ?>

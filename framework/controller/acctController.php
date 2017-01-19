@@ -29,6 +29,16 @@ class acctController extends controller {
                 echo 'Database added.';
             }
             return;
+        } else if (isset($_POST['function'])) {
+            $function = $this->post('function', 'a', 16);
+            switch ($function) {
+                case 'delete':
+                    $db = (object)['db_id' => $this->post('db_id', 'i')];
+                    if ($this->acctModel->deleteDatabase($db)) {
+                        echo 'Database deleted.'; return;
+                    }
+                break;
+            }
         }
         $dbs = $this->acctModel->readDatabase();
         $this->acctView->queries($dbs);

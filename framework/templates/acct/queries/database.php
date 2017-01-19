@@ -15,6 +15,8 @@
         <?php echo $data->database; ?>
     </td>
     <td>
-        <?php echo $data->db_id; ?>
+        <button class="btn btn-warning delete_database_button" dbid="<?php echo $data->db_id; ?>">
+            Delete
+        </button>
     </td>
 </tr>
