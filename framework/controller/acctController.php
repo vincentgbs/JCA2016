@@ -23,21 +23,22 @@ class acctController extends controller {
 
     public function queries()
     {
-        if (isset($_POST['nickname'])) {
-            $db = (object)$_POST;
-            if ($this->acctModel->createDatabase($db)) {
-                echo 'Database added.';
-            }
-            return;
-        } else if (isset($_POST['function'])) {
+        if (isset($_POST['function'])) {
             $function = $this->post('function', 'a', 16);
             switch ($function) {
+                case 'create':
+                    $db = (object)$_POST;
+                    if ($this->acctModel->createDatabase($db)) {
+                        echo 'Database added.';
+                    } return;
+                break;
                 case 'delete':
                     $db = (object)['db_id' => $this->post('db_id', 'i')];
                     if ($this->acctModel->deleteDatabase($db)) {
-                        echo 'Database deleted.'; return;
-                    }
+                        echo 'Database deleted.';
+                    } return;
                 break;
+                default: exit('Invalid database function.');
             }
         }
         $dbs = $this->acctModel->readDatabase();

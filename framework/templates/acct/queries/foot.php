@@ -1,11 +1,19 @@
     </tbody>
 </table>
 
+<hr class="row col-md-12">
+<div class="row col-md-12">
+    Brand(s): <input type="text" id="brand">
+    Channel(s): <input type="text" id="brand">
+</div> <!-- </div class="row col-md-12"> -->
+
 <script>
 $(document).ready(function(){
     $('#new_nickname').keyup(function(){
         limitInput(this, 'alphanumeric');
     });
+
+    $("#databases").dataTable();
 
     $(document).on('click', ".delete_database_button.btn-danger", function(){
         var dbid = $(this).attr('dbid');
@@ -26,8 +34,6 @@ $(document).ready(function(){
         }); // ajax
     });
 
-    $("#databases").dataTable();
-
     $("#new_database_button").on('click', function(){
         var nickname = $("#new_nickname").val();
         var host = $("#new_host").val();
@@ -39,6 +45,7 @@ $(document).ready(function(){
                 url: "?url=acct/queries",
                 type: "POST",
                 data: {
+                    function: 'create',
                     nickname: nickname,
                     host: host,
                     username: username,
