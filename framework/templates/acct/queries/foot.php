@@ -4,11 +4,28 @@
 <hr class="row col-md-12">
 <div class="row col-md-12">
     Brand(s): <input type="text" id="brand">
-    Channel(s): <input type="text" id="brand">
+    Channel(s): <input type="text" id="channel">
 </div> <!-- </div class="row col-md-12"> -->
 
 <script>
 $(document).ready(function(){
+    $("#brand").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "?url=acct/queries",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    function: 'brand',
+                    brand: request.term
+                },
+                success: function(data) {
+                    response(data);
+                }
+            }); // ajax
+        } // source
+    }); // autocomplete
+
     $('#new_nickname').keyup(function(){
         limitInput(this, 'alphanumeric');
     });

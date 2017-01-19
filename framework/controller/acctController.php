@@ -13,7 +13,11 @@ class acctController extends controller {
         } // else
         $this->getModel('acct', $this->userController->userModel->db);
         $this->getView('acct');
-        $this->getSettings('acct');
+        // $this->getSettings('acct');
+        if (!isset($_SESSION['zoos_connection'])) {
+            $dbs = $this->acctModel->readDatabase();
+            $_SESSION['zoos_connection'] = $dbs[0];
+        }
     }
 
     public function home()
@@ -37,6 +41,21 @@ class acctController extends controller {
                     if ($this->acctModel->deleteDatabase($db)) {
                         echo 'Database deleted.';
                     } return;
+                break;
+                case 'brand':
+                    // $db = new mysqli($_SESSION['zoos_connection']->host,
+                    //     $_SESSION['zoos_connection']->username,
+                    //     $_SESSION['zoos_connection']->password,
+                    //     $_SESSION['zoos_connection']->database);
+                    // $brand = $this->post('brand');
+                    // $query = "SELECT * FROM `cs_ecomm_brand` WHERE `brand` LIKE '{$brand}%';";
+                    // $result = $db->query($query, MYSQLI_USE_RESULT);
+                    // $return = [];
+                    // while ($row = $result->fetch_object()) {
+                    //     $return[] = $row->brand;
+                    // }
+                    // $result->close();
+                    // echo json_encode($return); return;
                 break;
                 default: exit('Invalid database function.');
             }
