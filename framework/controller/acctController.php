@@ -23,6 +23,13 @@ class acctController extends controller {
 
     public function queries()
     {
+        if (isset($_POST['nickname'])) {
+            $db = (object)$_POST;
+            if ($this->acctModel->createDatabase($db)) {
+                echo 'Database added.';
+            }
+            return;
+        }
         $dbs = $this->acctModel->readDatabase();
         $this->acctView->queries($dbs);
     }
