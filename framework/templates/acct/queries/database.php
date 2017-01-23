@@ -15,8 +15,8 @@
         <?php echo $data->database; ?>
     </td>
     <td>
-        <button class="btn btn-default select_database_button" dbid="<?php echo $data->db_id; ?>" <?php echo (NULL); ?>>
-            SELECT
+        <button class="btn btn-success select_database_button" dbid="<?php echo $data->db_id; ?>" <?php echo (NULL); ?>>
+            Select
         </button>
     </td>
     <td>

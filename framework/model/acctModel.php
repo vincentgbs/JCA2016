@@ -41,9 +41,12 @@ class acctModel extends model {
         return $this->execute($q);
     }
 
+
+
     public function readCache($table)
     {
         $q = "SELECT * FROM {$table};";
+        return $this->select($q);
     }
 
     public function updateCache($table, $rows)

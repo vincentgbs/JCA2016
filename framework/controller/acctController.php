@@ -62,7 +62,9 @@ class acctController extends controller {
                     }
                     return;
                 break;
-                case 'update_table':
+                case 'update_tables':
+                    $brands = $this->acctModel->readCache('cache_cs_ecomm_brand');
+                    $channels = $this->acctModel->readCache('cache_cs_journal_channel');
                     // first in our model, select all from cache_cs_ecomm_brand;
                     // check last ids... and update accordingly
 
@@ -81,8 +83,10 @@ class acctController extends controller {
                 default: exit('Invalid database function.');
             }
         }
+        $data['brands'] = $this->acctModel->readCache('cache_cs_ecomm_brand');
+        $data['channels'] = $this->acctModel->readCache('cache_cs_journal_channel');
         $dbs = $this->acctModel->readDatabase();
-        $this->acctView->queries($dbs);
+        $this->acctView->queries($dbs, $data);
     }
 
 }

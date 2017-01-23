@@ -16,13 +16,13 @@ class acctView extends view {
         $this->display();
     }
 
-    public function queries($dbs)
+    public function queries($dbs, $data)
     {
         $this->loadTemplate('acct/queries/head');
         foreach ($dbs as $db) {
             $this->loadTemplate('acct/queries/database', $db);
         }
-        $this->loadTemplate('acct/queries/foot');
+        $this->loadTemplate('acct/queries/foot', $data);
         $this->display();
     }
 

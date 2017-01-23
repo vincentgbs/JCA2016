@@ -29,3 +29,4 @@
         <a href="/acct/queries"><button class="btn btn-default">Zoos Data</button></a>
         <a href="/user/home"><button class="btn btn-default">User Pages</button></a>
     </div> <!-- </div class="row col-md-12"> -->
+<hr class="row col-md-12">

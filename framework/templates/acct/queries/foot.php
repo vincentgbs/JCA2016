@@ -1,10 +1,20 @@
-    </tbody>
-</table>
+        </tbody>
+    </table>
+    <hr class="row col-md-12">
+</div> <!-- </div class="row col-md-12" id="database_container"> -->
 
-<hr class="row col-md-12">
+<div class="row col-md-12" id="query_container">
+    <button class="btn btn-default">Update Brands and Channels</button>
+</div> <!-- </div class="row col-md-12" id="query_container"> -->
+
+
 
 <script>
 $(document).ready(function(){
+    $("#hide_database_container").on('click', function(){
+        $("#database_container").hide();
+    });
+
     $("#brand").autocomplete({
         source: function(request, response) {
             $.ajax({
