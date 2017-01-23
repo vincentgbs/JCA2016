@@ -22,6 +22,8 @@
     <button class="btn btn-default" id="new_database_button">Add database</button>
 </div><!-- </div class="row col-md-12"> -->
 
+<hr class="row col-md-12">
+
 <table id="databases">
     <thead>
         <tr>
@@ -30,6 +32,7 @@
             <th>Username</th>
             <th>Password</th>
             <th>Database</th>
+            <th>Select</th>
             <th>Delete</th>
         </tr>
     </thead>

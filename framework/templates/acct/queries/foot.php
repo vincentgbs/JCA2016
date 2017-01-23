@@ -2,10 +2,6 @@
 </table>
 
 <hr class="row col-md-12">
-<div class="row col-md-12">
-    Brand(s): <input type="text" id="brand">
-    Channel(s): <input type="text" id="channel">
-</div> <!-- </div class="row col-md-12"> -->
 
 <script>
 $(document).ready(function(){
@@ -46,6 +42,28 @@ $(document).ready(function(){
                 flashMessage(response);
                 if (response.trim() == 'Database deleted.') {
                     row.hide();
+                }
+            } // success
+        }); // ajax
+    });
+
+    $(document).on('click', ".select_database_button", function(){
+        var dbid = $(this).attr('dbid');
+        $.ajax({
+            url: "?url=acct/queries",
+            type: "POST",
+            data: {
+                function: 'select',
+                db_id: dbid
+            },
+            success: function(response) {
+                flashMessage(response);
+                if (response.trim() == 'Database selected.') {
+                    setTimeout(
+                        function(){
+                            location.reload();
+                        }, 1000
+                    ); // setTimeout
                 }
             } // success
         }); // ajax

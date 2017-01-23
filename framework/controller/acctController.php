@@ -13,10 +13,24 @@ class acctController extends controller {
         } // else
         $this->getModel('acct', $this->userController->userModel->db);
         $this->getView('acct');
-        // $this->getSettings('acct');
-        if (!isset($_SESSION['zoos_connection'])) {
-            $dbs = $this->acctModel->readDatabase();
+        $this->getSettings('acct');
+        $this->setConnection();
+    }
+
+    private function setConnection($params=false)
+    {
+        if ($params) {
+            $dbs = $this->acctModel->readDatabase($params);
+        } else if (!isset($_SESSION['zoos_connection'])) {
+            $dbs = $this->acctModel->readDatabase([
+                'nickname' => $this->settings['default_database_connection']
+            ]);
+        } else { return true; }
+        if (isset($dbs[0])) {
             $_SESSION['zoos_connection'] = $dbs[0];
+            return true;
+        } else {
+            exit('Database connection does not exist.');
         }
     }
 
@@ -42,20 +56,27 @@ class acctController extends controller {
                         echo 'Database deleted.';
                     } return;
                 break;
-                case 'brand':
+                case 'select':
+                    if ($this->setConnection(['db_id' => $this->post('db_id', 'i')])) {
+                        echo 'Database selected.';
+                    }
+                    return;
+                break;
+                case 'update_table':
+                    // first in our model, select all from cache_cs_ecomm_brand;
+                    // check last ids... and update accordingly
+
                     // $db = new mysqli($_SESSION['zoos_connection']->host,
                     //     $_SESSION['zoos_connection']->username,
                     //     $_SESSION['zoos_connection']->password,
                     //     $_SESSION['zoos_connection']->database);
-                    // $brand = $this->post('brand');
-                    // $query = "SELECT * FROM `cs_ecomm_brand` WHERE `brand` LIKE '{$brand}%';";
+                    // $query = "SELECT * FROM `cs_ecomm_brand`;";
                     // $result = $db->query($query, MYSQLI_USE_RESULT);
                     // $return = [];
                     // while ($row = $result->fetch_object()) {
                     //     $return[] = $row->brand;
                     // }
                     // $result->close();
-                    // echo json_encode($return); return;
                 break;
                 default: exit('Invalid database function.');
             }

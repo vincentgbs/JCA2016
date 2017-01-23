@@ -41,5 +41,23 @@ class acctModel extends model {
         return $this->execute($q);
     }
 
+    public function readCache($table)
+    {
+        $q = "SELECT * FROM {$table};";
+    }
+
+    public function updateCache($table, $rows)
+    {
+        $q = "INSERT INTO {$table} ";
+        foreach ($rows as $row) {
+            foreach ($row as $key => $value) {
+                $key .= "";
+                $value .= "";
+            }
+        }
+        $q .= $key . ' VALUES ' . $values;
+        echo $q;
+    }
+
 }
 ?>

@@ -9,10 +9,15 @@
         <?php echo $data->username; ?>
     </td>
     <td>
-        <?php echo $data->password; ?>
+        <input type="password" value="<?php echo $data->password; ?>" disabled>
     </td>
     <td>
         <?php echo $data->database; ?>
+    </td>
+    <td>
+        <button class="btn btn-default select_database_button" dbid="<?php echo $data->db_id; ?>" <?php echo (NULL); ?>>
+            SELECT
+        </button>
     </td>
     <td>
         <button class="btn btn-warning delete_database_button" dbid="<?php echo $data->db_id; ?>">
