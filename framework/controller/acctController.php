@@ -62,31 +62,30 @@ class acctController extends controller {
                     }
                     return;
                 break;
-                case 'update_tables':
-                    $brands = $this->acctModel->readCache('cache_cs_ecomm_brand');
-                    $channels = $this->acctModel->readCache('cache_cs_journal_channel');
-                    // first in our model, select all from cache_cs_ecomm_brand;
-                    // check last ids... and update accordingly
-
-                    // $db = new mysqli($_SESSION['zoos_connection']->host,
-                    //     $_SESSION['zoos_connection']->username,
-                    //     $_SESSION['zoos_connection']->password,
-                    //     $_SESSION['zoos_connection']->database);
-                    // $query = "SELECT * FROM `cs_ecomm_brand`;";
-                    // $result = $db->query($query, MYSQLI_USE_RESULT);
-                    // $return = [];
-                    // while ($row = $result->fetch_object()) {
-                    //     $return[] = $row->brand;
-                    // }
-                    // $result->close();
-                break;
                 default: exit('Invalid database function.');
             }
         }
-        $data['brands'] = $this->acctModel->readCache('cache_cs_ecomm_brand');
-        $data['channels'] = $this->acctModel->readCache('cache_cs_journal_channel');
+        $data['brands'] = $this->acctModel->readCache('cs_ecomm_brand');
+        $data['channels'] = $this->acctModel->readCache('cs_journal_channel');
         $dbs = $this->acctModel->readDatabase();
         $this->acctView->queries($dbs, $data);
+    }
+
+    private function select($query)
+    {
+        $db = new mysqli($_SESSION['zoos_connection']->host,
+            $_SESSION['zoos_connection']->username,
+            $_SESSION['zoos_connection']->password,
+            $_SESSION['zoos_connection']->database);
+        $query = "SELECT * FROM `cs_ecomm_brand`;";
+        $result = $db->query($query, MYSQLI_USE_RESULT);
+        $return = [];
+        while ($row = $result->fetch_object()) {
+            $return[] = $row->brand;
+        }
+        $result->close();
+        $db->close();
+        return $return;
     }
 
 }

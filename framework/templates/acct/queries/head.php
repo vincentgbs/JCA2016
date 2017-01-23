@@ -1,4 +1,4 @@
-<div class="row col-md-12" id="database_container">
+<div class="row col-md-12 hide" id="database_container">
     <div class="col-md-11" id="new_database_form">
         <div class="row col-md-12">
             <div class="col-md-4"><label for="new_nickname">Nickname:</label></div> <!-- </div class="col-md-4"> -->

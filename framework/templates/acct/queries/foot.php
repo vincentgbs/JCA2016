@@ -4,33 +4,71 @@
 </div> <!-- </div class="row col-md-12" id="database_container"> -->
 
 <div class="row col-md-12" id="query_container">
-    <button class="btn btn-default">Update Brands and Channels</button>
+    <div class="select_date">WHERE order_date >= '<span id="start_date"></span>'
+        AND order_date <= '<span id="end_date"></span>'
+    </div>
+    <div class="select_brand">AND brand_id IN (<span></span>)</div>
+    <div class="select_channel">AND channel_id IN (<span></span>)</div>
+
+    <hr class="row col-md-12">
+    <div class="row col-md-12">
+        <button class="last_date" id="last_month" time="1">Last month</button>
+        <button class="last_date" id="last_six_months" time="6">Last six months</button>
+        <button class="last_date" id="last_year" time="12">Last year</button>
+        <button class="last_date" id="last_two_years" time="24">Last two years</button>
+        Start: <input type="text" id="start_date" value="<?php echo date('Y'); ?>-01-01 00:00:00">
+        End: <input type="text" id="end_date" value="<?php echo date('Y'); ?>-12-31 23:59:59">
+    </div> <!-- </div class="row col-md-12"> -->
+    <div class="col-md-6">
+        <label for="brands">Brands:</label> <input type="text" id="brands">
+        <ol class="selectable" id="select_brand">
+            <?php
+            foreach ($data['brands'] as $brand) {
+                echo '<li class="ui-widget-content">' . $brand->brand_id . '. ' . $brand->brand . '</li>';
+            }
+            ?>
+        </ol>
+    </div> <!-- </div class="col-md-6"> -->
+    <div class="col-md-6">
+        <label for="channels">Channels:</label> <input type="text" id="channels">
+        <ol class="selectable" id="select_channel">
+            <?php
+            foreach ($data['channels'] as $channel) {
+                echo '<li class="ui-widget-content">' . $channel->channel_id . '. ' . $channel->channel . '</li>';
+            }
+            ?>
+        </ol>
+    </div> <!-- </div class="col-md-6"> -->
 </div> <!-- </div class="row col-md-12" id="query_container"> -->
 
-
+<style>
+    .selectable { list-style-type: none; }
+    .selectable .ui-selecting { background: #0AF; }
+    .selectable .ui-selected { background: #05A; color: white; }
+</style>
 
 <script>
 $(document).ready(function(){
+    $(".last_date").on('click', function(){
+        var months = $(this).attr('time');
+        $(".select_date").html("WHERE order_date >= DATE_FORMAT(CURDATE(), '%Y-%m-%d') - INTERVAL "
+        + months + " MONTH<span id=\"start_date\"></span><span id=\"end_date\"></span>");
+    });
+
+    $(".selectable").selectable({
+        stop: function() {
+            var string = '';
+            $( ".ui-selected", this ).each(function() {
+                var index = $(".selectable li").index( this );
+                string += ( index + 1 ) + ", ";
+            }); // each
+            $('.' + $(this).attr('id') + ' > span').text( string.substr(0, string.length-2) );
+        } // stop
+    });
+
     $("#hide_database_container").on('click', function(){
         $("#database_container").hide();
     });
-
-    $("#brand").autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: "?url=acct/queries",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    function: 'brand',
-                    brand: request.term
-                },
-                success: function(data) {
-                    response(data);
-                }
-            }); // ajax
-        } // source
-    }); // autocomplete
 
     $('#new_nickname').keyup(function(){
         limitInput(this, 'alphanumeric');
