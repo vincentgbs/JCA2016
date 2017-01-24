@@ -1,11 +1,11 @@
 <?php
 require_once FILE . 'framework/model/model.php';
 
-class acctModel extends model {
+class reptModel extends model {
 
     public function createDatabase($db)
     {
-        $q = "INSERT INTO `acct_ls_databases`
+        $q = "INSERT INTO `rept_ls_databases`
             (`nickname`, `host`, `username`, `password`, `database`)
             VALUES ({$this->wrap($db->nickname)},
                 {$this->wrap($db->host)},
@@ -17,7 +17,7 @@ class acctModel extends model {
 
     public function readDatabase($db=false)
     {
-        $q = 'SELECT * FROM `acct_ls_databases`';
+        $q = 'SELECT * FROM `rept_ls_databases`';
         if ($db) {
             $q .= ' WHERE';
             foreach ($db as $key => $value) {
@@ -30,7 +30,7 @@ class acctModel extends model {
 
     public function deleteDatabase($db)
     {
-        $q = 'DELETE FROM `acct_ls_databases`';
+        $q = 'DELETE FROM `rept_ls_databases`';
         if ($db) {
             $q .= ' WHERE';
             foreach ($db as $key => $value) {

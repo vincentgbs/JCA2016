@@ -1,7 +1,7 @@
 <?php
 require_once FILE . 'framework/controller/controller.php';
 
-class acctController extends controller {
+class reptController extends controller {
 
     public function __construct()
     {
@@ -11,18 +11,18 @@ class acctController extends controller {
             $this->flashMessage('Please log in to access this page.');
             $this->redirect('user/login', false, URL);
         } // else
-        $this->getModel('acct', $this->userController->userModel->db);
-        $this->getView('acct');
-        $this->getSettings('acct');
+        $this->getModel('rept', $this->userController->userModel->db);
+        $this->getView('rept');
+        $this->getSettings('rept');
         $this->setConnection();
     }
 
     private function setConnection($params=false)
     {
         if ($params) {
-            $dbs = $this->acctModel->readDatabase($params);
+            $dbs = $this->reptModel->readDatabase($params);
         } else if (!isset($_SESSION['zoos_connection'])) {
-            $dbs = $this->acctModel->readDatabase([
+            $dbs = $this->reptModel->readDatabase([
                 'nickname' => $this->settings['default_database_connection']
             ]);
         } else { return true; }
@@ -36,7 +36,7 @@ class acctController extends controller {
 
     public function home()
     {
-        $this->acctView->home();
+        $this->reptView->home();
     }
 
     public function queries()
@@ -46,13 +46,13 @@ class acctController extends controller {
             switch ($function) {
                 case 'create':
                     $db = (object)$_POST;
-                    if ($this->acctModel->createDatabase($db)) {
+                    if ($this->reptModel->createDatabase($db)) {
                         echo 'Database added.';
                     } return;
                 break;
                 case 'delete':
                     $db = (object)['db_id' => $this->post('db_id', 'i')];
-                    if ($this->acctModel->deleteDatabase($db)) {
+                    if ($this->reptModel->deleteDatabase($db)) {
                         echo 'Database deleted.';
                     } return;
                 break;
@@ -65,10 +65,10 @@ class acctController extends controller {
                 default: exit('Invalid database function.');
             }
         }
-        $data['brands'] = $this->acctModel->readCache('cs_ecomm_brand');
-        $data['channels'] = $this->acctModel->readCache('cs_journal_channel');
-        $dbs = $this->acctModel->readDatabase();
-        $this->acctView->queries($dbs, $data);
+        $data['brands'] = $this->reptModel->readCache('cs_ecomm_brand');
+        $data['channels'] = $this->reptModel->readCache('cs_journal_channel');
+        $dbs = $this->reptModel->readDatabase();
+        $this->reptView->queries($dbs, $data);
     }
 
     private function select($query)
