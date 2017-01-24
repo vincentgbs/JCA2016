@@ -13,13 +13,11 @@ class simpleChunking {
         $size = $_FILES['fileToUpload']['size'];
         $name = $_FILES['fileToUpload']['name'];
 
-        $target_file = $target_path . basename($name);
-
         $com = fopen($target_path . $complete, "ab");
         error_log($target_path);
 
         // Open temp file
-        $out = fopen($target_file, "wb");
+        $out = fopen($target_path . '/blob' . $_POST['count'], "wb");
 
         if ( $out ) {
             // Read binary input stream and append it to temp file
@@ -35,6 +33,12 @@ class simpleChunking {
         }
         fclose($com);
         return;
+    }
+
+    public function clean()
+    {
+        // check final size of file vs expected size of file
+        unlink(FILE . 'html/cache/files/blob');
     }
 
 }

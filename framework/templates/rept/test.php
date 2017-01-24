@@ -17,16 +17,19 @@
     (window.BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder);
     function sendRequest() {
         var blob = document.getElementById('fileToUpload').files[0];
+        if (typeof blob == 'undefined') { alert('No file selected'); return; }
         const BYTES_PER_CHUNK = 1048576; // 1MB chunk sizes.
         const SIZE = blob.size;
         var start = 0;
         var end = BYTES_PER_CHUNK;
+        var count = 0;
         while( start < SIZE ) {
             var chunk = blob.slice(start, end);
             if (!chunk) { alert('Your browser does not support uploading.'); return; }
-            uploadFile(chunk);
+            uploadFile(chunk, count);
             start = end;
             end = start + BYTES_PER_CHUNK;
+            count += 1;
         }
     }
 
@@ -44,10 +47,11 @@
         }
     }
 
-    function uploadFile(blobFile) {
+    function uploadFile(blobFile, count) {
         //var file = document.getElementById('fileToUpload').files[0];
         var fd = new FormData();
-        fd.append("fileToUpload", blobFile);
+        fd.append("fileToUpload", blobFile); // _FILES
+        fd.append('count', count); // _POST
 
         var xhr = new XMLHttpRequest();
         xhr.upload.addEventListener("progress", uploadProgress, false);
