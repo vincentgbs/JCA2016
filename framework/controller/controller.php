@@ -201,5 +201,12 @@ abstract class controller extends application {
         return $html;
     }
 
+    protected function log($message)
+    {
+        $fp = fopen(FILE . 'framework/log.txt', 'a');
+        fwrite($fp, (string)$message . PHP_EOL);
+        fclose($fp);
+    }
+
 }
 ?>

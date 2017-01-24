@@ -88,4 +88,16 @@ class reptController extends controller {
         return $return;
     }
 
+    public function test()
+    {
+        if (isset($_FILES['fileToUpload'])) {
+            require_once FILE . 'framework/libraries/simpleChunking.php';
+            $upload = new simpleChunking();
+            return $upload->upload('test.csv');
+        }
+        $this->reptView->loadTemplate('rept/test');
+        $this->reptView->display();
+    }
+
+
 }
