@@ -1,7 +1,9 @@
-# hides folder structures
+# if possible: should be set in /etc/apache2/apache2.conf instead of htaccess
+
+# hide folder structures
 Options -Indexes
 
-# can make prettier apache urls
+# make prettier urls
 RewriteEngine On
 RewriteRule ^([A-z]+)/([A-z]+)?$ /index.php?url=$1/$2 [QSA,L,NC]
 RewriteRule ^([A-z]+)?$ /index.php?url=$1 [QSA,L,NC]
@@ -9,16 +11,16 @@ RewriteRule ^([A-z]+)?$ /index.php?url=$1 [QSA,L,NC]
 # cache resources to user browser
 <IfModule mod_expires.c>
     ExpiresActive on
-    ExpiresByType image/jpg "access 1 month"
-    ExpiresByType image/gif "access 1 month"
-    ExpiresByType image/jpeg "access 1 month"
-    ExpiresByType image/png "access 1 month"
-    ExpiresByType text/css "access 1 month"
-    ExpiresByType application/x-javascript "access plus 1 month"
-    ExpiresByType text/javascript "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 month"
-    ExpiresByType image/x-icon "access plus 6 month"
-    ExpiresByType image/icon "access plus 6 month"
-    ExpiresByType application/x-ico "access plus 6 month"
-    ExpiresByType application/ico "access plus 6 month"
+    ExpiresByType image/jpg "access 3 month"
+    ExpiresByType image/gif "access 3 month"
+    ExpiresByType image/jpeg "access 3 month"
+    ExpiresByType image/png "access 3 month"
+    ExpiresByType text/css "access 3 month"
+    ExpiresByType application/x-javascript "access plus 3 month"
+    ExpiresByType text/javascript "access plus 3 month"
+    ExpiresByType application/javascript "access plus 3 month"
+    ExpiresByType image/x-icon "access plus 12 month"
+    ExpiresByType image/icon "access plus 12 month"
+    ExpiresByType application/x-ico "access plus 12 month"
+    ExpiresByType application/ico "access plus 12 month"
 </IfModule>

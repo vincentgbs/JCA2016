@@ -24,12 +24,16 @@ define('URL', $url);
 
 $route = explode('/', $url);
 if (isset($route[0]) && is_file(FILE . 'framework/controller/' . $route[0] . 'Controller.php')) {
-    $controller = $route[0] . 'Controller';
-    include_once FILE . 'framework/controller/' . $controller . '.php';
-    if (class_exists($controller)) {
-        $controller = new $controller();
+    if (in_array($route[0], unserialize(MODULES))) {
+        $controller = $route[0] . 'Controller';
+        include_once FILE . 'framework/controller/' . $controller . '.php';
+        if (class_exists($controller)) {
+            $controller = new $controller();
+        } else {
+            exit('404 Not Found: Missing controller class');
+        }
     } else {
-        exit('404 Not Found: Missing controller class');
+        exit('This module is disabled. Please contact a system administrator.');
     }
 } else {
     exit('404 Not Found: Missing controller file');
