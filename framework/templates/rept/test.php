@@ -1,17 +1,16 @@
-<form id="form1" enctype="multipart/form-data" method="post" action="?url=rept/test">
+<form enctype="multipart/form-data" method="post">
     <div class="row">
         <label for="fileToUpload">Select a File to Upload</label><br />
         <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();"/>
-        <input type="button" value="cancel"  onClick="uploadCanceled();"/>
     </div>
     <div id="fileName"></div>
     <div id="fileSize"></div>
     <div id="fileType"></div>
-    <div class="row">
-        <input type="button" onclick="sendRequest();" value="Upload" />
-    </div>
-    <div id="progressNumber"></div>
 </form>
+<button class="btn btn-default" onClick="uploadCanceled();" disabled>Cancel</button>
+<button class="btn btn-default" onclick="sendRequest();">Upload</button>
+
+<div id="progressNumber"></div>
 
 <script type="text/javascript">
     (window.BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder);
@@ -26,7 +25,7 @@
         while( start < SIZE ) {
             var chunk = blob.slice(start, end);
             if (!chunk) { alert('Your browser does not support uploading.'); return; }
-            uploadFile(chunk, count);
+            uploadFile(chunk, count, SIZE);
             start = end;
             end = start + BYTES_PER_CHUNK;
             count += 1;
@@ -47,11 +46,11 @@
         }
     }
 
-    function uploadFile(blobFile, count) {
-        //var file = document.getElementById('fileToUpload').files[0];
+    function uploadFile(blobFile, count, size) {
         var fd = new FormData();
         fd.append("fileToUpload", blobFile); // _FILES
         fd.append('count', count); // _POST
+        fd.append('size', size); // _POST
 
         var xhr = new XMLHttpRequest();
         xhr.upload.addEventListener("progress", uploadProgress, false);
@@ -59,9 +58,7 @@
         xhr.addEventListener("error", uploadFailed, false);
         xhr.addEventListener("abort", uploadCanceled, false);
         xhr.open("POST", "?url=rept/test");
-        xhr.onload = function(e) {
-            console.debug("loaded!");
-          };
+        xhr.onload = function(e) { console.debug(count + ' loaded!'); };
         xhr.send(fd);
     }
 
@@ -76,7 +73,12 @@
     }
 
     function uploadComplete(e) {
-        console.debug(e.target.responseText);
+        var response = e.target.responseText.trim();
+        if (response == 'Upload complete.' || response == '') {
+            console.debug(response);
+        } else {
+            alert(response);
+        }
     }
 
     function uploadFailed(e) {
