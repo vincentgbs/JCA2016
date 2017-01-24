@@ -9,7 +9,7 @@
         <?php echo $data->username; ?>
     </td>
     <td>
-        <input type="password" value="<?php echo $data->password; ?>" disabled>
+        <?php foreach(range(1, strlen($data->password)) as $char) { echo '*'; } ?>
     </td>
     <td>
         <?php echo $data->database; ?>
