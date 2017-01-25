@@ -25,7 +25,7 @@
         while( start < SIZE ) {
             var chunk = blob.slice(start, end);
             if (!chunk) { alert('Your browser does not support uploading.'); return; }
-            uploadFile(chunk, count, SIZE);
+            uploadFile(chunk, count, SIZE, BYTES_PER_CHUNK);
             start = end;
             end = start + BYTES_PER_CHUNK;
             count += 1;
@@ -46,11 +46,12 @@
         }
     }
 
-    function uploadFile(blobFile, count, size) {
+    function uploadFile(blobFile, count, size, chunk) {
         var fd = new FormData();
         fd.append("fileToUpload", blobFile); // _FILES
         fd.append('count', count); // _POST
         fd.append('size', size); // _POST
+        fd.append('chunk', chunk); // _POST
 
         var xhr = new XMLHttpRequest();
         xhr.upload.addEventListener("progress", uploadProgress, false);
