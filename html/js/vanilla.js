@@ -1,5 +1,6 @@
 function flashMessage(message, time = 999, color = ['09F', '000'])
 {
+    if ($("#flash_message").length <= 0) { return; }
     $("#flash_message").attr('style', 'background-color:#' + color[0] + ';color:#' + color[1]);
     $("#flash_message").html(message);
     setTimeout(
@@ -12,6 +13,7 @@ function flashMessage(message, time = 999, color = ['09F', '000'])
 }
 function limitInput(input, limit)
 {
+    if (input.length <= 0) { return; }
     if (limit == 'numbers') {
         $(input).val( $(input).val().replace(/\D/g, '') );
     } else if (limit == 'letters') {

@@ -1,9 +1,7 @@
 <script>
 $(document).ready(function(){
     $(document).keyup(function(){
-        if (typeof $('#filename') != 'undefined') {
-            limitInput($('#filename'), 'words');
-        }
+        limitInput($('#filename'), 'words');
     });
 
     $(".get_upload_button").on('click', function(){
