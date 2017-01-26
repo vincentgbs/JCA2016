@@ -18,6 +18,7 @@ abstract class view extends application {
         $html = ob_get_contents();
         ob_end_clean();
         if ($return) { return $html; }
+        if ($load == 'footer') { return $this->$load = $html . $this->$load; }
         $this->$load .= $html;
     }
 

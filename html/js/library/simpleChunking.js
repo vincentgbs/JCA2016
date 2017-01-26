@@ -24,8 +24,7 @@ function uploadFile(url, post, fileId, bytes_per_chunk, blobFile, count, total_s
     fd.append('chunk', bytes_per_chunk); // _POST
     if (post) {
         for (var key in post) {
-            var value = post[key];
-            fd.append(key, value); // _POST
+            fd.append(key, post[key]); // _POST
         }
     }
 

@@ -25,12 +25,16 @@ class cmsController extends controller {
     {
         if (isset($_FILES['fileToUpload'])) {
             require_once FILE . 'framework/libraries/simpleChunking.php';
-            $upload = new simpleChunking('html');
-            $name = $this->post('name', 'a') . '.tpl';
-            return $upload->upload($name);
+            $type = $this->post('type', 'a', 9);
+            switch ($type) {
+                case 'html':
+                $upload = new simpleChunking('html');
+                $name = $this->post('name', 'a') . '.tpl';
+                return $upload->upload($name);
+                break;
+            }
         }
-        $this->cmsView->loadTemplate('libraries/simpleChunkingExample');
-        $this->cmsView->display();
+        $this->cmsView->upload();
     }
 
 }
