@@ -1,5 +1,5 @@
 (window.BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder);
-function sendRequest(url, name=false, fileId='fileToUpload', bpc=1048576)
+function sendRequest(url, post=false, fileId='fileToUpload', bpc=1048576)
 {
     var blob = document.getElementById(fileId).files[0];
     if (typeof blob == 'undefined') { alert('No file was selected'); return; }
@@ -9,22 +9,24 @@ function sendRequest(url, name=false, fileId='fileToUpload', bpc=1048576)
     while( start < SIZE ) {
         var blobFile = blob.slice(start, start+bpc);
         if (!blobFile) { alert('Your browser does not support uploading.'); return; }
-        uploadFile(url, name, fileId, bpc, blobFile, count, SIZE);
+        uploadFile(url, post, fileId, bpc, blobFile, count, SIZE);
         start += bpc;
         count += 1;
     }
 }
 
-function uploadFile(url, name, fileId, bytes_per_chunk, blobFile, count, total_size)
+function uploadFile(url, post, fileId, bytes_per_chunk, blobFile, count, total_size)
 {
     var fd = new FormData();
     fd.append(fileId, blobFile); // _FILES
     fd.append('count', count); // _POST
     fd.append('size', total_size); // _POST
     fd.append('chunk', bytes_per_chunk); // _POST
-    if (name) {
-        console.log(name);
-        fd.append('name', name);
+    if (post) {
+        for (var key in post) {
+            var value = post[key];
+            fd.append(key, value); // _POST
+        }
     }
 
     var xhr = new XMLHttpRequest();

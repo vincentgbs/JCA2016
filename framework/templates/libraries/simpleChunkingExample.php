@@ -16,7 +16,7 @@
 $(document).ready(function(){
     $("#sendRequest").on('click', function(){
         var name = $("#filename").val();
-        sendRequest('?url=cms/upload', name);
+        sendRequest('?url=cms/upload', {'name': name});
     });
 
     $("#uploadCanceled").on('click', function(){
