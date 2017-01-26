@@ -14,10 +14,6 @@ class cmsView extends view {
     {
         $this->loadTemplate('cms/upload/head', null, 'header');
         $this->loadTemplate('cms/upload/foot', null, 'footer');
-
-        $this->loadTemplate('cms/upload/html');
-        $this->loadTemplate('cms/upload/css');
-        $this->loadTemplate('cms/upload/js');
         $this->display();
     }
 

@@ -34,15 +34,30 @@ class cmsController extends controller {
                 break;
                 case 'css':
                     $upload = new simpleChunking('css');
-                    $name = $this->post('name', 'a') . '.tpl';
+                    $name = $this->post('name', 'a') . '.css';
                     return $upload->upload($name);
                 break;
                 case 'js':
                     $upload = new simpleChunking('js');
-                    $name = $this->post('name', 'a') . '.tpl';
+                    $name = $this->post('name', 'a') . '.js';
                     return $upload->upload($name);
                 break;
                 default: exit('Invalid upload function.');
+            }
+        }
+        if (isset($_POST['upload_form'])) {
+            $form = $this->post('upload_form', 'a', 9);
+            if ($form == 'html') {
+                $this->cmsView->loadTemplate('cms/upload/html');
+                return $this->cmsView->display(false);
+            } else if ($form == 'css') {
+                $this->cmsView->loadTemplate('cms/upload/css');
+                return $this->cmsView->display(false);
+            } else if ($form == 'js') {
+                $this->cmsView->loadTemplate('cms/upload/js');
+                return $this->cmsView->display(false);
+            } else {
+                exit('Invalid upload function.');
             }
         }
         $this->cmsView->upload();

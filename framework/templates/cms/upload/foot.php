@@ -1,16 +1,33 @@
-<script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/simpleChunking.js"></script>
 <script>
 $(document).ready(function(){
-    $("#sendRequest").on('click', function(){
+    $(".get_upload_button").on('click', function(){
+        var id = $(this).attr('load');
+        var type = id.replace('upload_', '');
+        $.ajax({
+            url: "?url=cms/upload",
+            type: "POST",
+            data: {
+                upload_form: type
+            },
+            success: function(response) {
+                $.each($(".upload_form_div"), function(index, value) {
+                    value.innerHTML = ''; // clear all divs
+                }); // each
+                $("#" + id).html(response);
+            } // success
+        }); // ajax
+    });
+
+    $(document).on('click', "#sendRequest", function(){
         var name = $("#filename").val();
         sendRequest('?url=cms/upload', {'name': name});
     });
 
-    $("#uploadCanceled").on('click', function(){
+    $(document).on('click', "#uploadCanceled", function(){
         uploadCanceled();
     });
 
-    $("#fileToUpload").on('change', function(){
+    $(document).on('change', "#fileToUpload", function(){
         fileSelected();
     });
 });
