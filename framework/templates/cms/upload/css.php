@@ -1,5 +1,6 @@
 <div class="row col-md-12" id="css_upload_container">
     <h3>Css</h3>
+    <input type="hidden" id="type" value="css">
     <form enctype="multipart/form-data" method="post">
         <div>
             <label for="filename">Name:</label> <input type="text" id="filename">

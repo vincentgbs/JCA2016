@@ -1,5 +1,6 @@
 <div class="row col-md-12" id="js_upload_container">
     <h3>Js</h3>
+    <input type="hidden" id="type" value="js">
     <form enctype="multipart/form-data" method="post">
         <div>
             <label for="filename">Name:</label> <input type="text" id="filename">
@@ -13,4 +14,4 @@
     <button class="btn btn-default" id="uploadCanceled">Cancel</button>
     <button class="btn btn-default" id="sendRequest">Upload</button>
     <div id="progressNumber"></div>
-</div><!-- </div class="row col-md-12" id="css_upload_container"> -->
+</div><!-- </div class="row col-md-12" id="js_upload_container"> -->

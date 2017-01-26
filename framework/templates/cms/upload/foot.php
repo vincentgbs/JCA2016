@@ -1,5 +1,11 @@
 <script>
 $(document).ready(function(){
+    $(document).keyup(function(){
+        if (typeof $('#filename') != 'undefined') {
+            limitInput($('#filename'), 'words');
+        }
+    });
+
     $(".get_upload_button").on('click', function(){
         var id = $(this).attr('load');
         var type = id.replace('upload_', '');
@@ -20,7 +26,8 @@ $(document).ready(function(){
 
     $(document).on('click', "#sendRequest", function(){
         var name = $("#filename").val();
-        sendRequest('?url=cms/upload', {'name': name});
+        var type = $("#type").val();
+        sendRequest('?url=cms/upload', {'name': name, 'type': type});
     });
 
     $(document).on('click', "#uploadCanceled", function(){

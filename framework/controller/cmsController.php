@@ -42,6 +42,9 @@ class cmsController extends controller {
                     $name = $this->post('name', 'a') . '.js';
                     return $upload->upload($name);
                 break;
+                case 'img':
+                    return;
+                break;
                 default: exit('Invalid upload function.');
             }
         }
@@ -55,6 +58,9 @@ class cmsController extends controller {
                 return $this->cmsView->display(false);
             } else if ($form == 'js') {
                 $this->cmsView->loadTemplate('cms/upload/js');
+                return $this->cmsView->display(false);
+            } else if ($form == 'img') {
+                // $this->cmsView->loadTemplate('cms/upload/img');
                 return $this->cmsView->display(false);
             } else {
                 exit('Invalid upload function.');
