@@ -145,9 +145,10 @@ class userController extends controller {
                         $token = $this->post('id_token', null);
                         $email = $this->post('email', 'e', 255);
                         return $this->googleLogin($token, $email);
-                    }// csrfCheck
-                    echo ($this->csrf_message);
+                    } // csrfCheck
+                    echo ($this->csrf_message); return;
                 break;
+                default: exit('Invalid login request.');
             }
         } else if (isset($_POST['api'])) {
             $api = $this->post('api', 'a', 255);

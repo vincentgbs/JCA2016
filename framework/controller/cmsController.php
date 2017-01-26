@@ -28,10 +28,21 @@ class cmsController extends controller {
             $type = $this->post('type', 'a', 9);
             switch ($type) {
                 case 'html':
-                $upload = new simpleChunking('html');
-                $name = $this->post('name', 'a') . '.tpl';
-                return $upload->upload($name);
+                    $upload = new simpleChunking('html');
+                    $name = $this->post('name', 'a') . '.tpl';
+                    return $upload->upload($name);
                 break;
+                case 'css':
+                    $upload = new simpleChunking('css');
+                    $name = $this->post('name', 'a') . '.tpl';
+                    return $upload->upload($name);
+                break;
+                case 'js':
+                    $upload = new simpleChunking('js');
+                    $name = $this->post('name', 'a') . '.tpl';
+                    return $upload->upload($name);
+                break;
+                default: exit('Invalid upload function.');
             }
         }
         $this->cmsView->upload();
