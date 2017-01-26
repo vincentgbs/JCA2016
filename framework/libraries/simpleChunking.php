@@ -1,8 +1,10 @@
 <?php
 class simpleChunking {
 
-    /* This object does NOT check the order of the blobs */
-
+    /* This object is meant to work within a custom MVC framework built off a
+        standard apache build. The cache directory within the standard html
+        directory is a specific location with open rwx (777) access. (All
+        other folders are locked down.) */
     public function __construct($file='files')
     {
         $this->base = FILE . "html/cache/" . $file . '/';
