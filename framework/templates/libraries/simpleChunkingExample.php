@@ -16,7 +16,7 @@
 $(document).ready(function(){
     $("#sendRequest").on('click', function(){
         var name = $("#filename").val();
-        sendRequest('?url=rept/test', name);
+        sendRequest('?url=cms/upload', name);
     });
 });
 </script>
