@@ -27,6 +27,18 @@ class cmsController extends controller {
         $this->cmsView->edit();
     }
 
+    private function upload_file($ext, $types, $type)
+    {
+        if (array_key_exists($ext, $types)) {
+            $upload = new simpleChunking($type);
+            $ext = $types[$ext]; // match type
+            $name = $this->post('name', 's', 99, '-_') . '.' . $ext;
+            return $upload->upload($name);
+        } else {
+            exit('Invalid ' . $type . ' file.');
+        }
+    }
+
     public function upload()
     {
         if (isset($_FILES['fileToUpload'])) {
@@ -34,38 +46,34 @@ class cmsController extends controller {
             $type = $this->post('type', 'a', 9);
             switch ($type) {
                 case 'html':
-                    $upload = new simpleChunking('html');
-                    $name = $this->post('name', 'a') . '.html';
-                    return $upload->upload($name);
+                    $htmltypes = ['text/html'=>'html', 'text/php'=>'html', 'text/plain'=>'html'];
+                    $ext = $this->post('filetype', 's', 16, '/');
+                    return $this->upload_file($ext, $htmltypes, 'html');
                 break;
                 case 'css':
-                    $upload = new simpleChunking('css');
-                    $name = $this->post('name', 'a') . '.css';
-                    return $upload->upload($name);
+                    $csstypes = ['text/css'=>'css'];
+                    $ext = $this->post('filetype', 's', 16, '/');
+                    return $this->upload_file($ext, $csstypes, 'css');
                 break;
                 case 'js':
-                    $upload = new simpleChunking('js');
-                    $name = $this->post('name', 'a') . '.js';
-                    return $upload->upload($name);
+                    $jstypes = ['application/x-javascript'=>'js'];
+                    $ext = $this->post('filetype', 's', 16, '/');
+                    return $this->upload_file($ext, $jstypes, 'js');
                 break;
                 case 'img':
-                    $upload = new simpleChunking('img');
-                    $filetypes = ['image/jpeg'=>'jpg', 'image/png'=>'png']; // filter
-                    $ext = $filetypes[$this->post('filetype', 's', 16, '/')]; // match type
-                    $name = $this->post('name', 'a') . '.' . $ext;
-                    return $upload->upload($name);
+                    $imgtypes = ['image/png'=>'png', 'image/jpeg'=>'jpg', 'image/gif'=>'gif', 'image/svg+xml'=>'svg'];
+                    $ext = $this->post('filetype', 's', 16, '/');
+                    return $this->upload_file($ext, $imgtypes, 'img');
                 break;
                 case 'aud':
-                    // $upload = new simpleChunking('aud');
-                    // $name = $this->post('name', 'a') . $this->post('filetype', 'a');
-                    // return $upload->upload($name);
-                    return;
+                    $audtypes = ['audio/mpeg'=>'aud', 'audio/x-wav'=>'aud'];
+                    $ext = $this->post('filetype', 's', 16, '/');
+                    return $this->upload_file($ext, $audtypes, 'aud');
                 break;
                 case 'file':
-                    // $upload = new simpleChunking('file');
-                    // $name = $this->post('name', 'a') . $this->post('filetype', 'a');
-                    // return $upload->upload($name);
-                    return;
+                    $upload = new simpleChunking('files');
+                    $name = $this->post('name', 'a') . $this->post('filetype', 'a');
+                    return $upload->upload($name);
                 break;
                 default: exit('Invalid upload function.');
             }

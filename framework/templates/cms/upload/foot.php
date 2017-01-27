@@ -26,7 +26,11 @@ $(document).ready(function(){
         var params = {};
         params['type'] = document.getElementById('type').value;
         if (document.getElementById('fileToUpload').files[0]) {
-            params['name'] = (document.getElementById('fileToUpload').files[0].name).replace(/(\..{1,5})$/, '');
+            /* Assumes file extension is not longer than 5 characters
+                AND '.' is not near end of file name. Not super important
+                because $_POST['name'] on backend only accepts alphanumerics */
+            params['name'] = (document.getElementById('fileToUpload').files[0].name).replace(/(\..{1,6})$/, '');
+            /* Assumes file extension agrees with filetype. */
             params['filetype'] = document.getElementById('fileToUpload').files[0].type;
         }
         if ($("#filename").val() != '') {
