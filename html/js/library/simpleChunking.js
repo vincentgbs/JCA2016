@@ -75,11 +75,12 @@ function fileSelected(displayFileName='fileName', displayFileSize='fileSize', di
 {
     var file = document.getElementById('fileToUpload').files[0];
     if (file) {
-        var fileSize = 0;
-        if (file.size > 1024 * 1024) {
-            fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+        if (file.size == 0) {
+            alert('You cannot upload an empty file.'); return;
+        } else if (file.size > 1024 * 1024) {
+            var fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
         } else {
-            fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+            var fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
         }
         if (document.getElementById(displayFileName)) {
             document.getElementById(displayFileName).innerHTML = 'Name: ' + file.name;

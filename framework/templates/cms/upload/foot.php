@@ -23,10 +23,13 @@ $(document).ready(function(){
     });
 
     $(document).on('click', "#sendRequest", function(){
-        var name = $("#filename").val();
-        var type = $("#file").val();
-        var filetype = $("#fileType").text();
-        sendRequest('?url=cms/upload', {'name': name, 'type': type, 'filetype': filetype});
+        var params = {};
+        params['name'] = $("#filename").val();
+        params['type'] = document.getElementById('type').value;
+        if (document.getElementById('fileToUpload').files[0]) {
+            params['filetype'] = document.getElementById('fileToUpload').files[0].type;
+        }
+        sendRequest('?url=cms/upload', params);
     });
 
     $(document).on('click', "#uploadCanceled", function(){
