@@ -44,7 +44,13 @@ class simpleChunking {
     {
         if ($name) { $this->name = $name; }
         if ($expected_parts) { $this->expected_parts = $expected_parts; }
-        $file = fopen($this->base . $this->name, "ab"); // append binary
+        if (file_exists($this->base . $this->name)) {
+            foreach (range(0, $this->expected_parts) as $i) {
+                unlink($this->base . $this->name . '_part_' . $i);
+            }
+            exit('This file already exists. ');
+        }
+        $file = fopen($this->base . $this->name, "wb"); // overwrite previous file
         foreach (range(0, $this->expected_parts) as $i) {
             $tmp_name = $this->base . $this->name . '_part_' . $i;
             $in = fopen($tmp_name, "rb"); // read binary

@@ -6,7 +6,7 @@ function sendRequest(url, post=false, fileId='fileToUpload', bpc=1048576)
     const SIZE = blob.size;
     var start = 0;
     var count = 0;
-    while( start < SIZE ) {
+    while (start < SIZE) {
         var blobFile = blob.slice(start, start+bpc);
         if (!blobFile) { alert('Your browser does not support uploading.'); return; }
         uploadFile(url, post, fileId, bpc, blobFile, count, SIZE);
@@ -34,7 +34,7 @@ function uploadFile(url, post, fileId, bytes_per_chunk, blobFile, count, total_s
     xhr.addEventListener("error", uploadFailed, false);
     xhr.addEventListener("abort", uploadCanceled, false);
     xhr.open("POST", url);
-    xhr.onload = function(e) { console.debug(count + ' loaded.'); };
+    xhr.onload = function() { console.debug(count + ' loaded.'); };
     xhr.send(fd);
 }
 
@@ -46,7 +46,7 @@ function uploadProgress(e)
             document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
         }
         else {
-            document.getElementById('progressNumber').innerHTML = 'Unable to compute.';
+            document.getElementById('progressNumber').innerHTML = '';
         }
     }
 }
@@ -54,10 +54,8 @@ function uploadProgress(e)
 function uploadComplete(e)
 {
     var response = e.target.responseText.trim();
-    if (response == 'Upload complete.' || response == '') {
-        console.debug(response);
-    } else {
-        alert(response); // any other error message
+    if (response != '' ) {
+        alert(response); // any message
     }
 }
 
