@@ -10,6 +10,17 @@ class cmsView extends view {
         $this->loadTemplate('cms/footer', null, 'footer');
     }
 
+    public function home()
+    {
+        $this->body .= 'DISPLAY ALL PAGES';
+        $this->display();
+    }
+
+    public function edit()
+    {
+        $this->display();
+    }
+
     public function upload()
     {
         $this->loadTemplate('cms/upload/head', null, 'header');

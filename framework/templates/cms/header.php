@@ -26,6 +26,8 @@
 
     <div class="row col-md-12">
         <a href="/cms/home"><button class="btn btn-default">Home</button></a>
+        <a href="/cms/edit"><button class="btn btn-default">Edit Templates</button></a>
+        <a href="/cms/upload"><button class="btn btn-default">Upload Files</button></a>
         <a href="/user/home"><button class="btn btn-default">User Pages</button></a>
     </div> <!-- </div class="row col-md-12"> -->
 <hr class="row col-md-12">

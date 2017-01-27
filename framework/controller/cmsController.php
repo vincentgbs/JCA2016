@@ -11,14 +11,20 @@ class cmsController extends controller {
             $this->flashMessage('Please log in to access this page.');
             $this->redirect('user/login', false, URL);
         } // else
-        // $this->getModel('cms', $this->userController->userModel->db);
+        $this->getModel('cms', $this->userController->userModel->db);
         $this->getView('cms');
         $this->getSettings('cms');
     }
 
+    public function home()
+    {
+        $this->cmsView->home();
+    }
+
     public function edit()
     {
-        echo 'Hello World';
+        // edit templates
+        $this->cmsView->edit();
     }
 
     public function upload()
@@ -29,7 +35,7 @@ class cmsController extends controller {
             switch ($type) {
                 case 'html':
                     $upload = new simpleChunking('html');
-                    $name = $this->post('name', 'a') . '.tpl';
+                    $name = $this->post('name', 'a') . '.html';
                     return $upload->upload($name);
                 break;
                 case 'css':
@@ -43,45 +49,31 @@ class cmsController extends controller {
                     return $upload->upload($name);
                 break;
                 case 'img':
-                    // $upload = new simpleChunking('img');
-                    // $name = $this->post('name', 'a') . $this->post('type', 'a');
-                    // return $upload->upload($name);
+                    $upload = new simpleChunking('img');
+                    $filetypes = ['Type: image/jpeg'=>'jpg']; // filter
+                    $ext = $filetypes[$this->post('filetype', 'a', 16)]; // match type
+                    $name = $this->post('name', 'a') . $ext;
+                    return $upload->upload($name);
                     return;
                 break;
                 case 'aud':
                     // $upload = new simpleChunking('aud');
-                    // $name = $this->post('name', 'a') . $this->post('type', 'a');
+                    // $name = $this->post('name', 'a') . $this->post('filetype', 'a');
                     // return $upload->upload($name);
                     return;
                 break;
                 case 'file':
                     // $upload = new simpleChunking('file');
-                    // $name = $this->post('name', 'a') . $this->post('type', 'a');
+                    // $name = $this->post('name', 'a') . $this->post('filetype', 'a');
                     // return $upload->upload($name);
                     return;
                 break;
                 default: exit('Invalid upload function.');
             }
-        }
-        if (isset($_POST['upload_form'])) {
+        } else if (isset($_POST['upload_form'])) {
             $form = $this->post('upload_form', 'a', 9);
-            if ($form == 'html') {
-                $this->cmsView->loadTemplate('cms/upload/html');
-                return $this->cmsView->display(false);
-            } else if ($form == 'css') {
-                $this->cmsView->loadTemplate('cms/upload/css');
-                return $this->cmsView->display(false);
-            } else if ($form == 'js') {
-                $this->cmsView->loadTemplate('cms/upload/js');
-                return $this->cmsView->display(false);
-            } else if ($form == 'img') {
-                $this->cmsView->loadTemplate('cms/upload/img');
-                return $this->cmsView->display(false);
-            } else if ($form == 'aud') {
-                $this->cmsView->loadTemplate('cms/upload/aud');
-                return $this->cmsView->display(false);
-            } else if ($form == 'file') {
-                $this->cmsView->loadTemplate('cms/upload/file');
+            if (in_array($form, ['html', 'css', 'js', 'img', 'aud', 'file'])) {
+                $this->cmsView->loadTemplate('cms/upload/' . $form);
                 return $this->cmsView->display(false);
             } else {
                 exit('Invalid upload function.');

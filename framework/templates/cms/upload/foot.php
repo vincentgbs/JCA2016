@@ -7,6 +7,9 @@ $(document).ready(function(){
     $(".get_upload_button").on('click', function(){
         var id = $(this).attr('load');
         var type = id.replace('upload_', '');
+        $.each($(".upload_form_div"), function(index, value) {
+            value.innerHTML = ''; // clear all divs
+        }); // each
         $.ajax({
             url: "?url=cms/upload",
             type: "POST",
@@ -14,9 +17,6 @@ $(document).ready(function(){
                 upload_form: type
             },
             success: function(response) {
-                $.each($(".upload_form_div"), function(index, value) {
-                    value.innerHTML = ''; // clear all divs
-                }); // each
                 $("#" + id).html(response);
             } // success
         }); // ajax
@@ -24,8 +24,9 @@ $(document).ready(function(){
 
     $(document).on('click', "#sendRequest", function(){
         var name = $("#filename").val();
-        var type = $("#type").val();
-        sendRequest('?url=cms/upload', {'name': name, 'type': type});
+        var type = $("#file").val();
+        var filetype = $("#fileType").text();
+        sendRequest('?url=cms/upload', {'name': name, 'type': type, 'filetype': filetype});
     });
 
     $(document).on('click', "#uploadCanceled", function(){
