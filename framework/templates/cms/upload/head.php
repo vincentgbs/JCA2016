@@ -9,3 +9,6 @@
 <button class="btn btn-default get_upload_button" load="upload_js">Js</button>
 <div class="row col-md-12 upload_form_div" id="upload_js">
 </div> <!-- </div class="row col-md-12 upload_form_div" id="upload_js"> -->
+<button class="btn btn-default get_upload_button" load="upload_img">Img</button>
+<div class="row col-md-12 upload_form_div" id="upload_img">
+</div> <!-- </div class="row col-md-12 upload_form_div" id="upload_img"> -->
