@@ -50,11 +50,10 @@ class cmsController extends controller {
                 break;
                 case 'img':
                     $upload = new simpleChunking('img');
-                    $filetypes = ['Type: image/jpeg'=>'jpg']; // filter
-                    $ext = $filetypes[$this->post('filetype', 'a', 16)]; // match type
-                    $name = $this->post('name', 'a') . $ext;
+                    $filetypes = ['image/jpeg'=>'jpg', 'image/png'=>'png']; // filter
+                    $ext = $filetypes[$this->post('filetype', 's', 16, '/')]; // match type
+                    $name = $this->post('name', 'a') . '.' . $ext;
                     return $upload->upload($name);
-                    return;
                 break;
                 case 'aud':
                     // $upload = new simpleChunking('aud');

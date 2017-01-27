@@ -55,7 +55,7 @@ function uploadComplete(e)
 {
     var response = e.target.responseText.trim();
     if (response != '' ) {
-        alert(response); // any message
+        flashMessage(response); // any message
     }
 }
 

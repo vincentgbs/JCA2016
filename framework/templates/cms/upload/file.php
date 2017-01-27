@@ -3,7 +3,7 @@
     <input type="hidden" id="type" value="file">
     <form enctype="multipart/form-data" method="post">
         <div>
-            <label for="filename">Name:</label> <input type="text" id="filename">
+            <label for="filename">Rename file:</label> <input type="text" id="filename" placeholder="optional">
         </div>
         <div>
             <label for="fileToUpload">Select a File to Upload</label><br />
