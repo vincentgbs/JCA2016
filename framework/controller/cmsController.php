@@ -43,9 +43,21 @@ class cmsController extends controller {
                     return $upload->upload($name);
                 break;
                 case 'img':
-                    $upload = new simpleChunking('img');
-                    $name = $this->post('name', 'a') . $this->post('type', 'a');
-                    return $upload->upload($name);
+                    // $upload = new simpleChunking('img');
+                    // $name = $this->post('name', 'a') . $this->post('type', 'a');
+                    // return $upload->upload($name);
+                    return;
+                break;
+                case 'aud':
+                    // $upload = new simpleChunking('aud');
+                    // $name = $this->post('name', 'a') . $this->post('type', 'a');
+                    // return $upload->upload($name);
+                    return;
+                break;
+                case 'file':
+                    // $upload = new simpleChunking('file');
+                    // $name = $this->post('name', 'a') . $this->post('type', 'a');
+                    // return $upload->upload($name);
                     return;
                 break;
                 default: exit('Invalid upload function.');
@@ -64,6 +76,12 @@ class cmsController extends controller {
                 return $this->cmsView->display(false);
             } else if ($form == 'img') {
                 $this->cmsView->loadTemplate('cms/upload/img');
+                return $this->cmsView->display(false);
+            } else if ($form == 'aud') {
+                $this->cmsView->loadTemplate('cms/upload/aud');
+                return $this->cmsView->display(false);
+            } else if ($form == 'file') {
+                $this->cmsView->loadTemplate('cms/upload/file');
                 return $this->cmsView->display(false);
             } else {
                 exit('Invalid upload function.');

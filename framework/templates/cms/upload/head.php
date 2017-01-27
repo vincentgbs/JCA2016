@@ -12,3 +12,9 @@
 <button class="btn btn-default get_upload_button" load="upload_img">Img</button>
 <div class="row col-md-12 upload_form_div" id="upload_img">
 </div> <!-- </div class="row col-md-12 upload_form_div" id="upload_img"> -->
+<button class="btn btn-default get_upload_button" load="upload_aud">Aud</button>
+<div class="row col-md-12 upload_form_div" id="upload_aud">
+</div> <!-- </div class="row col-md-12 upload_form_div" id="upload_aud"> -->
+<button class="btn btn-default get_upload_button" load="upload_file">File</button>
+<div class="row col-md-12 upload_form_div" id="upload_file">
+</div> <!-- </div class="row col-md-12 upload_form_div" id="upload_file"> -->
