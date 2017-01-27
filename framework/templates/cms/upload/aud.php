@@ -12,6 +12,6 @@
     </form>
     <div id="fileName"></div><div id="fileSize"></div><div id="fileType"></div>
     <button class="btn btn-default" id="uploadCanceled">Cancel</button>
-    <button class="btn btn-default" id="sendRequest" disabled>Upload</button>
+    <button class="btn btn-default" id="sendRequest">Upload</button>
     <div id="progressNumber"></div>
 </div><!-- </div class="row col-md-12" id="aud_upload_container"> -->
