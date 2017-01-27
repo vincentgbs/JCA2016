@@ -18,6 +18,8 @@ class cmsView extends view {
 
     public function edit()
     {
+        $this->loadTemplate('cms/edit/head', null, 'header');
+        $this->loadTemplate('cms/edit/foot', null, 'footer');
         $this->display();
     }
 
