@@ -41,7 +41,11 @@ class cmsController extends controller {
 
     private function addFileToDatabase($filename, $type)
     {
-        //
+        $file = new stdClass();
+        $file->type = $type;
+        $file->name = NULL;
+        $file->resource = file_get_contents($filename);
+        $file->data = NULL;
     }
 
     public function upload()
@@ -57,11 +61,13 @@ class cmsController extends controller {
                 break;
                 case 'css':
                     $csstypes = ['textcss'=>'css'];
-                    return $this->upload_file($this->post('filetype', 'a', 16), $csstypes, 'css');
+                    $check = $this->upload_file($this->post('filetype', 'a', 16), $csstypes, 'css');
+                    if ($check) { return $this->addFileToDatabase($check, 'css'); }
                 break;
                 case 'js':
                     $jstypes = ['applicationx-javascript'=>'js'];
-                    return $this->upload_file($this->post('filetype', 's', 32, '-'), $jstypes, 'js');
+                    $check = $this->upload_file($this->post('filetype', 's', 32, '-'), $jstypes, 'js');
+                    if ($check) { return $this->addFileToDatabase($check, 'js'); }
                 break;
                 case 'img':
                     $imgtypes = ['imagepng'=>'png', 'imagejpeg'=>'jpg', 'imagegif'=>'gif', 'imagesvg+xml'=>'svg'];
