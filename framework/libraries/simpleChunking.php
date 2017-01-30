@@ -37,7 +37,7 @@ class simpleChunking {
         fclose($file);
         if ($part >= $this->expected_parts) {
             return $this->clean();
-        }
+        } // else return NULL
     }
 
     public function compileParts($name=false, $expected_parts=false)
@@ -69,7 +69,8 @@ class simpleChunking {
     {
         if ($this->compileParts()) {
             if (filesize($this->base . $this->name) == $this->size) {
-                echo ('Upload complete.'); return;
+                echo ('Upload complete.');
+                return $this->base . $this->name;
             } // else
         } // else
         echo ('Upload failed. Please try again.'); return;
