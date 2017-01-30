@@ -39,6 +39,11 @@ class cmsController extends controller {
         }
     }
 
+    private function addFileToDatabase($filename, $type)
+    {
+        //
+    }
+
     public function upload()
     {
         if (isset($_FILES['fileToUpload'])) {
@@ -46,33 +51,29 @@ class cmsController extends controller {
             $type = $this->post('type', 'a', 9);
             switch ($type) {
                 case 'html':
-                    $htmltypes = ['text/html'=>'html', 'text/php'=>'html', 'text/plain'=>'html'];
-                    $ext = $this->post('filetype', 's', 16, '/');
-                    return $this->upload_file($ext, $htmltypes, 'html');
+                    $htmltypes = ['texthtml'=>'html', 'textphp'=>'html', 'textplain'=>'html'];
+                    $check = $this->upload_file($this->post('filetype', 'a', 16), $htmltypes, 'html');
+                    if ($check) { return $this->addFileToDatabase($check, 'html'); }
                 break;
                 case 'css':
-                    $csstypes = ['text/css'=>'css'];
-                    $ext = $this->post('filetype', 's', 16, '/');
-                    return $this->upload_file($ext, $csstypes, 'css');
+                    $csstypes = ['textcss'=>'css'];
+                    return $this->upload_file($this->post('filetype', 'a', 16), $csstypes, 'css');
                 break;
                 case 'js':
-                    $jstypes = ['application/x-javascript'=>'js'];
-                    $ext = $this->post('filetype', 's', 16, '/');
-                    return $this->upload_file($ext, $jstypes, 'js');
+                    $jstypes = ['applicationx-javascript'=>'js'];
+                    return $this->upload_file($this->post('filetype', 's', 32, '-'), $jstypes, 'js');
                 break;
                 case 'img':
-                    $imgtypes = ['image/png'=>'png', 'image/jpeg'=>'jpg', 'image/gif'=>'gif', 'image/svg+xml'=>'svg'];
-                    $ext = $this->post('filetype', 's', 16, '/');
-                    return $this->upload_file($ext, $imgtypes, 'img');
+                    $imgtypes = ['imagepng'=>'png', 'imagejpeg'=>'jpg', 'imagegif'=>'gif', 'imagesvg+xml'=>'svg'];
+                    return $this->upload_file($this->post('filetype', 's', 16, '+'), $imgtypes, 'img');
                 break;
                 case 'aud':
-                    $audtypes = ['audio/mpeg'=>'aud', 'audio/x-wav'=>'aud'];
-                    $ext = $this->post('filetype', 's', 16, '/');
-                    return $this->upload_file($ext, $audtypes, 'aud');
+                    $audtypes = ['audiompeg'=>'aud', 'audiox-wav'=>'aud'];
+                    return $this->upload_file($this->post('filetype', 's', 16, '-'), $audtypes, 'aud');
                 break;
                 case 'file':
                     $upload = new simpleChunking('files');
-                    $name = $this->post('name', 'a') . $this->post('filetype', 'a');
+                    $name = $this->post('name', 'a') . '.' . $this->post('filetype', 'a');
                     return $upload->upload($name);
                 break;
                 default: exit('Invalid upload function.');
