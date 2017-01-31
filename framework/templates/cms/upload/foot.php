@@ -1,5 +1,23 @@
 <script>
+function getUploadButton(id, type) {
+    $.each($(".upload_form_div"), function(index, value) {
+        value.innerHTML = ''; // clear all divs
+    }); // each
+    $.ajax({
+        url: "?url=cms/upload",
+        type: "POST",
+        data: {
+            upload_form: type
+        },
+        success: function(response) {
+            $("#" + id).html(response);
+        } // success
+    }); // ajax
+}
 $(document).ready(function(){
+    /* Default form on page load */
+    getUploadButton('upload_html', 'html');
+
     $(document).keyup(function(){
         limitInput($('#filename'), 'words');
     });
@@ -7,19 +25,7 @@ $(document).ready(function(){
     $(".get_upload_button").on('click', function(){
         var id = $(this).attr('load');
         var type = id.replace('upload_', '');
-        $.each($(".upload_form_div"), function(index, value) {
-            value.innerHTML = ''; // clear all divs
-        }); // each
-        $.ajax({
-            url: "?url=cms/upload",
-            type: "POST",
-            data: {
-                upload_form: type
-            },
-            success: function(response) {
-                $("#" + id).html(response);
-            } // success
-        }); // ajax
+        getUploadButton(id, type);
     });
 
     $(document).on('click', "#sendRequest", function(){
