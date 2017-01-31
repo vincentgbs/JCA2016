@@ -33,19 +33,27 @@ class cmsController extends controller {
             $upload = new simpleChunking($type);
             $ext = $types[$ext]; // match type
             $name = $this->post('name', 's', 99, '-_') . '.' . $ext;
-            return $upload->upload($name);
+            $chunk = $upload->upload($name);
+            if (in_array($type, ['html', 'css', 'js'])) {
+                if ($chunk) {
+                    $this->addFileToDatabase($chunk, $type, $ext);
+                } else { return; }
+            } else {
+                return $chunk;
+            }
         } else {
             exit('Invalid ' . $type . ' file.');
         }
     }
 
-    private function addFileToDatabase($filename, $type)
+    private function addFileToDatabase($file, $type, $ext)
     {
-        $file = new stdClass();
-        $file->type = $type;
-        $file->name = NULL;
-        $file->resource = file_get_contents($filename);
-        $file->data = NULL;
+        $resource = new stdClass();
+        $resource->type = $type;
+        $resource->name = $file->name;
+        $resource->resource = htmlspecialchars(file_get_contents($file->base . $file->name));
+        $resource->data = serialize(['extension'=>$ext]);
+        return $this->cmsModel->createResource($resource);
     }
 
     public function upload()
@@ -56,18 +64,15 @@ class cmsController extends controller {
             switch ($type) {
                 case 'html':
                     $htmltypes = ['texthtml'=>'html', 'textphp'=>'html', 'textplain'=>'html'];
-                    $check = $this->upload_file($this->post('filetype', 'a', 16), $htmltypes, 'html');
-                    if ($check) { return $this->addFileToDatabase($check, 'html'); }
+                    return $this->upload_file($this->post('filetype', 'a', 16), $htmltypes, 'html');
                 break;
                 case 'css':
                     $csstypes = ['textcss'=>'css'];
-                    $check = $this->upload_file($this->post('filetype', 'a', 16), $csstypes, 'css');
-                    if ($check) { return $this->addFileToDatabase($check, 'css'); }
+                    return $this->upload_file($this->post('filetype', 'a', 16), $csstypes, 'css');
                 break;
                 case 'js':
                     $jstypes = ['applicationx-javascript'=>'js'];
-                    $check = $this->upload_file($this->post('filetype', 's', 32, '-'), $jstypes, 'js');
-                    if ($check) { return $this->addFileToDatabase($check, 'js'); }
+                    return $this->upload_file($this->post('filetype', 's', 32, '-'), $jstypes, 'js');
                 break;
                 case 'img':
                     $imgtypes = ['imagepng'=>'png', 'imagejpeg'=>'jpg', 'imagegif'=>'gif', 'imagesvg+xml'=>'svg'];

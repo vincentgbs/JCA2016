@@ -9,8 +9,11 @@ class cmsModel extends model {
                 `{$resource->type}`, `cms_data`)
             VALUES ({$this->wrap($resource->name)},
                 {$this->wrap($resource->resource)},
-                {$this->wrap($resource->data)});";
-        echo $q;
+                {$this->wrap($resource->data)})
+            ON DUPLICATE KEY UPDATE
+                `{$resource->type}`={$this->wrap($resource->resource)},
+                `cms_data`={$this->wrap($resource->data)};";
+        return $this->execute($q);
     }
 
     public function readResource($resource)

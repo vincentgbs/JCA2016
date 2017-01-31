@@ -45,10 +45,10 @@ class simpleChunking {
         if ($name) { $this->name = $name; }
         if ($expected_parts) { $this->expected_parts = $expected_parts; }
         if (file_exists($this->base . $this->name)) {
-            foreach (range(0, $this->expected_parts) as $i) {
-                unlink($this->base . $this->name . '_part_' . $i);
-            }
-            exit('This file already exists. ');
+            // foreach (range(0, $this->expected_parts) as $i) {
+            //     unlink($this->base . $this->name . '_part_' . $i);
+            // }
+            echo ('Overwriting previous file. ');
         }
         $file = fopen($this->base . $this->name, "wb"); // overwrite previous file
         foreach (range(0, $this->expected_parts) as $i) {
@@ -70,7 +70,7 @@ class simpleChunking {
         if ($this->compileParts()) {
             if (filesize($this->base . $this->name) == $this->size) {
                 echo ('Upload complete.');
-                return $this->base . $this->name;
+                return $this;
             } // else
         } // else
         echo ('Upload failed. Please try again.'); return;
