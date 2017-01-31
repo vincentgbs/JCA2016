@@ -23,7 +23,15 @@ class cmsController extends controller {
 
     public function edit()
     {
-        // edit templates
+        if (isset($_POST['edit_form'])) {
+           $form = $this->post('edit_form', 'a', 9);
+           if (in_array($form, ['html', 'css', 'js', 'page'])) {
+               $this->cmsView->loadTemplate('cms/edit/' . $form);
+               return $this->cmsView->display(false);
+           } else {
+               exit('Invalid edit function.');
+           }
+       }
         $this->cmsView->edit();
     }
 
