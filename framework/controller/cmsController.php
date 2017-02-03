@@ -25,8 +25,15 @@ class cmsController extends controller {
     {
         if (isset($_POST['edit_form'])) {
            $form = $this->post('edit_form', 'a', 9);
-           if (in_array($form, ['html', 'css', 'js', 'page'])) {
+           if (in_array($form, ['html', 'css', 'js'])) {
                $this->cmsView->loadTemplate('cms/edit/' . $form);
+               return $this->cmsView->display(false);
+           } else if ($form === 'page') {
+               $this->cmsView->loadTemplate('cms/edit/page/start');
+               foreach (range(0,3) as $i) {
+                   $this->cmsView->loadTemplate('cms/edit/html');
+               }
+               $this->cmsView->loadTemplate('cms/edit/page/end');
                return $this->cmsView->display(false);
            } else {
                exit('Invalid edit function.');
