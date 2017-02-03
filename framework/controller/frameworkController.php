@@ -24,13 +24,31 @@ class frameworkController extends controller {
     public function permissions()
     {
         if (isset($_POST['permission'])) {
-            //
+            $username = $this->post('username', 'a', 99);
+            $group = $this->post('group', 'a', 99);
+            $permission = $this->post('permission', 's', 99, '/');
+            if (true) {// validate $permission format */* and make sure group_name is not blank
+                $q = "INSERT IGNORE INTO `user_ls_permissions` (`function`) VALUES ({$permission});";
+                $q = "INSERT IGNORE INTO `user_ls_groups` (`group_name`) VALUES ({$group});";
+                $q = "INSERT INTO `user_rel_permissions`
+                    VALUES (
+                    (SELECT `group_id` FROM `user_ls_groups` WHERE `group_name`='{$group}'),
+                    (SELECT `permission_id` FROM `user_ls_permissions` WHERE `function`='$permission'));";
+            }
+            if ($username != '') { // username isn't blank
+                $q = "INSERT INTO `user_rel_groups` (`user_id`, `group_id`)
+                VALUES (
+                (SELECT `user_id` FROM `user_ls_users` WHERE `username`='{$username}'),
+                (SELECT `group_id` FROM `user_ls_groups` WHERE `group_name`='{$group}')
+                );";
+            }
+            return;
         }
         $this->view .= '<style>td {min-width:10%;}</style><div>
         username: <input type="text" id="username">
         group_name: <input type="text" id="group_name">
-        function: <input type="text" id="function">
-        <button>Add/Update</button>
+        permission(function): <input type="text" id="permission">
+        <button id="add_permission_button">Add/Update</button>
         </div><hr>
         <table id="permissions"><thead><tr>
             <th>username</th>
@@ -55,7 +73,25 @@ class frameworkController extends controller {
         }
         $this->view .= '</tbody>
             </table>
-        <script></script>';
+        <script>$(document).ready(function(){
+            $("#add_permission_button").on("click", function(){
+                var username = $("#username").val();
+                var group_name = $("#group_name").val();
+                var permission = $("#permission").val();
+                $.ajax({
+                    url: "?url=framework/permissions",
+                    type: "POST",
+                    data: {
+                        username: username,
+                        group_name: group_name,
+                        permission: permission
+                    },
+                    success: function(response){
+                        alert(response);
+                    }
+                }); // ajax
+            });
+        });</script>';
         $this->display();
     }
 
