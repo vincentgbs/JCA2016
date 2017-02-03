@@ -11,11 +11,15 @@ class frameworkController extends controller {
             header('HTTP/1.0 401 Unauthorized');
             exit ('Invalid login credentials.');
         }
+        $this->db = new mysqli(DBHOST, DBUSER, DBPASS, DATABASE);
+        if ($this->db->connect_errno) {
+            exit('500 Internal Server Error: Database connection error');
+        }
     }
 
     public function permissions()
     {
-        echo 'HERE';
+        echo '<input type="text">';
     }
 
 }
