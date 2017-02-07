@@ -18,31 +18,53 @@ class frameworkController extends controller {
         if ($this->db->connect_errno) {
             exit('500 Internal Server Error: Database connection error');
         }
-        $this->view = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>User Management Module</title><link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="/css/library/jquery-ui.min.css"><link rel="stylesheet" type="text/css" href="/css/library/1.10.12.dataTables.min.css"><link rel="stylesheet" type="text/css" href="/css/style.css"><script type="text/javascript" src="/js/library/jquery-3.1.1.min.js"></script><script type="text/javascript" src="/js/library/sha256.js"></script><script type="text/javascript" src="/js/library/jquery-ui.min.js"></script><script type="text/javascript" src="/js/vanilla.js"></script><script type="text/javascript" src="/js/library/1.10.12.dataTables.min.js"></script></head>';
+        $this->view = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>User Management Module</title><link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="/css/library/jquery-ui.min.css"><link rel="stylesheet" type="text/css" href="/css/library/1.10.12.dataTables.min.css"><link rel="stylesheet" type="text/css" href="/css/style.css"><script type="text/javascript" src="/js/library/jquery-3.1.1.min.js"></script><script type="text/javascript" src="/js/library/sha256.js"></script><script type="text/javascript" src="/js/library/jquery-ui.min.js"></script><script type="text/javascript" src="/js/vanilla.js"></script><script type="text/javascript" src="/js/library/1.10.12.dataTables.min.js"></script></head><div id="flash_message"></div>';
     }
 
     public function permissions()
     {
         if (isset($_POST['permission'])) {
             $username = $this->post('username', 'a', 99);
-            $group = $this->post('group', 'a', 99);
-            $permission = $this->post('permission', 's', 99, '/');
-            if (true) {// validate $permission format */* and make sure group_name is not blank
-                $q = "INSERT IGNORE INTO `user_ls_permissions` (`function`) VALUES ({$permission});";
-                $q = "INSERT IGNORE INTO `user_ls_groups` (`group_name`) VALUES ({$group});";
+            $group = $this->post('group_name', 'a', 99);
+            $permission = $this->post('permission', 's', 99, '/*');
+            if ((preg_match('/[A-z]+\/[A-z*]+/', $permission)) && $group != '') {
+                $q = "INSERT INTO `user_ls_permissions` (`function`) VALUES ({$this->wrap($permission)});";
+                $this->execute($q);
+                $q = "INSERT IGNORE INTO `user_ls_groups` (`group_name`) VALUES ({$this->wrap($group)});";
+                $this->execute($q);
                 $q = "INSERT INTO `user_rel_permissions`
                     VALUES (
-                    (SELECT `group_id` FROM `user_ls_groups` WHERE `group_name`='{$group}'),
-                    (SELECT `permission_id` FROM `user_ls_permissions` WHERE `function`='$permission'));";
-            }
-            if ($username != '') { // username isn't blank
-                $q = "INSERT INTO `user_rel_groups` (`user_id`, `group_id`)
-                VALUES (
-                (SELECT `user_id` FROM `user_ls_users` WHERE `username`='{$username}'),
-                (SELECT `group_id` FROM `user_ls_groups` WHERE `group_name`='{$group}')
-                );";
-            }
-            return;
+                    (SELECT `group_id` FROM `user_ls_groups` WHERE `group_name`={$this->wrap($group)}),
+                    (SELECT `permission_id` FROM `user_ls_permissions` WHERE `function`={$this->wrap($permission)}));";
+                $this->execute($q);
+                if ($username != '') {
+                    $q = "INSERT INTO `user_rel_groups` (`user_id`, `group_id`)
+                    VALUES (
+                    (SELECT `user_id` FROM `user_ls_users` WHERE `username`={$this->wrap($username)}),
+                    (SELECT `group_id` FROM `user_ls_groups` WHERE `group_name`={$this->wrap($group)}));";
+                    $this->execute($q);
+                }
+                echo ('Permissions updated.'); return;
+            } // else
+            echo ('Invalid permissions parameters.'); return;
+        } else if (isset($_POST['delete'])) {
+            $group = $this->post('group', 'i');
+            $user = $this->post('user', 'i');
+            $permission = $this->post('permission_id', 'i');
+            if ($group != '' && $user != '') {
+                $q = "DELETE FROM `user_rel_groups` WHERE `user_id`={$user} AND `group_id`={$group};";
+                $this->execute($q);
+                echo ('User permission deleted.'); return;
+            } else if ($group != '' && $permission != '') {
+                $q = "DELETE FROM `user_rel_permissions` WHERE `group_id`=$group AND `permission_id`={$permission};";
+                $this->execute($q);
+                echo ('Group permission deleted.'); return;
+            } else if ($permission != '') {
+                $q = "DELETE FROM `user_ls_permissions` WHERE `permission_id`={$permission};";
+                $this->execute($q);
+                echo ('Permission deleted.'); return;
+            }// else
+            echo ('Invalid permissions parameters.'); return;
         }
         $this->view .= '<style>td {min-width:10%;}</style><div>
         username: <input type="text" id="username">
@@ -68,7 +90,9 @@ class frameworkController extends controller {
                 <td>{$a->group_name}</td>
                 <td>{$a->permission_id}</td>
                 <td>{$a->function}</td>
-                <td>{$a->user_id} | {$a->group_id}" . '<td>
+                <td><button class='btn btn-warning remove_permission_button'
+                    user_id='{$a->user_id}' group_id='{$a->group_id}'
+                    permission_id='{$a->permission_id}'>Remove</button>" . '<td>
             </tr>';
         }
         $this->view .= '</tbody>
@@ -87,7 +111,25 @@ class frameworkController extends controller {
                         permission: permission
                     },
                     success: function(response){
-                        alert(response);
+                        flashMessage(response);
+                    }
+                }); // ajax
+            });
+            $(document).on("click", ".remove_permission_button.btn-danger", function(){
+                var group = $(this).attr("group_id");
+                var user = $(this).attr("user_id");
+                var permission = $(this).attr("permission_id");
+                $.ajax({
+                    url: "?url=framework/permissions",
+                    type: "POST",
+                    data: {
+                        delete: "delete_permission",
+                        group: group,
+                        user: user,
+                        permission_id: permission
+                    },
+                    success: function(response){
+                        flashMessage(response);
                     }
                 }); // ajax
             });
