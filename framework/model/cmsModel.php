@@ -22,5 +22,15 @@ class cmsModel extends model {
         return $this->select($q);
     }
 
+    public function updatePage()
+    {
+        //
+    }
+
+    public function deletePage()
+    {
+        //
+    }
+
 }
 ?>

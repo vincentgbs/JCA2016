@@ -21,11 +21,6 @@ class frameworkController extends controller {
         $this->view = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>User Management Module</title><link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="/css/library/jquery-ui.min.css"><link rel="stylesheet" type="text/css" href="/css/library/1.10.12.dataTables.min.css"><link rel="stylesheet" type="text/css" href="/css/style.css"><script type="text/javascript" src="/js/library/jquery-3.1.1.min.js"></script><script type="text/javascript" src="/js/library/sha256.js"></script><script type="text/javascript" src="/js/library/jquery-ui.min.js"></script><script type="text/javascript" src="/js/vanilla.js"></script><script type="text/javascript" src="/js/library/1.10.12.dataTables.min.js"></script></head><div id="flash_message"></div>';
     }
 
-    public function home()
-    {
-        $this->permissions();
-    }
-
     public function permissions()
     {
         if (isset($_POST['permission'])) {
@@ -72,9 +67,9 @@ class frameworkController extends controller {
             echo ('Invalid permissions parameters.'); return;
         }
         $this->view .= '<style>td {min-width:10%;}</style><div>
-        username: <input type="text" id="username">
-        group_name: <input type="text" id="group_name">
-        permission(function): <input type="text" id="permission">
+        username: <input type="text" id="username" placeholder="optional">
+        group_name: <input type="text" id="group_name" placeholder="required">
+        permission(function): <input type="text" id="permission" placeholder="required">
         <button id="add_permission_button">Add/Update</button>
         </div><hr>
         <table id="permissions"><thead><tr>

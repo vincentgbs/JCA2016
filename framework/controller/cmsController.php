@@ -16,6 +16,11 @@ class cmsController extends controller {
         $this->getSettings('cms');
     }
 
+    public function preview()
+    {
+        //
+    }
+
     public function pages()
     {
         if (isset($_POST['function'])) {
