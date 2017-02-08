@@ -9,7 +9,12 @@ class userController extends controller {
         $this->getModel('user');
         $this->getView('user');
         $this->getSettings('user');
-        $this->flashMessage();
+        if (isset($this->settings['google_client_id']) &&
+        isset($this->settings['google_default_group'])) {
+            $this->flashMessage();
+        } else {
+            exit('Missing google settings.');
+        }
     }
 
     public function check()
@@ -255,7 +260,7 @@ class userController extends controller {
 
     private function googleLogin($token, $email)
     {
-        $url = $this->settings['google_verify_url'] . $token;
+        $url = 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' . $token;
         $output = json_decode($this->simpleCurl($url));
         if ($output === null) { exit('Google Authentification Error'); }
         if ($output->aud == $this->settings['google_client_id'] && $output->email == $email) {

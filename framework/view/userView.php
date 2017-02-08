@@ -69,22 +69,3 @@ class userView extends view {
 
 }
 ?>
-
-
-
-<?php
-// public function getHomepage($user, $apps)
-// {
-//     $this->loadTemplate('user/apps', $apps);
-//     $this->loadTemplate('user/update', $user);
-//     $this->display();
-// }
-//
-//
-// public function googleLogin($data)
-// {
-//     $this->loadTemplate('user/google', $data);
-//     $this->display(false);
-// }
-//
-?>
