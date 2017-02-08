@@ -2,7 +2,7 @@
 require_once FILE . 'framework/controller/controller.php';
 
 /* A combined controller for simple backend work */
-class frameworkController extends controller {
+class permissionsController extends controller {
 
     public function __construct()
     {
@@ -21,7 +21,7 @@ class frameworkController extends controller {
         $this->view = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>User Management Module</title><link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="/css/library/jquery-ui.min.css"><link rel="stylesheet" type="text/css" href="/css/library/1.10.12.dataTables.min.css"><link rel="stylesheet" type="text/css" href="/css/style.css"><script type="text/javascript" src="/js/library/jquery-3.1.1.min.js"></script><script type="text/javascript" src="/js/library/sha256.js"></script><script type="text/javascript" src="/js/library/jquery-ui.min.js"></script><script type="text/javascript" src="/js/vanilla.js"></script><script type="text/javascript" src="/js/library/1.10.12.dataTables.min.js"></script></head><div id="flash_message"></div>';
     }
 
-    public function permissions()
+    public function home()
     {
         if (isset($_POST['permission'])) {
             $username = $this->post('username', 'a', 99);
@@ -65,6 +65,10 @@ class frameworkController extends controller {
                 echo ('Permission deleted.'); return;
             }// else
             echo ('Invalid permissions parameters.'); return;
+        } else if (isset($_POST['truncate'])) {
+            $q = 'DELETE FROM user_ls_access WHERE user_id > 0;';
+            $this->execute($q);
+            echo ('Access requests deleted.'); return;
         }
         $this->view .= '<style>td {min-width:10%;}</style><div>
         username: <input type="text" id="username" placeholder="optional">
@@ -95,15 +99,21 @@ class frameworkController extends controller {
                     permission_id='{$a->permission_id}'>Remove</button>" . '<td>
             </tr>';
         }
-        $this->view .= '</tbody>
-            </table>
-        <script>$(document).ready(function(){
+        $this->view .= '</tbody></table>';
+        $access = $this->select('SELECT `timestamp`, `url`, `username`, `email`, `users`.`user_id` FROM `user_ls_access` AS `access`
+        LEFT JOIN `user_ls_users` AS `users` ON `access`.`user_id`=`users`.`user_id`;');
+        $this->view .= '<pre><button class="btn btn-warning" id="truncate_access_requests">Delete ALL access requests</button>';
+        foreach ($access as $a) {
+            $this->view .= "({$a->timestamp}) {$a->url}: ({$a->user_id}) {$a->username}, {$a->email}<br>";
+        }
+        $this->view .= '</pre>';
+        $this->view .= '<script>$(document).ready(function(){
             $("#add_permission_button").on("click", function(){
                 var username = $("#username").val();
                 var group_name = $("#group_name").val();
                 var permission = $("#permission").val();
                 $.ajax({
-                    url: "?url=framework/permissions",
+                    url: "?url=permissions/home",
                     type: "POST",
                     data: {
                         username: username,
@@ -120,7 +130,7 @@ class frameworkController extends controller {
                 var user = $(this).attr("user_id");
                 var permission = $(this).attr("permission_id");
                 $.ajax({
-                    url: "?url=framework/permissions",
+                    url: "?url=permissions/home",
                     type: "POST",
                     data: {
                         delete: "delete_permission",
@@ -133,10 +143,21 @@ class frameworkController extends controller {
                     }
                 }); // ajax
             });
+            $(document).on("click", "#truncate_access_requests.btn-danger", function(){
+                $.ajax({
+                    url: "?url=permissions/home",
+                    type: "POST",
+                    data: {
+                        truncate: "truncate_access_requests",
+                    },
+                    success: function(response){
+                        flashMessage(response);
+                    }
+                }); // ajax
+            });
         });</script>';
         $this->display();
     }
-
 
 
 

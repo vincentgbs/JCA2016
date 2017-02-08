@@ -9,12 +9,7 @@ class userController extends controller {
         $this->getModel('user');
         $this->getView('user');
         $this->getSettings('user');
-        if (isset($this->settings['google_client_id']) &&
-        isset($this->settings['google_default_group'])) {
-            $this->flashMessage();
-        } else {
-            exit('Missing google settings.');
-        }
+        $this->flashMessage();
     }
 
     public function check()
@@ -159,7 +154,11 @@ class userController extends controller {
             $api = $this->post('api', 'a', 255);
             switch ($api) {
                 case 'google':
-                    return $this->userView->google($this->settings);
+                    if (isset($this->settings['google_client_id'], $this->settings['google_default_group'])) {
+                        return $this->userView->google($this->settings);
+                    } else {
+                        exit('Missing google settings.');
+                    }
                 break;
             }
         }
