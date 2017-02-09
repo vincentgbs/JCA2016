@@ -38,7 +38,56 @@ function autocompleteNameAndId(input, url, display_id=false)
 }
 $(document).ready(function(){
     $("#page_name").keyup(function(e){
+        limitInput(this, 'alphanumeric');
         autocompleteNameAndId(this, '?url=cms/pages');
+    });
+
+    $("#create_page_button").on('click', function(){
+        var name = $("#page_name").val();
+        if (name == '') { return flashMessage('No page name entered'); }
+        $.ajax({
+            url: "?url=cms/pages",
+            type: "POST",
+            data: {
+                function: 'create',
+                name: name
+            }, // data
+            success: function(response) {
+                flashMessage(response);
+            } // success
+        }); // ajax
+    });
+
+    $("#read_page_button").on('click', function(){
+        var name = $("#page_name").val();
+        if (name == '') { return flashMessage('No page name entered'); }
+        $.ajax({
+            url: "?url=cms/pages",
+            type: "POST",
+            data: {
+                function: 'read',
+                name: name
+            },
+            success: function(response) {
+                $("#update_page_container").html(response);
+            }
+        });
+    });
+
+    $(document).on('click', ".btn-danger#delete_page_button", function(){
+        var name = $("#page_name").val();
+        if (name == '') { return flashMessage('No page name entered'); }
+        $.ajax({
+            url: "?url=cms/pages",
+            type: "POST",
+            data: {
+                function: 'delete',
+                name: name
+            }, // data
+            success: function(response) {
+                flashMessage(response);
+            } // success
+        }); // ajax
     });
 
 });

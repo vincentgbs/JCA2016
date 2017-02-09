@@ -34,28 +34,33 @@ class cmsController extends controller {
         } else if (isset($_POST['function'])) {
             switch ($this->post('function', 'a', 32)) {
                 case 'create':
-                    $page = (object)['page_name'=>strtolower($this->post('name', 'a', 99))];
+                    $page = (object)['page_name' => strtolower($this->post('name', 'a', 99))];
                     if ($this->cmsModel->createPage($page)) {
-                        echo ('Page created.'); return;
+                        echo ($page->page_name . ' created.'); return;
                     } else {
                         exit('Error creating page.');
                     }
                     break;
                 case 'read':
-                    $page = (object)['`ls`.`page_id`'=>strtolower($this->post('page_id', 'i'))];
+                    $page = (object)['page_name' => strtolower($this->post('name', 'a', 99))];
                     $page = $this->cmsModel->readPage($page);
                     foreach ($page as $row) {
-                        // get template
+                        var_dump($row);
                     }
-                    // get update form
+                    echo ('...end of update forms'); return;
                     break;
                 case 'update':
                     // NEED - (page name OR id) AND template name AND order AND (add OR remove)
                     // add or remove html templates from page
+                    return;
                     break;
                 case 'delete':
-                    // NEED - name OR id
-                    // delete page
+                    $page = (object)['page_name' => strtolower($this->post('name', 'a', 99))];
+                    if ($this->cmsModel->deletePage($page)) {
+                        echo ($page->page_name . ' deleted.'); return;
+                    } else {
+                        exit('Error deleting page.');
+                    }
                     break;
                 default: echo ('Invalid page function.'); return;
             }

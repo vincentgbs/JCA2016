@@ -38,12 +38,14 @@ function autocompleteNameAndId(input, url, display_id=false)
 }
 $(document).ready(function(){
     $("#resource_name").keyup(function(e){
+        limitInput(this, 'alphanumeric');
         autocompleteNameAndId(this, '?url=cms/edit');
     });
 
     $(".get_resource_button").on('click', function(){
         var type = $(this).attr('type');
         var name = $("#resource_name").val();
+        if (name == '') { return flashMessage('No resource name entered'); }
         $.ajax({
             url: "?url=cms/edit",
             type: "POST",

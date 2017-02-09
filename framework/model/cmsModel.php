@@ -22,9 +22,9 @@ class cmsModel extends model {
         JOIN `cms_ls_pages` AS `ls` ON `rel`.`page_id`=`ls`.`page_id`
         WHERE ';
         foreach ($page as $key => $value) {
-            $q .= "{$key} = {$value} AND";
+            $q .= "{$key} = {$this->wrap($value)} AND";
         }
-        $q = substr($q, 0, -4) . 'ORDER BY `page_order` ASC';
+        $q = substr($q, 0, -4) . ' ORDER BY `page_order` ASC;';
         return $this->select($q);
     }
 
@@ -33,9 +33,14 @@ class cmsModel extends model {
         //
     }
 
-    public function deletePage()
+    public function deletePage($page)
     {
-        //
+        $q = 'DELETE FROM `cms_ls_pages` WHERE ';
+        foreach ($page as $key => $value) {
+            $q .= "{$key} = {$this->wrap($value)} AND";
+        }
+        $q = substr($q, 0, -4) . ';';
+        return $this->execute($q);
     }
 
 }
