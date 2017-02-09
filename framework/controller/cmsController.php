@@ -29,7 +29,9 @@ class cmsController extends controller {
 
     public function pages()
     {
-        if (isset($_POST['function'])) {
+        if (isset($_POST['search'])) {
+            return $this->pageSearch( strtolower($this->post('name', 'a', 99)) );
+        } else if (isset($_POST['function'])) {
             switch ($this->post('function', 'a', 32)) {
                 case 'create':
                     $page = (object)['page_name'=>strtolower($this->post('name', 'a', 99))];
@@ -66,21 +68,23 @@ class cmsController extends controller {
         if (isset($_POST['search'])) {
             return $this->resourceSearch( strtolower($this->post('name', 'a', 99)) );
         } else if (isset($_POST['function'])) {
-            $function = $this->post('function', 'a', 32);
             $type = strtolower($this->post('type', 'a', 8));
             $name = strtolower($this->post('name', 's', 105, '-_|'));
-            if ($function == 'getupdateform') {
-                return $this->resourceUpdateForm($type, $name);
-            } else if ($function == 'updateresource') {
-                $filename = FILE . 'html/cache/' . $type . '/' . $name . '.' . $type;
-                file_put_contents($filename, $_POST['resource']);
-                echo ($name . '.' .$type . ' updated.'); return;
-            } else if ($function == 'deleteresource') {
-                $filename = FILE . 'html/cache/' . $type . '/' . $name . '.' . $type;
-                if (is_file($filename)) { unlink($filename); }
-                echo ($name . '.' .$type . ' deleted.'); return;
-            } else {
-                return false;
+            switch ($this->post('function', 'a', 32)) {
+                case 'getupdateform':
+                    return $this->resourceUpdateForm($type, $name);
+                    break;
+                case 'updateresource':
+                    $filename = FILE . 'html/cache/' . $type . '/' . $name . '.' . $type;
+                    file_put_contents($filename, $_POST['resource']);
+                    echo ($name . '.' .$type . ' updated.'); return;
+                    break;
+                case 'deleteresource':
+                    $filename = FILE . 'html/cache/' . $type . '/' . $name . '.' . $type;
+                    if (is_file($filename)) { unlink($filename); }
+                    echo ($name . '.' .$type . ' deleted.'); return;
+                    break;
+                default: echo ('Invalid page function.'); return;
             }
         }
         $this->cmsView->edit();
@@ -131,6 +135,9 @@ class cmsController extends controller {
         $this->cmsView->upload();
     }
 
+
+
+
     private function resourceSearch($name)
     {
         $resources = [];
@@ -145,7 +152,20 @@ class cmsController extends controller {
         if (isset($results)) {
             echo (json_encode($results));
         } else {
-            echo (json_encode([['id'=>0, 'name'=>'No results found']]));
+            echo (json_encode([['id'=>0, 'name'=>'No resources found']]));
+        }
+    }
+
+    private function pageSearch($name)
+    {
+        $pages = $this->cmsModel->searchPages($name);
+        foreach ($pages as $page) {
+            $results[] = ['id'=>$page->page_id, 'name'=>$page->page_name];
+        }
+        if (isset($results)) {
+            echo (json_encode($results));
+        } else {
+            echo (json_encode([['id'=>0, 'name'=>'No pages found']]));
         }
     }
 

@@ -3,6 +3,12 @@ require_once FILE . 'framework/model/model.php';
 
 class cmsModel extends model {
 
+    public function searchPages($name)
+    {
+        $q = "SELECT * FROM `cms_ls_pages` WHERE `page_name` LIKE '{$name}%';";
+        return $this->select($q);
+    }
+
     public function createPage($page)
     {
         $q = "INSERT INTO `cms_ls_pages` (`page_name`)

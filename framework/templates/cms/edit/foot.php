@@ -34,7 +34,7 @@ function autocompleteNameAndId(input, url, display_id=false)
                 .append( "<a>" + ((display_id) ? item.id + '. ' : '') + item.name + "</a>" )
                 .appendTo( ul );
         };
-});
+    });
 }
 $(document).ready(function(){
     $("#resource_name").keyup(function(e){
