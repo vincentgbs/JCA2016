@@ -44,10 +44,10 @@ class cmsController extends controller {
                 case 'read':
                     $page = (object)['page_name' => strtolower($this->post('name', 'a', 99))];
                     $page = $this->cmsModel->readPage($page);
-                    foreach ($page as $row) {
-                        var_dump($row);
+                    foreach ($page as $template) {
+                        var_dump($template);
                     }
-                    echo ('...end of update forms'); return;
+                    echo ('Add template here: <input type="text">'); return;
                     break;
                 case 'update':
                     // NEED - (page name OR id) AND template name AND order AND (add OR remove)

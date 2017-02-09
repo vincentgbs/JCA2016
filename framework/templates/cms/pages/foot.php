@@ -67,11 +67,11 @@ $(document).ready(function(){
             data: {
                 function: 'read',
                 name: name
-            },
+            }, // data
             success: function(response) {
                 $("#update_page_container").html(response);
-            }
-        });
+            } // success
+        }); // ajax
     });
 
     $(document).on('click', ".btn-danger#delete_page_button", function(){
