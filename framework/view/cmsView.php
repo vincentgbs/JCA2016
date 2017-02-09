@@ -12,6 +12,8 @@ class cmsView extends view {
 
     public function pages()
     {
+        $this->loadTemplate('cms/pages/head', null, 'header');
+        $this->loadTemplate('cms/pages/foot', null, 'footer');
         $this->display();
     }
 

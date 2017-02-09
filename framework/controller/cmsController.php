@@ -16,6 +16,12 @@ class cmsController extends controller {
         $this->getSettings('cms');
     }
 
+    public function home()
+    {
+        $this->cmsView->body .= '<p class="row col-md-12">This CMS was designed only to create and manage simple html pages.</p>';
+        return $this->cmsView->display();
+    }
+
     public function preview()
     {
         //
@@ -26,7 +32,7 @@ class cmsController extends controller {
         if (isset($_POST['function'])) {
             switch ($this->post('function', 'a', 32)) {
                 case 'create':
-                    $page = (object)['page_name'=>$this->post('name', 'a', 99)];
+                    $page = (object)['page_name'=>strtolower($this->post('name', 'a', 99))];
                     if ($this->cmsModel->createPage($page)) {
                         echo ('Page created.'); return;
                     } else {
@@ -34,7 +40,7 @@ class cmsController extends controller {
                     }
                     break;
                 case 'read':
-                    $page = (object)['`ls`.`page_id`'=>$this->post('page_id', 'i')];
+                    $page = (object)['`ls`.`page_id`'=>strtolower($this->post('page_id', 'i'))];
                     $page = $this->cmsModel->readPage($page);
                     foreach ($page as $row) {
                         // get template
@@ -58,24 +64,20 @@ class cmsController extends controller {
     public function edit()
     {
         if (isset($_POST['search'])) {
-            return $this->resourceSearch( $this->post('name', 'a', 99) );
+            return $this->resourceSearch( strtolower($this->post('name', 'a', 99)) );
         } else if (isset($_POST['function'])) {
             $function = $this->post('function', 'a', 32);
+            $type = strtolower($this->post('type', 'a', 8));
+            $name = strtolower($this->post('name', 's', 105, '-_|'));
             if ($function == 'getupdateform') {
-                $type = $this->post('type', 'a', 8);
-                $name = $this->post('name', 's', 105, '-_|');
                 return $this->resourceUpdateForm($type, $name);
             } else if ($function == 'updateresource') {
-                $type = $this->post('type', 'a', 8);
-                $name = $this->post('name', 's', 99, '-_');
                 $filename = FILE . 'html/cache/' . $type . '/' . $name . '.' . $type;
                 file_put_contents($filename, $_POST['resource']);
                 echo ($name . '.' .$type . ' updated.'); return;
             } else if ($function == 'deleteresource') {
-                $type = $this->post('type', 'a', 8);
-                $name = $this->post('name', 's', 99, '-_');
                 $filename = FILE . 'html/cache/' . $type . '/' . $name . '.' . $type;
-                unlink($filename);
+                if (is_file($filename)) { unlink($filename); }
                 echo ($name . '.' .$type . ' deleted.'); return;
             } else {
                 return false;
@@ -112,7 +114,7 @@ class cmsController extends controller {
                 break;
                 case 'file':
                     $upload = new simpleChunking('files');
-                    $name = $this->post('name', 'a') . '.' . $this->post('filetype', 'a');
+                    $name = strtolower($this->post('name', 'a') . '.' . $this->post('filetype', 'a'));
                     return $upload->upload($name);
                 break;
                 default: exit('Invalid upload function.');
@@ -175,7 +177,7 @@ class cmsController extends controller {
         if (array_key_exists($ext, $types)) {
             $upload = new simpleChunking($type);
             $ext = $types[$ext]; // match type
-            $name = $this->post('name', 's', 99, '-_') . '.' . $ext;
+            $name = strtolower($this->post('name', 's', 99, '-_') . '.' . $ext);
             return $upload->upload($name);
         } else {
             exit('Invalid ' . $type . ' file.');
