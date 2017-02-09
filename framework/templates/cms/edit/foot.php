@@ -31,7 +31,7 @@ function autocompleteNameAndId(input, url, display_id=false)
     }).each(function(index, element) {
         $(element).data('ui-autocomplete')._renderItem = function(ul, item) {
             return $( "<li>" )
-                .append( "<a>" + ((display_id)?item.id + '. ':'') + item.name + "</a>" )
+                .append( "<a>" + ((display_id) ? item.id + '. ' : '') + item.name + "</a>" )
                 .appendTo( ul );
         };
 });
@@ -63,7 +63,6 @@ $(document).ready(function(){
         var name = container.find('.update_resource_name').val();
         var type = container.find('.update_resource_type').val();
         var resource = container.find('.update_resource').val();
-        console.debug(name, type, resource);
         $.ajax({
             url: "?url=cms/edit",
             type: "POST",
@@ -75,6 +74,27 @@ $(document).ready(function(){
             }, // data
             success: function(response) {
                 flashMessage(response);
+            } // success
+        }); // ajax
+    });
+
+    $(document).on('click', ".btn-danger.delete_resource_button", function(){
+        var container = $(this).closest('.update_resource_container');
+        var name = container.find('.update_resource_name').val();
+        var type = container.find('.update_resource_type').val();
+        $.ajax({
+            url: "?url=cms/edit",
+            type: "POST",
+            data: {
+                function: 'delete_resource',
+                type: type,
+                name: name
+            }, // data
+            success: function(response) {
+                flashMessage(response);
+                if (response.trim().slice(-8) == 'deleted.') {
+                    container.hide();
+                }
             } // success
         }); // ajax
     });

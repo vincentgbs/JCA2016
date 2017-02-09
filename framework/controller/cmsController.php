@@ -37,7 +37,7 @@ class cmsController extends controller {
                     $page = (object)['`ls`.`page_id`'=>$this->post('page_id', 'i')];
                     $page = $this->cmsModel->readPage($page);
                     foreach ($page as $row) {
-                        //
+                        // get template
                     }
                     // get update form
                     break;
@@ -71,6 +71,12 @@ class cmsController extends controller {
                 $filename = FILE . 'html/cache/' . $type . '/' . $name . '.' . $type;
                 file_put_contents($filename, $_POST['resource']);
                 echo ($name . '.' .$type . ' updated.'); return;
+            } else if ($function == 'deleteresource') {
+                $type = $this->post('type', 'a', 8);
+                $name = $this->post('name', 's', 99, '-_');
+                $filename = FILE . 'html/cache/' . $type . '/' . $name . '.' . $type;
+                unlink($filename);
+                echo ($name . '.' .$type . ' deleted.'); return;
             } else {
                 return false;
             }
@@ -145,17 +151,20 @@ class cmsController extends controller {
     {
         $resource = new stdClass();
         $name = explode('|', $name);
+        $resource->type = $type;
         if (isset($name[1])) {
             $filename = FILE . 'html/cache/' . $type . '/' . $name[0] . '.' . $name[1];
             $resource->name = $name[0];
-            $resource->type = $type;
+        } else if (isset($name[0]) && $name[0] != '') {
+            $filename = FILE . 'html/cache/' . $type . '/' . $name[0] . '.' . $type;
+            $resource->name = $name[0];
         } else {
             echo ('No file found.'); return;
         }
         if (is_file($filename)) {
             $resource->resource = file_get_contents($filename);
         } else {
-            echo ('No file found.'); return;
+            $resource->resource = '';
         }
         $this->cmsView->loadTemplate('cms/edit/update', $resource);
         return $this->cmsView->display(false);
