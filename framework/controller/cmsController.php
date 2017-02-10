@@ -18,12 +18,6 @@ class cmsController extends controller {
 
     public function home()
     {
-        $this->cmsView->body .= '<p class="row col-md-12">This CMS was designed only to create and manage simple html pages.</p>';
-        return $this->cmsView->display();
-    }
-
-    public function preview()
-    {
         if (isset($_GET['page'])) {
             $page = (object)['page_name' => strtolower($this->get('page', 'a', 99))];
             $page = $this->cmsModel->readPage($page);
