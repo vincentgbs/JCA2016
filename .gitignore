@@ -1,3 +1,4 @@
+framework/libraries/credentials
 framework/config.php
 framework/log.txt
 html/cache/css/*
