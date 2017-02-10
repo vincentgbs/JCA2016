@@ -10,6 +10,16 @@ class cmsView extends view {
         $this->loadTemplate('cms/footer', null, 'footer');
     }
 
+    public function preview($pages)
+    {
+        $this->loadTemplate('cms/preview/head');
+        foreach ($pages as $page) {
+            $this->loadTemplate('cms/preview/page', $page);
+        }
+        $this->loadTemplate('cms/preview/foot');
+        $this->display();
+    }
+
     public function pages()
     {
         $this->loadTemplate('cms/pages/head', null, 'header');

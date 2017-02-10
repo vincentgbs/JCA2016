@@ -24,7 +24,21 @@ class cmsController extends controller {
 
     public function preview()
     {
-        //
+        if (isset($_GET['page'])) {
+            $page = (object)['page_name' => strtolower($this->get('page', 'a', 99))];
+            $page = $this->cmsModel->readPage($page);
+            foreach ($page as $html) {
+                if (is_file(FILE . 'html/cache/html/' . $html->html_template . '.html')) {
+                    $this->cmsView->body .= file_get_contents(FILE . 'html/cache/html/' . $html->html_template . '.html');
+                } else {
+                    $this->cmsView->loadTemplate('cms/preview/missing', $html);
+                }
+            }
+            return $this->cmsView->display(false);
+        } else {
+            $pages = $this->cmsModel->searchPages('');
+            return $this->cmsView->preview($pages);
+        }
     }
 
     public function pages()
@@ -51,10 +65,7 @@ class cmsController extends controller {
                     return $this->cmsView->display(false);
                 break;
                 case 'updateadd':
-                    $template = new stdClass();
-                    $template->page_id = $this->post('page_id', 'i');
-                    $template->page_order = $this->post('page_order', 'i');
-                    $template->html_template = $this->post('html_template', 'a');
+                    $template = $this->getPostTemplate();
                     if ($this->cmsModel->shiftOrder($template, '+1')) {
                         if ($this->cmsModel->addTemplate($template)) {
                             echo 'Template added to page.'; return;
@@ -65,10 +76,7 @@ class cmsController extends controller {
                     exit('Error adding template to page.');
                 break;
                 case 'updateremove':
-                    $template = new stdClass();
-                    $template->page_id = $this->post('page_id', 'i');
-                    $template->page_order = $this->post('page_order', 'i');
-                    $template->html_template = $this->post('html_template', 'a');
+                    $template = $this->getPostTemplate();
                     if ($this->cmsModel->removeTemplate($template)) {
                         if ($this->cmsModel->shiftOrder($template, '-1')) {
                             echo 'Template removed from page.'; return;
@@ -168,6 +176,15 @@ class cmsController extends controller {
 
 
 
+
+    private function getPostTemplate()
+    {
+        $template = new stdClass();
+        $template->page_id = $this->post('page_id', 'i');
+        $template->page_order = $this->post('page_order', 'i');
+        $template->html_template = $this->post('html_template', 'a');
+        return $template;
+    }
 
     private function resourceSearch($name)
     {

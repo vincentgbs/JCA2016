@@ -36,6 +36,20 @@ function autocompleteNameAndId(input, url, display_id=false)
         };
     });
 }
+function getPage(name) {
+    $.ajax({
+        url: "?url=cms/pages",
+        type: "POST",
+        data: {
+            function: 'read',
+            name: name
+        }, // data
+        success: function(response) {
+            $("#update_page_container").html(response);
+            $(".delete_resource_button").hide();
+        } // success
+    }); // ajax
+}
 $(document).ready(function(){
     $("#page_name").keyup(function(e){
         limitInput(this, 'alphanumeric');
@@ -61,18 +75,7 @@ $(document).ready(function(){
     $("#read_page_button").on('click', function(){
         var name = $("#page_name").val();
         if (name == '') { return flashMessage('No page name entered'); }
-        $.ajax({
-            url: "?url=cms/pages",
-            type: "POST",
-            data: {
-                function: 'read',
-                name: name
-            }, // data
-            success: function(response) {
-                $("#update_page_container").html(response);
-                $(".delete_resource_button").hide();
-            } // success
-        }); // ajax
+        return getPage(name);
     });
 
     $(document).on('click', ".btn-danger#delete_page_button", function(){
@@ -107,7 +110,7 @@ $(document).ready(function(){
                 html_template: name
             }, // data
             success: function(response) {
-                flashMessage(response);
+                flashMessage(response, 4999);
             } // success
         }); // ajax
     });
@@ -128,7 +131,7 @@ $(document).ready(function(){
                 html_template: name
             }, // data
             success: function(response) {
-                flashMessage(response);
+                flashMessage(response, 4999);
             } // success
         }); // ajax
     });
