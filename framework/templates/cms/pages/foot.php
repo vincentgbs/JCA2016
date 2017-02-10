@@ -94,12 +94,16 @@ $(document).ready(function(){
         }); // ajax
     });
 
+    $(document).on('keyup', ".add_html_template", function(e){
+        limitInput(this, 'alphanumeric');
+    });
+
     $(document).on('click', ".insert_template_button", function(){
         var container = $(this).closest('.update_page_container');
         var page_order = container.find('.page_order').val();
         var page_id = container.find('.page_id').val();
-        var name = container.find('.add_html_template').val();
-        if (name == '') { return flashMessage('No resource name entered'); }
+        var html = container.find('.add_html_template').val();
+        if (html == '') { return flashMessage('No resource name entered'); }
         $.ajax({
             url: "?url=cms/pages",
             type: "POST",
@@ -107,10 +111,13 @@ $(document).ready(function(){
                 function: 'update_add',
                 page_order: page_order,
                 page_id: page_id,
-                html_template: name
+                html_template: html
             }, // data
             success: function(response) {
-                flashMessage(response, 4999);
+                flashMessage(response);
+                if (response.trim().slice(-14) == 'added to page.') {
+                    getPage(container.find('.page_name').val());
+                }
             } // success
         }); // ajax
     });
@@ -119,8 +126,8 @@ $(document).ready(function(){
         var container = $(this).closest('.update_page_container');
         var page_order = container.find('.page_order').val();
         var page_id = container.find('.page_id').val();
-        var name = container.find('.remove_html_template').val();
-        if (name == '') { return flashMessage('No resource name entered'); }
+        var html = container.find('.remove_html_template').val();
+        if (html == '') { return flashMessage('No resource name entered'); }
         $.ajax({
             url: "?url=cms/pages",
             type: "POST",
@@ -128,10 +135,13 @@ $(document).ready(function(){
                 function: 'update_remove',
                 page_order: page_order,
                 page_id: page_id,
-                html_template: name
+                html_template: html
             }, // data
             success: function(response) {
-                flashMessage(response, 4999);
+                flashMessage(response);
+                if (response.trim().slice(-18) == 'removed from page.') {
+                    getPage(container.find('.page_name').val());
+                }
             } // success
         }); // ajax
     });

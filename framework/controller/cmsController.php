@@ -58,9 +58,16 @@ class cmsController extends controller {
                 case 'read':
                     $page = (object)['page_name' => strtolower($this->post('name', 'a', 99))];
                     $page = $this->cmsModel->readPage($page);
-                    foreach ($page as $html) {
-                        $this->cmsView->loadTemplate('cms/pages/update', $html);
-                        $this->resourceUpdateForm('html', $html->html_template);
+                    if (isset($page[0]->page_order, $page[0]->html_template)) {
+                        foreach ($page as $html) {
+                            $this->cmsView->loadTemplate('cms/pages/update', $html);
+                            $this->resourceUpdateForm('html', $html->html_template);
+                        }
+                    } else if (isset($page[0]->page_id, $page[0]->page_name)) {
+                        $page[0]->page_order = 1;
+                        $this->cmsView->loadTemplate('cms/pages/update', $page[0]);
+                    } else {
+                        exit('No page found.');
                     }
                     return $this->cmsView->display(false);
                 break;
@@ -182,7 +189,7 @@ class cmsController extends controller {
         $template = new stdClass();
         $template->page_id = $this->post('page_id', 'i');
         $template->page_order = $this->post('page_order', 'i');
-        $template->html_template = $this->post('html_template', 'a');
+        $template->html_template = strtolower($this->post('html_template', 'a'));
         return $template;
     }
 

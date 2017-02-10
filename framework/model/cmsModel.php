@@ -19,7 +19,7 @@ class cmsModel extends model {
     public function readPage($page)
     {
         $q = 'SELECT * FROM `cms_rel_pages` AS `rel`
-        JOIN `cms_ls_pages` AS `ls` ON `rel`.`page_id`=`ls`.`page_id`
+        RIGHT JOIN `cms_ls_pages` AS `ls` ON `rel`.`page_id`=`ls`.`page_id`
         WHERE ';
         foreach ($page as $key => $value) {
             $q .= "{$key} = {$this->wrap($value)} AND";
