@@ -40,20 +40,45 @@ class cmsController extends controller {
                     } else {
                         exit('Error creating page.');
                     }
-                    break;
+                break;
                 case 'read':
                     $page = (object)['page_name' => strtolower($this->post('name', 'a', 99))];
                     $page = $this->cmsModel->readPage($page);
-                    foreach ($page as $template) {
-                        var_dump($template);
+                    foreach ($page as $html) {
+                        $this->cmsView->loadTemplate('cms/pages/update', $html);
+                        $this->resourceUpdateForm('html', $html->html_template);
                     }
-                    echo ('Add template here: <input type="text">'); return;
-                    break;
-                case 'update':
-                    // NEED - (page name OR id) AND template name AND order AND (add OR remove)
-                    // add or remove html templates from page
+                    return $this->cmsView->display(false);
+                break;
+                case 'updateadd':
+                    $template = new stdClass();
+                    $template->page_id = $this->post('page_id', 'i');
+                    $template->page_order = $this->post('page_order', 'i');
+                    $template->html_template = $this->post('html_template', 'a');
+                    if ($this->cmsModel->shiftOrder($template, '+1')) {
+                        if ($this->cmsModel->addTemplate($template)) {
+                            echo 'Template added to page.'; return;
+                        } else { // undo shift
+                            $this->cmsModel->shiftOrder($template, '-1');
+                        }
+                    } // else
+                    exit('Error adding template to page.');
+                break;
+                case 'updateremove':
+                    $template = new stdClass();
+                    $template->page_id = $this->post('page_id', 'i');
+                    $template->page_order = $this->post('page_order', 'i');
+                    $template->html_template = $this->post('html_template', 'a');
+                    if ($this->cmsModel->removeTemplate($template)) {
+                        if ($this->cmsModel->shiftOrder($template, '-1')) {
+                            echo 'Template removed from page.'; return;
+                        } else {
+                            $this->cmsModel->addTemplate($template);
+                        }
+                    } // else
+                    exit('Error removing template from page.');
                     return;
-                    break;
+                break;
                 case 'delete':
                     $page = (object)['page_name' => strtolower($this->post('name', 'a', 99))];
                     if ($this->cmsModel->deletePage($page)) {
@@ -61,7 +86,7 @@ class cmsController extends controller {
                     } else {
                         exit('Error deleting page.');
                     }
-                    break;
+                break;
                 default: echo ('Invalid page function.'); return;
             }
         }
@@ -77,18 +102,19 @@ class cmsController extends controller {
             $name = strtolower($this->post('name', 's', 105, '-_|'));
             switch ($this->post('function', 'a', 32)) {
                 case 'getupdateform':
-                    return $this->resourceUpdateForm($type, $name);
-                    break;
+                    $this->resourceUpdateForm($type, $name);
+                    return $this->cmsView->display(false);
+                break;
                 case 'updateresource':
                     $filename = FILE . 'html/cache/' . $type . '/' . $name . '.' . $type;
                     file_put_contents($filename, $_POST['resource']);
                     echo ($name . '.' .$type . ' updated.'); return;
-                    break;
+                break;
                 case 'deleteresource':
                     $filename = FILE . 'html/cache/' . $type . '/' . $name . '.' . $type;
                     if (is_file($filename)) { unlink($filename); }
                     echo ($name . '.' .$type . ' deleted.'); return;
-                    break;
+                break;
                 default: echo ('Invalid page function.'); return;
             }
         }
@@ -194,7 +220,6 @@ class cmsController extends controller {
             $resource->resource = '';
         }
         $this->cmsView->loadTemplate('cms/edit/update', $resource);
-        return $this->cmsView->display(false);
     }
 
     private function upload_file($ext, $types, $type)

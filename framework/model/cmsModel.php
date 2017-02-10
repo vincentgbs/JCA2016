@@ -28,11 +28,6 @@ class cmsModel extends model {
         return $this->select($q);
     }
 
-    public function updatePage()
-    {
-        //
-    }
-
     public function deletePage($page)
     {
         $q = 'DELETE FROM `cms_ls_pages` WHERE ';
@@ -40,6 +35,31 @@ class cmsModel extends model {
             $q .= "{$key} = {$this->wrap($value)} AND";
         }
         $q = substr($q, 0, -4) . ';';
+        return $this->execute($q);
+    }
+
+    public function shiftOrder($template, $direction)
+    {
+        $q = "UPDATE `cms_rel_pages` SET `page_order`=(`page_order`{$direction})
+            WHERE `page_id`=$template->page_id AND `page_order`>={$template->page_order}";
+        if ($direction == '+1') { $q .= ' ORDER BY `page_order` DESC;'; }
+        return $this->execute($q);
+    }
+
+    public function addTemplate($template)
+    {
+        $q = "INSERT INTO `cms_rel_pages` (`page_id`, `html_template`, `page_order`)
+            VALUES ({$template->page_id},
+                {$this->wrap($template->html_template)},
+                {$template->page_order});";
+        return $this->execute($q);
+    }
+
+    public function removeTemplate($template)
+    {
+        $q = "DELETE FROM `cms_rel_pages`
+            WHERE `page_id`=$template->page_id AND
+                `page_order`=$template->page_order;";
         return $this->execute($q);
     }
 
