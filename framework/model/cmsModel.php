@@ -35,7 +35,18 @@ class cmsModel extends model {
             $q .= "{$key} = {$this->wrap($value)} AND";
         }
         $q = substr($q, 0, -4) . ';';
-        return $this->execute($q);
+        if ($this->execute($q)) {
+            $q = 'DELETE FROM `cms_rel_pages` WHERE `page_id`=';
+            if (isset($page->page_id)) {
+                $q .= "$page->page_id;";
+            } else if (isset($page->page_name)) {
+                $q .= "(SELECT `page_id` FROM `cms_ls_pages`
+                WHERE `page_name`={$this->wrap($page->page_name)});";
+            } else {
+                return true;
+            }
+            return $this->execute($q);
+        }
     }
 
     public function shiftOrder($template, $direction)
