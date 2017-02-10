@@ -38,7 +38,7 @@ function autocompleteNameAndId(input, url, display_id=false)
 }
 $(document).ready(function(){
     $("#resource_name").keyup(function(e){
-        limitInput(this, 'alphanumeric');
+        limitInput(this, /[^A-z0-9\.]/g);
         autocompleteNameAndId(this, '?url=cms/edit');
     });
 

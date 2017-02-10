@@ -57,6 +57,9 @@ class cmsController extends controller {
                             $this->cmsView->loadTemplate('cms/pages/update', $html);
                             $this->resourceUpdateForm('html', $html->html_template);
                         }
+                        // to add template at the bottom
+                        $html->page_order += 1; $html->html_template = NULL;
+                        $this->cmsView->loadTemplate('cms/pages/update', $html);
                     } else if (isset($page[0]->page_id, $page[0]->page_name)) {
                         $page[0]->page_order = 1;
                         $this->cmsView->loadTemplate('cms/pages/update', $page[0]);

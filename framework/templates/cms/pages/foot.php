@@ -68,6 +68,9 @@ $(document).ready(function(){
             }, // data
             success: function(response) {
                 flashMessage(response);
+                if (response.trim().slice(-8) == 'created.') {
+                    getPage(name);
+                }
             } // success
         }); // ajax
     });
