@@ -76,10 +76,35 @@ class jcaModel extends cmsModel {
         return $this->select($q);
     }
 
-    public function deleteBanner($banner)
+    public function deleteBanner()
     {
         $q = "DELETE FROM `jca_ls_banner` WHERE `banner_id`=1;";
         return $this->execute($q);
+    }
+
+    public function createSermon()
+    {
+        //
+    }
+
+    public function readSermons()
+    {
+        //
+    }
+
+    public function deleteSermon()
+    {
+        //
+    }
+
+    public function createForm()
+    {
+        //
+    }
+
+    public function readForms()
+    {
+        //
     }
 
 }

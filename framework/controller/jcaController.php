@@ -75,7 +75,20 @@ class jcaController extends controller {
         } else if (isset($_POST['function'])) {
             switch ($this->post('function', 'a', 32)) {
                 case 'banner':
-                    echo ('HERE'); return;
+                    if (isset($_POST['delete'])) {
+                        return $this->jcaModel->deleteBanner();
+                    }
+                    $banner = new stdClass();
+                    $banner->banner_title = $this->post('banner_title', 'w', 99);
+                    $banner->banner_body = $this->post('banner_body', NULL, 999);
+                    $banner->commencement = $this->post('commencement', 's', 32, '-');
+                    $banner->expiration = $this->post('expiration', 's', 32, '-');
+                    if ($this->jcaModel->createBanner($banner)) {
+                        echo ('title: ' . $banner->banner_title .
+                            '<br>body: ' . $banner->banner_body); return;
+                    } else {
+                        exit('Error updating banner.');
+                    }
                 break;
                 case 'events':
                     echo ('HERE'); return;
