@@ -15,7 +15,6 @@ class jcaController extends controller {
         if (isset($_GET['page'])) {
             $page = (object)['page_name' => strtolower($this->get('page', 'a', 99))];
         } else {
-            define('JCADEFAULTPAGE', 'imnew');
             $page = (object)['page_name' => JCADEFAULTPAGE];
         }
         $this->jcaView->simple($this->jcaModel->readPage($page));
@@ -34,6 +33,9 @@ class jcaController extends controller {
     // special pages
     public function events()
     {
+        $templates['top'] = ['headtop', 'headevents', 'headbot', 'eventstop'];
+        $templates['loop'] = 'event';
+        $templates['bottom'] = ['eventsbot', 'footer'];
         $events = $this->jcaModel->readEvents();
         return $this->jcaView->events($events);
     }
@@ -41,6 +43,9 @@ class jcaController extends controller {
     // special pages
     public function sermons()
     {
+        $templates['top'] = ['headtop', 'headsermons', 'headbot', 'sermonstop'];
+        $templates['loop'] = 'sermon';
+        $templates['bottom'] = ['sermonsbot', 'footer'];
         $sermons = $this->jcaModel->readSermons();
         return $this->jcaView->sermons($sermons);
     }
@@ -56,10 +61,33 @@ class jcaController extends controller {
         if (!$this->userController->check()) {
             $this->flashMessage('Please log in to access this page.');
             $this->redirect('user/login', false, URL);
-        } // else
-        // banner
-        // events
-        // sermons
+        }
+        if (isset($_POST['edit'])) {
+            $form = $this->post('edit', 'a', 32);
+            if (in_array($form, ['banner', 'events', 'sermons', 'forms'])) {
+                $this->jcaView->loadTemplate('jca/edit/' . $form);
+                return $this->jcaView->display(false);
+            } else {
+                exit('Invalid edit function.');
+            }
+        } else if (isset($_POST['function'])) {
+            switch ($this->post('function', 'a', 32)) {
+                case 'banner':
+                    echo ('HERE'); return;
+                break;
+                case 'events':
+                    echo ('HERE'); return;
+                break;
+                case 'sermons':
+                    echo ('HERE'); return;
+                break;
+                case 'forms':
+                    echo ('HERE'); return;
+                break;
+                default: exit('Invalid edit function.');
+            }
+        }
+        return $this->jcaView->edit();
     }
 
 }

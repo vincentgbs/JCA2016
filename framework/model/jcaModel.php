@@ -51,5 +51,25 @@ class jcaModel extends cmsModel {
         return $this->execute($q);
     }
 
+    public function createBanner($banner)
+    {
+        //
+    }
+
+    public function readBanner($banner)
+    {
+        //
+    }
+
+    public function updateBanner($update, $banner)
+    {
+        //
+    }
+
+    public function deleteBanner($banner)
+    {
+        //
+    }
+
 }
 ?>

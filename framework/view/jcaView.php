@@ -7,7 +7,9 @@ class jcaView extends view {
     {
         foreach ($page as $html) {
             if (is_file(FILE . 'html/cache/html/' . $html->html_template . '.html')) {
-                $this->jcaView->body .= file_get_contents(FILE . 'html/cache/html/' . $html->html_template . '.html');
+                $html .= file_get_contents(FILE . 'html/cache/html/' . $html->html_template . '.html');
+                $html = str_replace("{{{@url}}}", DOMAIN, $html);
+                $this->body .= $html;
             }
         }
         return $this->display(false);
@@ -35,6 +37,12 @@ class jcaView extends view {
                 $this->body .= file_get_contents($base . $template . '.html');
             }
         }
+        $this->display();
+    }
+
+    public function edit()
+    {
+        $this->loadTemplate('jca/edit');
         $this->display();
     }
 
