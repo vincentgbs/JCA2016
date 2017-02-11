@@ -23,6 +23,7 @@ class jcaController extends controller {
     // special pages
     public function index()
     {
+        $this->bannerCheck();
         $templates['top'] = ['headtop', 'headindex', 'headbot', 'indextop'];
         $templates['loop'] = 'announcement';
         $templates['bottom'] = ['indexbot', 'footer'];
@@ -103,6 +104,23 @@ class jcaController extends controller {
             }
         }
         return $this->jcaView->edit();
+    }
+
+    private function bannerCheck()
+    {
+        $banner = $this->jcaModel->readBanner(true);
+        if (isset($banner[0], $banner[0]->banner_title, $banner[0]->banner_body)) {
+            if (is_file(FILE . 'html/cache/html/emergencybanner.html')) {
+                $html = file_get_contents(FILE . 'html/cache/html/emergencybanner.html');
+                $html = str_replace("{{{@banner_title}}}", $banner[0]->banner_title, $html);
+                $html = str_replace("{{{@banner_body}}}", $banner[0]->banner_body, $html);
+                $this->jcaView->body .= $html;
+            } else {
+                $this->jcaView->body .= '<p>' . $banner[0]->banner_title
+                    . '<br>' . $banner[0]->banner_body . '</p>';
+            }
+            return true;
+        } // else { return NULL; }
     }
 
 }

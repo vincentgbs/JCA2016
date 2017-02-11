@@ -67,7 +67,7 @@ class jcaModel extends cmsModel {
         return $this->execute($q);
     }
 
-    public function readBanner($current=true)
+    public function readBanner($current=false)
     {
         $q = 'SELECT * FROM `jca_ls_banner`';
         if ($current) {
@@ -78,8 +78,7 @@ class jcaModel extends cmsModel {
 
     public function deleteBanner()
     {
-        $q = "DELETE FROM `jca_ls_banner` WHERE `banner_id`=1;";
-        return $this->execute($q);
+        return $this->execute('DELETE FROM `jca_ls_banner` WHERE `banner_id`=1;');
     }
 
     public function createSermon()
