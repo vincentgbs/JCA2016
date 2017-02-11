@@ -23,7 +23,7 @@ class jcaModel extends cmsModel {
             DATE_FORMAT(`event_date`, \'%b %d, %Y\') as `abbreviation_date`
             FROM jca_ls_events';
         if ($current) {
-            $q .= " WHERE `event_date` >= now() - INTERVAL 1 DAY";
+            $q .= " WHERE `event_date` >= NOW() - INTERVAL 1 DAY";
         }
         if ($limit) {
             $q .= " LIMIT {$limit}";
@@ -53,24 +53,33 @@ class jcaModel extends cmsModel {
 
     public function createBanner($banner)
     {
-        $q = "INSERT INTO `jca_ls_banner` (`banner_title`, `banner_body`, `commencement`, `expiration`)
-            VALUES ({$this->wrap($banner->banner_title)}, {$this->wrap($banner->banner_body)}, {$this->wrap($banner->commencement)}, {$this->wrap($banner->expiration)});";
+        $q = "INSERT INTO `jca_ls_banner`
+            (`banner_id`, `banner_title`, `banner_body`, `commencement`, `expiration`)
+            VALUES (1, {$this->wrap($banner->banner_title)},
+            {$this->wrap($banner->banner_body)},
+            {$this->wrap($banner->commencement)},
+            {$this->wrap($banner->expiration)})
+            ON DUPLICATE KEY UPDATE
+            `banner_title`={$this->wrap($banner->banner_title)},
+            `banner_body`={$this->wrap($banner->banner_body)},
+            `commencement`={$this->wrap($banner->commencement)},
+            `expiration`={$this->wrap($banner->expiration)};";
         return $this->execute($q);
     }
 
-    public function readBanner($banner)
+    public function readBanner($current=true)
     {
-        //
-    }
-
-    public function updateBanner($update, $banner)
-    {
-        //
+        $q = 'SELECT * FROM `jca_ls_banner`';
+        if ($current) {
+            $q .= ' WHERE `commencement` <= NOW() AND `expiration` >= NOW();';
+        }
+        return $this->select($q);
     }
 
     public function deleteBanner($banner)
     {
-        //
+        $q = "DELETE FROM `jca_ls_banner` WHERE `banner_id`=1;";
+        return $this->execute($q);
     }
 
 }

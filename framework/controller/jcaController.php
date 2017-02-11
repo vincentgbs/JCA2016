@@ -65,7 +65,9 @@ class jcaController extends controller {
         if (isset($_POST['edit'])) {
             $form = $this->post('edit', 'a', 32);
             if (in_array($form, ['banner', 'events', 'sermons', 'forms'])) {
-                $this->jcaView->loadTemplate('jca/edit/' . $form);
+                $function = 'read' . ucfirst($form);
+                $data = $this->jcaModel->$function();
+                $this->jcaView->loadTemplate('jca/edit/' . $form, $data);
                 return $this->jcaView->display(false);
             } else {
                 exit('Invalid edit function.');
