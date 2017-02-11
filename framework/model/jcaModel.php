@@ -53,7 +53,9 @@ class jcaModel extends cmsModel {
 
     public function createBanner($banner)
     {
-        //
+        $q = "INSERT INTO `jca_ls_banner` (`banner_title`, `banner_body`, `commencement`, `expiration`)
+            VALUES ({$this->wrap($banner->banner_title)}, {$this->wrap($banner->banner_body)}, {$this->wrap($banner->commencement)}, {$this->wrap($banner->expiration)});";
+        return $this->execute($q);
     }
 
     public function readBanner($banner)
