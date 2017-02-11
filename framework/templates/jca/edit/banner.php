@@ -29,10 +29,13 @@
 <script>
 $(document).ready(function(){
     $("#update_banner_button").on('click', function(){
-        var banner_title = $("#banner_title").val();
         var commencement = $("#commencement").val();
         var expiration = $("#expiration").val();
+        var banner_title = $("#banner_title").val();
         var banner_body = $("#banner_body").val();
+        if (banner_title == '' || banner_body == '') {
+            return flashMessage('Missing banner title and/or body');
+        }
         $.ajax({
             url: "?url=jca/edit",
             type: "POST",

@@ -17,6 +17,7 @@ class jcaController extends controller {
         } else {
             $page = (object)['page_name' => JCADEFAULTPAGE];
         }
+        $this->bannerCheck();
         $this->jcaView->simple($this->jcaModel->readPage($page));
     }
 
@@ -34,6 +35,7 @@ class jcaController extends controller {
     // special pages
     public function events()
     {
+        $this->bannerCheck();
         $templates['top'] = ['headtop', 'headevents', 'headbot', 'eventstop'];
         $templates['loop'] = 'event';
         $templates['bottom'] = ['eventsbot', 'footer'];
