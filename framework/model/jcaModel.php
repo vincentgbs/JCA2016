@@ -14,7 +14,7 @@ class jcaModel extends cmsModel {
         return $this->execute($q);
     }
 
-    public function readEvents($current=true, $limit=false)
+    public function readEvents($current=false, $limit=false)
     {
         $q = 'SELECT *,
             DATE_FORMAT(`event_date`, \'%M %d, %Y %h:%i %p\') as `full_date_time`,
