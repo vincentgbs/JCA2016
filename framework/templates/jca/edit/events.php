@@ -10,7 +10,7 @@
 </style>
 
 <div class="row col-md-12">
-    <br>Date: <input type="text" value="<?php echo date('Y-m-d', strtotime("+2 weeks")); ?>" id="event_date">
+    <br>Date: <input type="text" value="<?php echo date('Y-m-d', strtotime("+2 weeks")); ?> 19:30:00" id="event_date">
     Image: <input type="file" id="event_image">
     <br>Title: <input type="text" id="event_title" maxlength="255">
     <br>Body: <textarea id="event_body" maxlength="2047"></textarea>
@@ -27,16 +27,18 @@
                     <th>Body</th>
                     <th>Date</th>
                     <th>Delete</th>
+                    <th>Update</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                     foreach ($data as $event) {
-                        echo "<tr><td><img src='data:image/jpg;base64,{$event->event_image}'/></td>";
-                        echo '<td>' . $event->event_title . '</td>';
-                        echo '<td>' . $event->event_body . '</td>';
-                        echo '<td>' . $event->event_date . '</td>';
-                        echo "<td><button class='btn btn-warning delete_event' event_id='{$event->event_id}'>Delete</button></td></tr>";
+                        echo "<tr class='event_row'><td><img src='data:image/jpg;base64,{$event->event_image}'/></td>";
+                        echo "<td><input type='text' class='event_title' value='{$event->event_title}'></td>";
+                        echo "<td><input type='text' class='event_body' value='{$event->event_body}'></td>";
+                        echo "<td><input type='text' class='event_date' value='{$event->event_date}'></td>";
+                        echo "<td><button class='btn btn-warning delete_event' event_id='{$event->event_id}'>Delete</button></td>";
+                        echo "<td><button class='btn update_event' event_id='{$event->event_id}'>Update</button></td></tr>";
                     }
                 ?>
             </tbody>
@@ -70,12 +72,14 @@ $(document).ready(function(){
 
     $(document).on('click', "#create_event_button", function(){
         var file = document.getElementById('event_image').files[0];
-        if (typeof file == 'undefined') { return flashMessage('No file was selected'); }
+        if (typeof file == 'undefined') {
+            // how to handle upload event without image?
+            file = {size: 0, type: 'image/png'};
+        }
         if (file.size >= 5000000) {
             return flashMessage('This image is too large to upload');
         }
         var filetype = file.type;
-        var filename = file.name;
         var event_date = $("#event_date").val();
         var event_title = $("#event_title").val();
         var event_body = $("#event_body").val();
@@ -90,6 +94,29 @@ $(document).ready(function(){
             event_body: event_body
         };
         sendRequest('?url=jca/edit', params, 'event_image', 5000001);
+    });
+
+    $(document).on('click', ".update_event", function(){
+        var row = $(this).closest('tr');
+        var event_id = $(this).attr('event_id');
+        var event_title = row.find('.event_title').val();
+        var event_body = row.find('.event_body').val();
+        var event_date = row.find('.event_date').val();
+        $.ajax({
+            url: "?url=jca/edit",
+            type: "POST",
+            data: {
+                function: 'events',
+                update: 0,
+                event_id: event_id,
+                event_title: event_title,
+                event_body: event_body,
+                event_date: event_date
+            },
+            success: function(response){
+                flashMessage(response);
+            } //  success
+        }); // ajax
     });
 });
 </script>

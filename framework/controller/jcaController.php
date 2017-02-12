@@ -102,16 +102,25 @@ class jcaController extends controller {
                         } else {
                             exit('Error deleting event.');
                         }
+                    } else if (isset($_POST['update'])) {
+                        $event = (object)['event_id' => $this->post('event_id', 'i')];
+                        $update = new stdClass();
+                        $update->event_date = $this->post('event_date', 's', 32, '-: ');
+                        $update->event_title = $this->post('event_title', 'w', 255);
+                        $update->event_body = $this->post('event_body', 'w', 2047);
+                        if ($this->jcaModel->updateEvent($update, $event)) {
+                            echo ('Event updated.'); return;
+                        } else {
+                            exit('Error updating event.');
+                        }
                     }
                     $event = new stdClass();
-                    $event->event_date = $this->post('event_date', 's', 32, '-');
+                    $event->event_date = $this->post('event_date', 's', 32, '-: ');
                     $event->event_title = $this->post('event_title', 'w', 255);
                     $event->event_body = $this->post('event_body', 'w', 2047);
-                    $imgtypes = ['imagepng', 'imagejpeg'];
                     $filetype = $this->post('filetype', 'a', 16);
-                    if (in_array($filetype, $imgtypes)) {
-                        $img = base64_encode(file_get_contents($_FILES['event_image']['tmp_name']));
-                        $event->event_image = $img;
+                    if (in_array($filetype, ['imagepng', 'imagejpeg'])) {
+                        $event->event_image = base64_encode(file_get_contents($_FILES['event_image']['tmp_name']));
                         if ($this->jcaModel->createEvent($event)) {
                             echo ('EVENTS HERE'); return;
                         } else {
