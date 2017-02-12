@@ -131,6 +131,16 @@ class jcaController extends controller {
                     }
                 break;
                 case 'sermons':
+                    if (isset($_POST['delete'])) {
+                        $sermon = (object)['sermon_id' => $this->post('sermon_id', 'i')];
+                        if ($this->jcaModel->deleteSermon($sermon)) {
+                            echo ('Event deleted.'); return;
+                        } else {
+                            exit('Error deleting sermon.');
+                        }
+                    } else if (isset($_POST['update'])) {
+                        exit('HERE');
+                    }
                     echo ('HERE'); return;
                 break;
                 case 'forms':

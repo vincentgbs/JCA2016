@@ -88,7 +88,8 @@ class jcaModel extends cmsModel {
 
     public function readSermons()
     {
-        //
+        $q = "SELECT * FROM `jca_ls_sermons`";
+        return $this->select($q);
     }
 
     public function deleteSermon()

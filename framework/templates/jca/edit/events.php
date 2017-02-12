@@ -73,8 +73,7 @@ $(document).ready(function(){
     $(document).on('click', "#create_event_button", function(){
         var file = document.getElementById('event_image').files[0];
         if (typeof file == 'undefined') {
-            // how to handle upload event without image?
-            file = {size: 0, type: 'image/png'};
+            return flashMessage('No image was selected');
         }
         if (file.size >= 5000000) {
             return flashMessage('This image is too large to upload');
