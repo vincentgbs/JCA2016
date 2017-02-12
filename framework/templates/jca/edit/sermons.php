@@ -45,7 +45,9 @@
 
 <script>
 $(document).ready(function(){
-    $("#event_table").DataTable();
+    $("#event_table").DataTable({
+        "pageLength": 25
+    });
 
     $(document).on('click', ".delete_sermon.btn-danger", function(){
         var row = $(this).closest('tr');

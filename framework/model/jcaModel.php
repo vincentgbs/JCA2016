@@ -81,14 +81,22 @@ class jcaModel extends cmsModel {
         return $this->execute('DELETE FROM `jca_ls_banner` WHERE `banner_id`=1;');
     }
 
-    public function createSermon()
+    public function createSermon($sermon)
     {
-        //
+        $q = "INSERT INTO `jca_ls_sermons` (`sermon_speaker`, `sermon_date`, `sermon_title`, `sermon_event`, `sermon_passage`, `sermon_url`, `sermon_series`)
+        VALUES ({$this->wrap($sermon->sermon_speaker)}, {$this->wrap($sermon->sermon_date)}, {$this->wrap($sermon->sermon_title)}, {$this->wrap($sermon->sermon_event)}, {$this->wrap($sermon->sermon_passage)}, {$this->wrap($sermon->sermon_url)}, {$this->wrap($sermon->sermon_series)});";
+        return $this->execute($q);
     }
 
-    public function readSermons()
+    public function readSermons($order=false, $limit=99)
     {
-        $q = "SELECT * FROM `jca_ls_sermons`";
+        $q = 'SELECT *, DATE_FORMAT(`sermon_date`, \'%b %d, %Y\') as `abbreviation_date` FROM `jca_ls_sermons`';
+        if ($order) {
+            $q .= " ORDER BY {$order}";
+        }
+        if ($limit) {
+            $q .= " LIMIT {$limit};";
+        }
         return $this->select($q);
     }
 
