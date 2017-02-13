@@ -55,13 +55,32 @@ class jcaController extends controller {
 
     public function forms()
     {
+        $form['form_name'] = 'contactus';
         // $form = ['form_name'=>$this->post('form_name', 'a', 99)];
-        $form = ['form_name'=>'contactus']; // TESTING
-
         $form = $this->jcaModel->readForms($form);
         if (isset($form[0])) { $form = $form[0]; }
         else { exit('Invalid form submission.'); }
         if (isset($form->google_spreadsheet_id, $form->google_spreadsheet_range)) {
+            foreach ($_POST as $key => $value) {
+                switch ($key) {
+                    case 'email':
+                        $row['email'] = $this->post('email', 'e', 255);
+                    break;
+                    case 'name':
+                        $row['name'] = $this->post('name', 'w', 99);
+                    break;
+                    case 'group':
+                        $row['group'] = $this->post('group', 'w', 99);
+                    break;
+                    case 'message':
+                        $row['message'] = $this->post('message', 'w', 999);
+                    break;
+                    case 'children':
+                        $row['children'] = $this->post('children', 'w', 255);
+                    break;
+                    default: NULL;
+                }
+            }
             if (isset($form->email_notification) && $form->email_notification != '') {
                 $message = 'A new form was submitted. Please visit:
                     https://docs.google.com/spreadsheets/d/' . $form->google_spreadsheet_id
@@ -73,8 +92,8 @@ class jcaController extends controller {
                 }
             }
             require_once FILE . 'framework/libraries/googleDocsApi.php';
-            // $googleDocsApi = new googleDocsApi();
-            // write entry to google doc
+            $googleDocsApi = new googleDocsApi();
+            // $googleDocsApi->writeToGoogleSpreadsheet($form->google_spreadsheet_id, $form->google_spreadsheet_range, [$row]);
             echo ('Form submitted.');
         }
     }
