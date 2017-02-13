@@ -62,23 +62,28 @@ class jcaController extends controller {
             else { exit('Invalid form submission.'); }
 
             if (isset($form->google_spreadsheet_id, $form->google_spreadsheet_range)) {
-                $row = new stdClass();
+                $response = new stdClass();
                 foreach ($_POST as $key => $value) {
                     switch ($key) {
                         case 'email':
-                            $row->email = $this->post('email', 'e', 255);
+                            $response->email = $this->post('email', 'e', 255);
+                            $google[] = $response->email;
                         break;
                         case 'name':
-                            $row->name = $this->post('name', 'w', 99);
+                            $response->name = $this->post('name', 'w', 99);
+                            $google[] = $response->name;
                         break;
                         case 'group':
-                            $row->group = $this->post('group', 'a', 99);
+                            $response->group = $this->post('group', 'a', 99);
+                            $google[] = $response->group;
                         break;
                         case 'message':
-                            $row->message = $this->post('message', 'w', 999);
+                            $response->message = $this->post('message', 'w', 999);
+                            $google[] = $response->message;
                         break;
                         case 'children':
-                            $row->children = $this->post('children', 'w', 255);
+                            $response->children = $this->post('children', 'w', 255);
+                            $google[] = $response->children;
                         break;
                         default: NULL;
                     }
@@ -93,11 +98,14 @@ class jcaController extends controller {
                         mail($form->email_notification, 'New form submission', $message);
                     }
                 }
-                if (isset($row)) {
-                    // require_once FILE . 'framework/libraries/googleDocsApi.php';
-                    // $googleDocsApi = new googleDocsApi();
-                    // $googleDocsApi->writeToGoogleSpreadsheet($form->google_spreadsheet_id, $form->google_spreadsheet_range, [$row]);
-                    var_dump($form, $row);
+                if (isset($google)) {
+                    require_once FILE . 'framework/libraries/googleDocsApi.php';
+                    $googleDocsApi = new googleDocsApi();
+                    $googleDocsApi->writeToGoogleSpreadsheet($form->google_spreadsheet_id, $form->google_spreadsheet_range, [$google]);
+                }
+                if (isset($response)) {
+                    $response->form_id = $form->form_id;
+                    $this->jcaModel->createResponse($response);
                 }
                 echo ('Form submitted.');
             }
@@ -201,7 +209,7 @@ class jcaController extends controller {
                         $form = (object)['form_id' => $this->post('form_id', 'i')];
                         $update = new stdClass();
                         $update->email_notification = $this->post('email_notification', 'e', 255);
-                        $update->google_spreadsheet_id = $this->post('google_spreadsheet_id', 'a', 255);
+                        $update->google_spreadsheet_id = $this->post('google_spreadsheet_id', 's', 255, '_');
                         $update->google_spreadsheet_range = $this->post('google_spreadsheet_range', 's', 255, '!:');
                         if ($this->jcaModel->updateForm($update, $form)) {
                             echo ('Form updated.'); return;

@@ -146,36 +146,36 @@ class jcaModel extends cmsModel {
         return $this->execute($q);
     }
 
-    // public function createResponse($response)
-    // {
-    //     $q = 'INSERT INTO `jca_ls_responses` (';
-    //     $keys = ''; $values = '';
-    //     foreach ($response as $key => $value) {
-    //         $keys .= "`$key`, ";
-    //         $values .= "{$this->wrap($value)}, ";
-    //     }
-    //     $q .= substr($keys, 0, -2) . ') VALUES (' . substr($values, 0, -2) . ');';
-    //     return $this->execute($q);
-    // }
-    //
-    // public function readResponses($response=false)
-    // {
-    //     $q = 'SELECT * FROM `jca_ls_responses`';
-    //     if ($response) {
-    //         $q .= ' WHERE';
-    //         foreach ($response as $key => $value) {
-    //             $q .= " `$key` = {$this->wrap($value)} AND";
-    //         }
-    //         $q = substr($q, 0, -4) . ';';
-    //     }
-    //     return $this->select($q);
-    // }
-    //
-    // public function deleteResponses($response)
-    // {
-    //     $q = "DELETE FROM `jca_ls_responses` WHERE `response_id`={$response->response_id};";
-    //     return $this->execute($q);
-    // }
+    public function createResponse($response)
+    {
+        $q = 'INSERT INTO `jca_ls_responses` (';
+        $keys = ''; $values = '';
+        foreach ($response as $key => $value) {
+            $keys .= "`$key`, ";
+            $values .= "{$this->wrap($value)}, ";
+        }
+        $q .= substr($keys, 0, -2) . ') VALUES (' . substr($values, 0, -2) . ');';
+        return $this->execute($q);
+    }
+
+    public function readResponses($response=false)
+    {
+        $q = 'SELECT * FROM `jca_ls_responses`';
+        if ($response) {
+            $q .= ' WHERE';
+            foreach ($response as $key => $value) {
+                $q .= " `$key` = {$this->wrap($value)} AND";
+            }
+            $q = substr($q, 0, -4) . ';';
+        }
+        return $this->select($q);
+    }
+
+    public function deleteResponses($response)
+    {
+        $q = "DELETE FROM `jca_ls_responses` WHERE `response_id`={$response->response_id};";
+        return $this->execute($q);
+    }
 
 }
 ?>
