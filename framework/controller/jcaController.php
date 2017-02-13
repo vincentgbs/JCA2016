@@ -55,7 +55,28 @@ class jcaController extends controller {
 
     public function forms()
     {
-        //
+        // $form = ['form_name'=>$this->post('form_name', 'a', 99)];
+        $form = ['form_name'=>'contactus']; // TESTING
+
+        $form = $this->jcaModel->readForms($form);
+        if (isset($form[0])) { $form = $form[0]; }
+        else { exit('Invalid form submission.'); }
+        if (isset($form->google_spreadsheet_id, $form->google_spreadsheet_range)) {
+            if (isset($form->email_notification) && $form->email_notification != '') {
+                $message = 'A new form was submitted. Please visit:
+                    https://docs.google.com/spreadsheets/d/' . $form->google_spreadsheet_id
+                    . ' for more information.';
+                if (DEBUG == 'ON') {
+                    echo ($message);
+                } else if (EMAIL == 'PHP') {
+                    mail($form->email_notification, 'New form submission', $message);
+                }
+            }
+            require_once FILE . 'framework/libraries/googleDocsApi.php';
+            // $googleDocsApi = new googleDocsApi();
+            // write entry to google doc
+            echo ('Form submitted.');
+        }
     }
 
     public function edit()

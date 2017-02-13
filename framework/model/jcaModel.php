@@ -123,9 +123,16 @@ class jcaModel extends cmsModel {
     // public function createForm() { }
     // public function deleteForm() { }
 
-    public function readForms()
+    public function readForms($form=false)
     {
-        $q = 'SELECT * FROM jca_ls_forms;';
+        $q = 'SELECT * FROM jca_ls_forms';
+        if ($form) {
+            $q .= ' WHERE';
+            foreach ($form as $key => $value) {
+                $q .= " `{$key}`={$this->wrap($value)} AND";
+            }
+            $q = substr($q, 0, -4) . ';';
+        }
         return $this->select($q);
     }
 
