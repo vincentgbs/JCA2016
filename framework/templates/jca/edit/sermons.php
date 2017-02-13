@@ -72,7 +72,7 @@
                         echo '<td><button class="btn btn-warning delete_sermon" sermon_id="'
                             . html_entity_decode($sermon->sermon_id) . '">Delete</button></td>';
                         echo '<td><button class="btn update_sermon" sermon_id="'
-                            . html_entity_decode($sermon->sermon_id) . '">Update</button></td></tr>';
+                            . $sermon->sermon_id . '">Update</button></td></tr>';
                     }
                 ?>
             </tbody>

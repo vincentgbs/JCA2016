@@ -88,7 +88,7 @@ class jcaModel extends cmsModel {
         return $this->execute($q);
     }
 
-    public function readSermons($order='`sermon_date` DESC', $limit=99)
+    public function readSermons($order='`sermon_date` DESC', $limit=false)
     {
         $q = 'SELECT *, DATE_FORMAT(`sermon_date`, \'%b %d, %Y\') as `abbreviation_date` FROM `jca_ls_sermons`';
         if ($order) {
@@ -120,14 +120,23 @@ class jcaModel extends cmsModel {
         return $this->execute($q);
     }
 
-    public function createForm()
-    {
-        //
-    }
+    // public function createForm() { }
+    // public function deleteForm() { }
 
     public function readForms()
     {
-        //
+        $q = 'SELECT * FROM jca_ls_forms;';
+        return $this->select($q);
+    }
+
+    public function updateForm($update, $form)
+    {
+        $q = "UPDATE `jca_ls_forms` SET ";
+        foreach ($update as $key => $value) {
+            $q .= " `$key` = {$this->wrap($value)},";
+        }
+        $q = substr($q, 0, -1) . " WHERE `form_id`={$form->form_id};";
+        return $this->execute($q);
     }
 
 }

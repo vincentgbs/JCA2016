@@ -73,10 +73,10 @@ $(document).ready(function(){
     $(document).on('click', "#create_event_button", function(){
         var file = document.getElementById('event_image').files[0];
         if (typeof file == 'undefined') {
-            return flashMessage('No image was selected');
+            return flashMessage('No image was selected.');
         }
-        if (file.size >= 5000000) {
-            return flashMessage('This image is too large to upload');
+        if (file.size >= 4999999) {
+            return flashMessage('This image is too large to upload (max 5mb).');
         }
         var filetype = file.type;
         var event_date = $("#event_date").val();
@@ -92,7 +92,7 @@ $(document).ready(function(){
             event_title: event_title,
             event_body: event_body
         };
-        sendRequest('?url=jca/edit', params, 'event_image', 5000001);
+        sendRequest('?url=jca/edit', params, 'event_image', 5000000);
     });
 
     $(document).on('click', ".update_event", function(){
