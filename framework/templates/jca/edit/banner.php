@@ -34,7 +34,7 @@ $(document).ready(function(){
         var banner_title = $("#banner_title").val();
         var banner_body = $("#banner_body").val();
         if (banner_title == '' || banner_body == '') {
-            return flashMessage('Missing banner title and/or body');
+            return flashMessage('Missing banner title and/or body.');
         }
         $.ajax({
             url: "?url=jca/edit",

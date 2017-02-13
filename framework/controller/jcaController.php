@@ -135,12 +135,18 @@ class jcaController extends controller {
                     } else if (isset($_POST['update'])) {
                         $sermon = (object)['sermon_id' => $this->post('sermon_id', 'i')];
                         $update = $this->sermonFromPost();
-                        var_dump($update);
-                        echo ('Sermon updated.'); return;
+                        if ($this->jcaModel->updateSermon($update, $sermon)) {
+                            echo ('Sermon updated.'); return;
+                        } else {
+                            exit('Error updating sermon.');
+                        }
                     }
                     $sermon = $this->sermonFromPost();
-                    var_dump($sermon);
-                    echo ('Sermon created.'); return;
+                    if ($this->jcaModel->createSermon($sermon)) {
+                        echo ('Sermon created.'); return;
+                    } else {
+                        exit('Error creating sermon.');
+                    }
                 break;
                 case 'forms':
                     echo ('HERE'); return;

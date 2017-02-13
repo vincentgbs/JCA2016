@@ -100,6 +100,16 @@ class jcaModel extends cmsModel {
         return $this->select($q);
     }
 
+    public function updateSermon($update, $sermon)
+    {
+        $q = 'UPDATE `jca_ls_sermons` SET ';
+        foreach ($update as $key => $value) {
+            $q .= " `$key` = {$this->wrap($value)},";
+        }
+        $q = substr($q, 0, -1) . " WHERE `sermon_id`={$sermon->sermon_id};";
+        return $this->execute($q);
+    }
+
     public function deleteSermon($sermon)
     {
         $q = 'DELETE FROM `jca_ls_sermons` WHERE';
