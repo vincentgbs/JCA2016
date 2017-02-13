@@ -55,46 +55,51 @@ class jcaController extends controller {
 
     public function forms()
     {
-        $form['form_name'] = 'contactus';
-        // $form = ['form_name'=>$this->post('form_name', 'a', 99)];
-        $form = $this->jcaModel->readForms($form);
-        if (isset($form[0])) { $form = $form[0]; }
-        else { exit('Invalid form submission.'); }
-        if (isset($form->google_spreadsheet_id, $form->google_spreadsheet_range)) {
-            foreach ($_POST as $key => $value) {
-                switch ($key) {
-                    case 'email':
-                        $row['email'] = $this->post('email', 'e', 255);
-                    break;
-                    case 'name':
-                        $row['name'] = $this->post('name', 'w', 99);
-                    break;
-                    case 'group':
-                        $row['group'] = $this->post('group', 'w', 99);
-                    break;
-                    case 'message':
-                        $row['message'] = $this->post('message', 'w', 999);
-                    break;
-                    case 'children':
-                        $row['children'] = $this->post('children', 'w', 255);
-                    break;
-                    default: NULL;
+        if (isset($_POST['form_name'])) {
+            $form = ['form_name'=>$this->post('form_name', 'a', 99)];
+            $form = $this->jcaModel->readForms($form);
+            if (isset($form[0])) { $form = $form[0]; }
+            else { exit('Invalid form submission.'); }
+
+            if (isset($form->google_spreadsheet_id, $form->google_spreadsheet_range)) {
+                $row = new stdClass();
+                foreach ($_POST as $key => $value) {
+                    switch ($key) {
+                        case 'email':
+                            $row->email = $this->post('email', 'e', 255);
+                        break;
+                        case 'name':
+                            $row->name = $this->post('name', 'w', 99);
+                        break;
+                        case 'group':
+                            $row->group = $this->post('group', 'a', 99);
+                        break;
+                        case 'message':
+                            $row->message = $this->post('message', 'w', 999);
+                        break;
+                        case 'children':
+                            $row->children = $this->post('children', 'w', 255);
+                        break;
+                        default: NULL;
+                    }
                 }
-            }
-            if (isset($form->email_notification) && $form->email_notification != '') {
-                $message = 'A new form was submitted. Please visit:
-                    https://docs.google.com/spreadsheets/d/' . $form->google_spreadsheet_id
-                    . ' for more information.';
-                if (DEBUG == 'ON') {
-                    echo ($message);
-                } else if (EMAIL == 'PHP') {
-                    mail($form->email_notification, 'New form submission', $message);
+                if (isset($form->email_notification) && $form->email_notification != '') {
+                    $message = 'A new form was submitted. Please visit:
+                        https://docs.google.com/spreadsheets/d/' . $form->google_spreadsheet_id
+                        . ' for more information.';
+                    if (DEBUG == 'ON') {
+                        echo ($message);
+                    } else if (EMAIL == 'PHP') {
+                        mail($form->email_notification, 'New form submission', $message);
+                    }
                 }
+                if (isset($row)) {
+                    require_once FILE . 'framework/libraries/googleDocsApi.php';
+                    $googleDocsApi = new googleDocsApi();
+                    $googleDocsApi->writeToGoogleSpreadsheet($form->google_spreadsheet_id, $form->google_spreadsheet_range, [$row]);
+                }
+                echo ('Form submitted.');
             }
-            require_once FILE . 'framework/libraries/googleDocsApi.php';
-            $googleDocsApi = new googleDocsApi();
-            // $googleDocsApi->writeToGoogleSpreadsheet($form->google_spreadsheet_id, $form->google_spreadsheet_range, [$row]);
-            echo ('Form submitted.');
         }
     }
 
