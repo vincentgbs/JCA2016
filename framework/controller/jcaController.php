@@ -149,7 +149,21 @@ class jcaController extends controller {
                     }
                 break;
                 case 'forms':
-                    echo ('HERE'); return;
+                    if (isset($_POST['delete'])) {
+                        exit('Currently unable to delete forms.');
+                    } else if (isset($_POST['update'])) {
+                        $form = (object)['form_id' => $this->post('form_id', 'i')];
+                        $update = new stdClass();
+                        $update->email_notification = $this->post('email_notification', 'e', 255);
+                        $update->google_spreadsheet_id = $this->post('google_spreadsheet_id', 'a', 255);
+                        $update->google_spreadsheet_range = $this->post('google_spreadsheet_range', 's', 255, '!:');
+                        if ($this->jcaModel->updateForm($update, $form)) {
+                            echo ('Form updated.'); return;
+                        } else {
+                            exit('Error updating form.');
+                        }
+                    }
+                    exit('Currently unable to create forms.');
                 break;
                 default: exit('Invalid edit function.');
             }
