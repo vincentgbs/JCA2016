@@ -56,19 +56,19 @@
                 <?php
                     foreach ($data as $sermon) {
                         echo '<tr class="sermon_row"><td><input type="text" class="sermon_speaker" value="'
-                            . html_entity_decode($sermon->sermon_speaker) . '"></td>';
+                            . html_entity_decode($sermon->sermon_speaker) . '" readonly></td>';
                         echo '<td><input type="text" class="sermon_date" value="'
-                            . html_entity_decode($sermon->sermon_date) . '"></td>';
+                            . html_entity_decode($sermon->sermon_date) . '" readonly></td>';
                         echo '<td><input type="text" class="sermon_title" value="'
-                            . html_entity_decode($sermon->sermon_title) . '"></td>';
+                            . html_entity_decode($sermon->sermon_title) . '" readonly></td>';
                         echo '<td><input type="text" class="sermon_event" value="'
-                            . html_entity_decode($sermon->sermon_event) . '"></td>';
+                            . html_entity_decode($sermon->sermon_event) . '" readonly></td>';
                         echo '<td><input type="text" class="sermon_passage" value="'
-                            . html_entity_decode($sermon->sermon_passage) . '"></td>';
+                            . html_entity_decode($sermon->sermon_passage) . '" readonly></td>';
                         echo '<td><input type="text" class="sermon_url" value="'
-                            . html_entity_decode($sermon->sermon_url) . '"></td>';
+                            . html_entity_decode($sermon->sermon_url) . '" readonly></td>';
                         echo '<td><input type="text" class="sermon_series" value="'
-                            . html_entity_decode($sermon->sermon_series) . '"></td>';
+                            . html_entity_decode($sermon->sermon_series) . '" readonly></td>';
                         echo '<td><button class="btn btn-warning delete_sermon" sermon_id="'
                             . html_entity_decode($sermon->sermon_id) . '">Delete</button></td>';
                         echo '<td><button class="btn update_sermon" sermon_id="'
@@ -84,6 +84,10 @@
 $(document).ready(function(){
     $("#event_table").DataTable({
         "pageLength": 25
+    });
+
+    $(document).on('dblclick', ".sermon_speaker, .sermon_date, .sermon_title, .sermon_event, .sermon_passage, .sermon_url, .sermon_series", function() {
+        $(this).removeAttr('readonly');
     });
 
     $("#sermon_speaker").on('change', function(){
