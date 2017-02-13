@@ -104,25 +104,19 @@ class jcaController extends controller {
                         }
                     } else if (isset($_POST['update'])) {
                         $event = (object)['event_id' => $this->post('event_id', 'i')];
-                        $update = new stdClass();
-                        $update->event_date = $this->post('event_date', 's', 32, '-: ');
-                        $update->event_title = $this->post('event_title', 'w', 255);
-                        $update->event_body = $this->post('event_body', 'w', 2047);
+                        $update = $this->eventFromPost();
                         if ($this->jcaModel->updateEvent($update, $event)) {
                             echo ('Event updated.'); return;
                         } else {
                             exit('Error updating event.');
                         }
                     }
-                    $event = new stdClass();
-                    $event->event_date = $this->post('event_date', 's', 32, '-: ');
-                    $event->event_title = $this->post('event_title', 'w', 255);
-                    $event->event_body = $this->post('event_body', 'w', 2047);
+                    $event = $this->eventFromPost();
                     $filetype = $this->post('filetype', 'a', 16);
                     if (in_array($filetype, ['imagepng', 'imagejpeg'])) {
                         $event->event_image = base64_encode(file_get_contents($_FILES['event_image']['tmp_name']));
                         if ($this->jcaModel->createEvent($event)) {
-                            echo ('EVENTS HERE'); return;
+                            echo ('Event created.'); return;
                         } else {
                             exit('Error creating event.');
                         }
@@ -134,14 +128,19 @@ class jcaController extends controller {
                     if (isset($_POST['delete'])) {
                         $sermon = (object)['sermon_id' => $this->post('sermon_id', 'i')];
                         if ($this->jcaModel->deleteSermon($sermon)) {
-                            echo ('Event deleted.'); return;
+                            echo ('Sermon deleted.'); return;
                         } else {
                             exit('Error deleting sermon.');
                         }
                     } else if (isset($_POST['update'])) {
-                        exit('HERE');
+                        $sermon = (object)['sermon_id' => $this->post('sermon_id', 'i')];
+                        $update = $this->sermonFromPost();
+                        var_dump($update);
+                        echo ('Sermon updated.'); return;
                     }
-                    echo ('HERE'); return;
+                    $sermon = $this->sermonFromPost();
+                    var_dump($sermon);
+                    echo ('Sermon created.'); return;
                 break;
                 case 'forms':
                     echo ('HERE'); return;
@@ -150,6 +149,28 @@ class jcaController extends controller {
             }
         }
         return $this->jcaView->edit();
+    }
+
+    private function eventFromPost()
+    {
+        $event = new stdClass();
+        $event->event_date = $this->post('event_date', 's', 32, '-: ');
+        $event->event_title = $this->post('event_title', 'w', 255);
+        $event->event_body = $this->post('event_body', 'w', 2047);
+        return $event;
+    }
+
+    private function sermonFromPost()
+    {
+        $sermon = new stdClass();
+        $sermon->sermon_speaker = $this->post('sermon_speaker', NULL, 255);
+        $sermon->sermon_date = $this->post('sermon_date', NULL, 255, '-: ');
+        $sermon->sermon_title = $this->post('sermon_title', NULL, 255);
+        $sermon->sermon_event = $this->post('sermon_event', NULL, 255);
+        $sermon->sermon_passage = $this->post('sermon_passage', NULL, 255);
+        $sermon->sermon_url = $this->post('sermon_url', 'r', 99);
+        $sermon->sermon_series = $this->post('sermon_series', NULL, 255);
+        return $sermon;
     }
 
     private function bannerCheck()
@@ -161,7 +182,7 @@ class jcaController extends controller {
                 $html = str_replace("{{{@banner_title}}}", $banner[0]->banner_title, $html);
                 $html = str_replace("{{{@banner_body}}}", $banner[0]->banner_body, $html);
                 $this->jcaView->body .= $html;
-            } else {
+            } else { // default banner display
                 $this->jcaView->body .= '<p>' . $banner[0]->banner_title
                     . '<br>' . $banner[0]->banner_body . '</p>';
             }
