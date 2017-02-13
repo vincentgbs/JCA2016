@@ -37,7 +37,7 @@
 </div><!-- </div class="row col-md-12"> -->
 
 <div class="row col-md-12">
-    <pre id="event_container">
+    <pre id="event_container" title="Double click to edit a field.">
         <table id="event_table">
             <thead>
                 <tr>
