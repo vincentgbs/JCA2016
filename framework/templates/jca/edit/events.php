@@ -18,7 +18,7 @@
 </div><!-- </div class="row col-md-12"> -->
 
 <div class="row col-md-12">
-    <pre id="event_container">
+    <pre id="event_container" title="Double click to edit a field.">
         <table id="event_table">
             <thead>
                 <tr>
@@ -34,9 +34,9 @@
                 <?php
                     foreach ($data as $event) {
                         echo "<tr class='event_row'><td><img src='data:image/jpg;base64,{$event->event_image}'/></td>";
-                        echo "<td><input type='text' class='event_title' value='{$event->event_title}'></td>";
-                        echo "<td><input type='text' class='event_body' value='{$event->event_body}'></td>";
-                        echo "<td><input type='text' class='event_date' value='{$event->event_date}'></td>";
+                        echo "<td><input type='text' class='event_title' value='{$event->event_title}' readonly></td>";
+                        echo "<td><input type='text' class='event_body' value='{$event->event_body}' readonly></td>";
+                        echo "<td><input type='text' class='event_date' value='{$event->event_date}' readonly></td>";
                         echo "<td><button class='btn btn-warning delete_event' event_id='{$event->event_id}'>Delete</button></td>";
                         echo "<td><button class='btn update_event' event_id='{$event->event_id}'>Update</button></td></tr>";
                     }
@@ -49,6 +49,10 @@
 <script>
 $(document).ready(function(){
     $("#event_table").DataTable();
+
+    $(document).on('dblclick', ".event_title, .event_body, .event_date", function() {
+        $(this).removeAttr('readonly');
+    });
 
     $(document).on('click', ".delete_event.btn-danger", function(){
         var row = $(this).closest('tr');
