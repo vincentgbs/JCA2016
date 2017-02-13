@@ -94,9 +94,10 @@ class jcaController extends controller {
                     }
                 }
                 if (isset($row)) {
-                    require_once FILE . 'framework/libraries/googleDocsApi.php';
-                    $googleDocsApi = new googleDocsApi();
-                    $googleDocsApi->writeToGoogleSpreadsheet($form->google_spreadsheet_id, $form->google_spreadsheet_range, [$row]);
+                    // require_once FILE . 'framework/libraries/googleDocsApi.php';
+                    // $googleDocsApi = new googleDocsApi();
+                    // $googleDocsApi->writeToGoogleSpreadsheet($form->google_spreadsheet_id, $form->google_spreadsheet_range, [$row]);
+                    var_dump($form, $row);
                 }
                 echo ('Form submitted.');
             }

@@ -37,8 +37,17 @@
 </div><!-- </div class="row col-md-12"> -->
 <div class="row col-md-12">
     <div class="row col-md-12">
-        Form Creator
-        <button class="btn btn-default" id="add_input_button">Add Input</button>
+        Form Name <input type="text" id="create_form_name">
+        <button class="btn btn-default" id="create_form">Create form</button>
+        <select id="add_input_selector">
+            <option disabled selected> - choose - </option>
+            <option value="name">name</option>
+            <option value="email">email</option>
+            <option value="message">message</option>
+            <option value="radiobutton">radiobutton</option>
+        </select>
+        <button class="btn btn-default" id="add_input_button" disabled>Add Input</button>
+        <button class="btn btn-default" id="close_form" disabled>Close form</button>
     </div><!-- </div class="row col-md-12"> -->
     <div class="col-md-6">
         Html
@@ -54,6 +63,45 @@
 $(document).ready(function(){
     $(".google_spreadsheet_id, .form_name").keyup(function(e){
         limitInput(this, 'alphanumeric');
+    });
+
+    $("#add_input_button").on('click', function(){
+        var value = $("#add_input_selector").val();
+        if (value) {
+            if (create_form[value]) {
+                return flashMessage('This form already has this input.');
+            } // else
+            create_form[value] = value;
+            var html = '\n  <input type="text" class="'+value+'">';
+            var js = '\n  var '+value+' = form.find(".'+value+'").val();';
+            $("#form_creator_html").val($("#form_creator_html").val() + html);
+            $("#form_creator_js").val($("#form_creator_js").val() + js);
+        }
+    });
+
+    $("#create_form").on('click', function(){
+        var form_name = $("#create_form_name").val();
+        if (form_name != '') {
+            window.create_form = {'form_name': form_name};
+            $("#form_creator_html").val('<div class="form_container">');
+            $("#form_creator_js").val('$(".form_submit").on("click", function(){'
+                +'\nvar form = $(this).closest(".form_container");');
+            $("#add_input_button, #close_form").removeAttr('disabled');
+        } else {
+            flashMessage('Missing form name.');
+        }
+    });
+    $("#close_form").on('click', function(){
+        $("#form_creator_html").val($("#form_creator_html").val()
+            + '\n<button class="form_submit">Submit</button></div>');
+        var js = $("#form_creator_js").val()+'\n  $.ajax({\n    url:"?url=jca/forms", \n    type:"POST", \n    data:{';
+            $.each(create_form, function( index, value ) {
+                js += '\n      ' + index + ': "' + value + '",';
+            });
+            js += '\n    }, \n    success: function(response){'
+                +'\n      console.debug(response)}\n    });\n  });';
+        $("#form_creator_js").val(js);
+        $("#add_input_button").attr('disabled', 'disabled');
     });
 
     $(document).on('click', ".update_form.btn-danger", function(){
