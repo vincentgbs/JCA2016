@@ -96,7 +96,6 @@ $(document).ready(function(){
             $("#sermon_speaker_container").html(html);
         }
     });
-
     $("#sermon_event").on('change', function(){
         if ($(this).val() == 'other') {
             var html = '<input type="text" id="sermon_event" maxlength="255">';

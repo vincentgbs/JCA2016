@@ -28,6 +28,10 @@
 
 <script>
 $(document).ready(function(){
+    $("#banner_title").keyup(function(e){
+        limitInput(this, /[^A-z0-9 ]/g);
+    });
+
     $("#update_banner_button").on('click', function(){
         var commencement = $("#commencement").val();
         var expiration = $("#expiration").val();

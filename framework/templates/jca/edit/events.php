@@ -50,6 +50,10 @@
 $(document).ready(function(){
     $("#event_table").DataTable();
 
+    $(".event_title, .event_body").keyup(function(e){
+        limitInput(this, /[^A-z0-9 ]/g);
+    });
+
     $(document).on('dblclick', ".event_title, .event_body, .event_date", function() {
         $(this).removeAttr('readonly');
     });
