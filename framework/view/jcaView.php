@@ -5,9 +5,9 @@ class jcaView extends view {
 
     public function simple($page)
     {
-        foreach ($page as $html) {
-            if (is_file(FILE . 'html/cache/html/' . $html->html_template . '.html')) {
-                $html .= file_get_contents(FILE . 'html/cache/html/' . $html->html_template . '.html');
+        foreach ($page as $template) {
+            if (is_file(FILE . 'html/cache/html/' . $template->html_template . '.html')) {
+                $html = file_get_contents(FILE . 'html/cache/html/' . $template->html_template . '.html');
                 $html = str_replace("{{{@url}}}", DOMAIN, $html);
                 $this->body .= $html;
             }
