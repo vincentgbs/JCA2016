@@ -237,6 +237,8 @@ class cmsController extends controller {
         }
         if (is_file($filename)) {
             $resource->resource = file_get_contents($filename);
+            $resource->resource = str_replace('<', '&lt;', $resource->resource);
+            $resource->resource = str_replace('>', '&gt;', $resource->resource);
         } else {
             $resource->resource = '';
         }
