@@ -40,7 +40,7 @@ class jcaController extends controller {
         $templates['loop'] = 'event';
         $templates['bottom'] = ['eventsbot', 'footer'];
         $events = $this->jcaModel->readEvents();
-        return $this->jcaView->events($events);
+        return $this->jcaView->oneloop($templates, $events);
     }
 
     // special pages
@@ -50,7 +50,7 @@ class jcaController extends controller {
         $templates['loop'] = 'sermon';
         $templates['bottom'] = ['sermonsbot', 'footer'];
         $sermons = $this->jcaModel->readSermons();
-        return $this->jcaView->sermons($sermons);
+        return $this->jcaView->oneloop($templates, $sermons);
     }
 
     public function forms()
