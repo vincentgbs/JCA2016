@@ -5,11 +5,11 @@ html/cache/css/*
 html/cache/js/*
 html/cache/img/*
 html/cache/html/*
-html/cache/audio/*
+html/cache/aud/*
 html/cache/files/*
 !html/cache/css/.gitkeep
 !html/cache/js/.gitkeep
 !html/cache/img/.gitkeep
 !html/cache/html/.gitkeep
-!html/cache/audio/.gitkeep
+!html/cache/aud/.gitkeep
 !html/cache/files/.gitkeep
