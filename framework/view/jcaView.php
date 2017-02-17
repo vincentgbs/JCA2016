@@ -27,7 +27,7 @@ class jcaView extends view {
             foreach ($data as $datum) {
                 $html = file_get_contents($base . $templates['loop'] . '.html');
                 foreach ($datum as $key => $value) {
-                    $html = str_replace("{{{@data:{$key}}}}", $value, $html);
+                    $html = str_replace("{{{@data:{$key}}}}", html_entity_decode($value), $html);
                 }
                 $this->body .= $html;
             }
