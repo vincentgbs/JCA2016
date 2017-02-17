@@ -21,7 +21,7 @@
             <tbody>
                 <?php foreach ($data as $form) {
                     echo '<tr class="form_row"><td><input type="text" class="form_name" value="'
-                        . html_entity_decode($form->form_name) . '" maxlength="99" disabled></td>';
+                        . html_entity_decode($form->form_name) . '" maxlength="99" readonly></td>';
                     echo '<td><input type="text" class="email_notification" value="'
                         . html_entity_decode($form->email_notification) . '" maxlength="255"></td>';
                     echo '<td><input type="text" class="google_spreadsheet_id" value="'
@@ -65,6 +65,10 @@ $(document).ready(function(){
         limitInput(this, 'alphanumeric');
     });
 
+    $(".form_name").on('click', function(){
+        $("#create_form_name").val($(this).val());
+    });
+
     $("#add_input_button").on('click', function(){
         var value = $("#add_input_selector").val();
         if (value) {
@@ -96,7 +100,11 @@ $(document).ready(function(){
             + '\n<button class="form_submit">Submit</button></div>');
         var js = $("#form_creator_js").val()+'\n  $.ajax({\n    url:"?url=jca/forms", \n    type:"POST", \n    data:{';
             $.each(create_form, function( index, value ) {
-                js += '\n      ' + index + ': "' + value + '",';
+                if (index == 'form_name') {
+                    js += '\n      ' + index + ': "' + value + '",';
+                } else {
+                    js += '\n      ' + index + ': ' + value + ',';
+                }
             });
             js += '\n    }, \n    success: function(response){'
                 +'\n      console.debug(response)}\n    });\n  });';
