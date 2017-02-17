@@ -7,6 +7,9 @@
 #event_image {
     display: inline;
 }
+.event_image {
+    max-height: 250px;
+}
 </style>
 
 <div class="row col-md-12">
@@ -33,10 +36,13 @@
             <tbody>
                 <?php
                     foreach ($data as $event) {
-                        echo "<tr class='event_row'><td><img src='data:image/jpg;base64,{$event->event_image}'/></td>";
-                        echo "<td><input type='text' class='event_title' value='{$event->event_title}' readonly></td>";
-                        echo "<td><input type='text' class='event_body' value='{$event->event_body}' readonly></td>";
-                        echo "<td><input type='text' class='event_date' value='{$event->event_date}' readonly></td>";
+                        echo "<tr class='event_row'><td><img src='data:image/jpg;base64,{$event->event_image}' class='event_image'/></td>";
+                        echo "<td><input type='text' class='event_title' value='"
+                            . html_entity_decode($event->event_title) . "' readonly></td>";
+                        echo "<td><input type='text' class='event_body' value='"
+                            . html_entity_decode($event->event_body) . "' readonly></td>";
+                        echo "<td><input type='text' class='event_date' value='"
+                            . html_entity_decode($event->event_date) . "' readonly></td>";
                         echo "<td><button class='btn btn-warning delete_event' event_id='{$event->event_id}'>Delete</button></td>";
                         echo "<td><button class='btn update_event' event_id='{$event->event_id}'>Update</button></td></tr>";
                     }
