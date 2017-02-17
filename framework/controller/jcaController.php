@@ -95,8 +95,7 @@ class jcaController extends controller {
                     if (DEBUG == 'ON') {
                         echo ($message);
                     } else if (EMAIL == 'PHP') {
-                        $headers = "From: jca.website <jcawebadmin@majikthise.dreamhost.com>";
-                        mail($form->email_notification, 'New form submission', $message, $headers);
+                        mail($form->email_notification, 'New form submission', $message);
                     }
                 }
                 if (isset($google)) {
