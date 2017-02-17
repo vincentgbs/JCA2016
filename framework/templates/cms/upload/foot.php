@@ -52,5 +52,19 @@ $(document).ready(function(){
     $(document).on('change', "#fileToUpload", function(){
         fileSelected();
     });
+
+    $(document).on('click', "#upload_directory_button", function(){
+        var directory = $("#upload_directory")[0].files;
+        $.each(directory, function(index, value){
+            if (value.size < 4999999) {
+                var params = {'filetype': value.type};
+                params['type'] = document.getElementById('type').value;
+                params['name'] = value.name.replace(/(\..{1,6})$/, '');
+                uploadFile('?url=cms/upload', params, 'fileToUpload', 4999999, value, 0, value.size);
+            } else {
+                console.debug('This file is too big to upload.');
+            }
+        }); // each
+    });
 });
 </script>
