@@ -229,6 +229,7 @@ class jcaController extends controller {
     {
         $event = new stdClass();
         $event->event_date = $this->post('event_date', 's', 32, '-: ');
+        if ($event->event_date == '') { $event->event_date = NULL; }
         $event->event_title = $this->post('event_title', 'w', 255);
         $event->event_body = $this->post('event_body', 'w', 2047);
         return $event;
