@@ -28,7 +28,7 @@ class jcaController extends controller {
         $templates['top'] = ['headtop', 'headindex', 'headbot', 'indextop'];
         $templates['loop'] = 'announcement';
         $templates['bottom'] = ['indexbot', 'footer'];
-        $events = $this->jcaModel->readEvents();
+        $events = $this->jcaModel->readEvents(true, 2);
         return $this->jcaView->oneloop($templates, $events);
     }
 
