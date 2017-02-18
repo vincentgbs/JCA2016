@@ -8,7 +8,7 @@
     display: inline;
 }
 .event_image {
-    max-height: 250px;
+    max-height: 150px;
 }
 </style>
 
@@ -20,15 +20,19 @@
     <br><button class="btn btn-default" id="create_event_button">Create</button>
 </div><!-- </div class="row col-md-12"> -->
 
+<style>
+th, td { width:16.67%; text-align:center;}
+</style>
+
 <div class="row col-md-12">
     <pre id="event_container" title="Double click to edit a field.">
         <table id="event_table">
             <thead>
                 <tr>
                     <th>Image</th>
-                    <th>Title</th>
+                    <th>Title / Date</th>
                     <th>Body</th>
-                    <th>Date</th>
+                    <th>Order</th>
                     <th>Delete</th>
                     <th>Update</th>
                 </tr>
@@ -37,12 +41,14 @@
                 <?php
                     foreach ($data as $event) {
                         echo "<tr class='event_row'><td><img src='data:image/jpg;base64,{$event->event_image}' class='event_image'/></td>";
-                        echo "<td><input type='text' class='event_title' value='"
-                            . html_entity_decode($event->event_title) . "' readonly></td>";
+                        echo "<td>Title:<br><input type='text' class='event_title' value='"
+                            . html_entity_decode($event->event_title) . "' readonly>
+                            <br>Date:<br><input type='text' class='event_date' value='"
+                            . html_entity_decode($event->event_date) . "' readonly></td>";
                         echo "<td><textarea class='event_body' rows='9' readonly>"
                             . html_entity_decode($event->event_body) . "</textarea></td>";
-                        echo "<td><input type='text' class='event_date' value='"
-                            . html_entity_decode($event->event_date) . "' readonly></td>";
+                        echo "<td><input type='text' class='event_order'
+                        value='{$event->event_order}' size='3'></td>";
                         echo "<td><button class='btn btn-warning delete_event' event_id='{$event->event_id}'>Delete</button></td>";
                         echo "<td><button class='btn update_event' event_id='{$event->event_id}'>Update</button></td></tr>";
                     }
@@ -54,11 +60,7 @@
 
 <script>
 $(document).ready(function(){
-    $("#event_table").DataTable();
-
-    $(".event_title, .event_body").keyup(function(e){
-        limitInput(this, /[^A-z0-9 ]/g);
-    });
+    // $("#event_table").DataTable();
 
     $(document).on('dblclick', ".event_title, .event_body, .event_date", function() {
         $(this).removeAttr('readonly');
@@ -115,6 +117,7 @@ $(document).ready(function(){
         var event_title = row.find('.event_title').val();
         var event_body = row.find('.event_body').val();
         var event_date = row.find('.event_date').val();
+        var event_order = row.find('.event_order').val();
         $.ajax({
             url: "?url=jca/edit",
             type: "POST",
@@ -124,6 +127,7 @@ $(document).ready(function(){
                 event_id: event_id,
                 event_title: event_title,
                 event_body: event_body,
+                event_order: event_order,
                 event_date: event_date
             },
             success: function(response){

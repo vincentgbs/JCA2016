@@ -28,7 +28,7 @@ class jcaController extends controller {
         $templates['top'] = ['headtop', 'headindex', 'headbot', 'indextop'];
         $templates['loop'] = 'announcement';
         $templates['bottom'] = ['indexbot', 'footer'];
-        $events = $this->jcaModel->readEvents(true, 2);
+        $events = $this->jcaModel->readEvents(true, '-event_order DESC', 2);
         return $this->jcaView->oneloop($templates, $events);
     }
 
@@ -39,7 +39,7 @@ class jcaController extends controller {
         $templates['top'] = ['headtop', 'headevents', 'headbot', 'eventstop'];
         $templates['loop'] = 'event';
         $templates['bottom'] = ['eventsbot', 'footer'];
-        $events = $this->jcaModel->readEvents();
+        $events = $this->jcaModel->readEvents(true, '-event_order DESC');
         return $this->jcaView->oneloop($templates, $events);
     }
 
@@ -230,8 +230,10 @@ class jcaController extends controller {
         $event = new stdClass();
         $event->event_date = $this->post('event_date', 's', 32, '-: ');
         if ($event->event_date == '') { $event->event_date = NULL; }
-        $event->event_title = $this->post('event_title', 'w', 255);
-        $event->event_body = $this->post('event_body', 'w', 2047);
+        $event->event_order = $this->post('event_order', 'i');
+        if ($event->event_order == '') { $event->event_order = NULL; }
+        $event->event_title = $this->post('event_title', NULL, 255);
+        $event->event_body = $this->post('event_body', NULL, 2047);
         return $event;
     }
 
@@ -248,6 +250,8 @@ class jcaController extends controller {
         return $sermon;
     }
 
+    // change banner function to add template to every page *** after headbot
+    // check if headbot exists??? - if it doesn't exist, add it to the bottom/top?
     private function bannerCheck()
     {
         $banner = $this->jcaModel->readBanner(true);

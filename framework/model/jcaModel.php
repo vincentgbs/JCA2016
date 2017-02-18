@@ -14,20 +14,19 @@ class jcaModel extends cmsModel {
         return $this->execute($q);
     }
 
-    public function readEvents($current=false, $limit=false)
+    public function readEvents($current=false, $order=false, $limit=false)
     {
         $q = 'SELECT *,
-            DATE_FORMAT(`event_date`, \'%M %d, %Y %h:%i %p\') as `full_date_time`,
+            DATE_FORMAT(`event_date`, \'%M %d, %Y %l:%i %p\') as `full_date_time`,
             DATE_FORMAT(`event_date`, \'%M %d, %Y\') as `full_date`,
-            DATE_FORMAT(`event_date`, \'%b %d, %Y %h:%i %p\') as `abbreviation_date_time`,
+            DATE_FORMAT(`event_date`, \'%b %d, %Y %l:%i %p\') as `abbreviation_date_time`,
             DATE_FORMAT(`event_date`, \'%b %d, %Y\') as `abbreviation_date`
             FROM jca_ls_events';
         if ($current) {
-            $q .= " WHERE `event_date` >= NOW() - INTERVAL 1 DAY";
+            $q .= " WHERE (`event_date` >= NOW() - INTERVAL 1 DAY OR `event_date` IS NULL)  ";
         }
-        if ($limit) {
-            $q .= " LIMIT {$limit}";
-        }
+        if ($order) { $q .= " ORDER BY {$order}"; }
+        if ($limit) { $q .= " LIMIT {$limit};"; }
         return $this->select($q);
     }
 
