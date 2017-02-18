@@ -3,6 +3,14 @@ require_once FILE . 'framework/view/view.php';
 
 class jcaView extends view {
 
+    private function bannerCheck($template)
+    {
+        if (isset($this->banner) && $template=='headbot') {
+            $this->body .= $this->banner;
+            unset($this->banner);
+        }
+    }
+
     public function simple($page)
     {
         foreach ($page as $template) {
@@ -11,6 +19,7 @@ class jcaView extends view {
                 $html = str_replace("{{{@url}}}", DOMAIN, $html);
                 $this->body .= $html;
             }
+            $this->bannerCheck($template->html_template);
         }
         return $this->display(false);
     }
@@ -22,6 +31,7 @@ class jcaView extends view {
             if (is_file($base . $template . '.html')) {
                 $this->body .= file_get_contents($base . $template . '.html');
             }
+            $this->bannerCheck($template);
         }
         if (is_file($base . $templates['loop'] . '.html')) {
             foreach ($data as $datum) {

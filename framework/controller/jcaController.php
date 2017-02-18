@@ -17,15 +17,16 @@ class jcaController extends controller {
         } else {
             $page = (object)['page_name' => JCADEFAULTPAGE];
         }
+        $page = $this->jcaModel->readPage($page);
         $this->bannerCheck();
-        $this->jcaView->simple($this->jcaModel->readPage($page));
+        $this->jcaView->simple($page);
     }
 
     // special pages
     public function index()
     {
-        $this->bannerCheck();
         $templates['top'] = ['headtop', 'headindex', 'headbot', 'indextop'];
+        $this->bannerCheck();
         $templates['loop'] = 'announcement';
         $templates['bottom'] = ['indexbot', 'footer'];
         $events = $this->jcaModel->readEvents(true, '-event_order DESC', 2);
@@ -35,8 +36,8 @@ class jcaController extends controller {
     // special pages
     public function events()
     {
-        $this->bannerCheck();
         $templates['top'] = ['headtop', 'headevents', 'headbot', 'eventstop'];
+        $this->bannerCheck();
         $templates['loop'] = 'event';
         $templates['bottom'] = ['eventsbot', 'footer'];
         $events = $this->jcaModel->readEvents(true, '-event_order DESC');
@@ -47,6 +48,7 @@ class jcaController extends controller {
     public function sermons()
     {
         $templates['top'] = ['headtop', 'headsermons', 'headbot', 'sermonstop'];
+        $this->bannerCheck();
         $templates['loop'] = 'sermon';
         $templates['bottom'] = ['sermonsbot', 'footer'];
         $sermons = $this->jcaModel->readSermons();
@@ -250,8 +252,6 @@ class jcaController extends controller {
         return $sermon;
     }
 
-    // change banner function to add template to every page *** after headbot
-    // check if headbot exists??? - if it doesn't exist, add it to the bottom/top?
     private function bannerCheck()
     {
         $banner = $this->jcaModel->readBanner(true);
@@ -260,13 +260,13 @@ class jcaController extends controller {
                 $html = file_get_contents(FILE . 'html/cache/html/emergencybanner.html');
                 $html = str_replace("{{{@banner_title}}}", $banner[0]->banner_title, $html);
                 $html = str_replace("{{{@banner_body}}}", $banner[0]->banner_body, $html);
-                $this->jcaView->body .= $html;
             } else { // default banner display
-                $this->jcaView->body .= '<p>' . $banner[0]->banner_title
-                    . '<br>' . $banner[0]->banner_body . '</p>';
+                $html = "<p>{$banner[0]->banner_title}<br>{$banner[0]->banner_body}</p>";
             }
-            return true;
-        } // else { return NULL; }
+            $this->jcaView->banner = $html;
+        } else {
+            return false;
+        }
     }
 
 }
