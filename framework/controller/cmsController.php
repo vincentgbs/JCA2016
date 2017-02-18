@@ -156,7 +156,7 @@ class cmsController extends controller {
                     return $this->upload_file($this->post('filetype', 's', 16, '+'), $imgtypes, 'img');
                 break;
                 case 'aud':
-                    $audtypes = ['audiompeg'=>'aud', 'audiox-wav'=>'aud'];
+                    $audtypes = ['audiompeg'=>'mp4', 'audiox-wav'=>'wav', 'audiomp3'=>'mp3'];
                     return $this->upload_file($this->post('filetype', 's', 16, '-'), $audtypes, 'aud');
                 break;
                 case 'file':
