@@ -45,10 +45,14 @@ class simpleChunking {
         if ($name) { $this->name = $name; }
         if ($expected_parts) { $this->expected_parts = $expected_parts; }
         if (file_exists($this->base . $this->name)) {
-            // foreach (range(0, $this->expected_parts) as $i) {
-            //     unlink($this->base . $this->name . '_part_' . $i);
-            // }
-            echo ('Overwriting previous file. ');
+            if (filter_input(INPUT_POST, 'prevent_overwrite', FILTER_SANITIZE_NUMBER_INT) == 1) {
+                foreach (range(0, $this->expected_parts) as $i) {
+                    unlink($this->base . $this->name . '_part_' . $i);
+                }
+                exit('This file already exists.');
+            } else {
+                echo ('Overwriting previous file. ');
+            }
         }
         $file = fopen($this->base . $this->name, "wb"); // overwrite previous file
         foreach (range(0, $this->expected_parts) as $i) {
