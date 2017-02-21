@@ -101,6 +101,7 @@ class jcaController extends controller {
                     }
                 }
                 if (isset($google)) {
+                    $google[] = date('Y-m-d H:i:s'); // timestamp
                     require_once FILE . 'framework/libraries/googleDocsApi.php';
                     $googleDocsApi = new googleDocsApi();
                     $googleDocsApi->writeToGoogleSpreadsheet($form->google_spreadsheet_id, $form->google_spreadsheet_range, [$google]);
