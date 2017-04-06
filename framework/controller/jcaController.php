@@ -224,6 +224,15 @@ class jcaController extends controller {
                 break;
                 default: exit('Invalid edit function.');
             }
+        } else if (isset($_GET['only'])) {
+            $form = $this->get('only', 'a', 32);
+            if (in_array($form, ['banner', 'events', 'sermons', 'forms'])) {
+                $function = 'read' . ucfirst($form);
+                $data = $this->jcaModel->$function();
+                return $this->jcaView->limitedEdit($form, $data);
+            } else {
+                exit('Invalid function request.');
+            }
         }
         return $this->jcaView->edit();
     }

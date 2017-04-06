@@ -57,5 +57,12 @@ class jcaView extends view {
         $this->display();
     }
 
+    public function limitedEdit($form, $data)
+    {
+        $this->loadTemplate('cms/header');
+        $this->loadTemplate('jca/edit/' . $form, $data);
+        $this->display();
+    }
+
 }
 ?>
