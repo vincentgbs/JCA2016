@@ -237,6 +237,31 @@ class jcaController extends controller {
         return $this->jcaView->edit();
     }
 
+    public function editSpecial()
+    {
+        $this->getController('user');
+        if (!$this->userController->check()) {
+            $this->flashMessage('Please log in to access this page.');
+            $this->redirect('user/login', false, URL);
+        }
+        $this->getView('cms');
+        $page = ['headtop', 'headindex', 'headbot', 'indextop',
+            'announcement', 'indexbot', 'footer'];
+        foreach ($page as $html) {
+            $filename = FILE . 'html/cache/html/' . $html . '.html';
+            $resource = (object) ['type' => 'html', 'name' => $html];
+            if (is_file($filename)) {
+                $resource->resource = file_get_contents($filename);
+                $resource->resource = str_replace('<', '&lt;', $resource->resource);
+                $resource->resource = str_replace('>', '&gt;', $resource->resource);
+                $this->cmsView->loadTemplate('cms/edit/update', $resource);
+            }
+        }
+        $this->cmsView->body .= '<style>.delete_resource_button{display:none;}</style>';
+        $this->cmsView->loadTemplate('cms/edit/foot');
+        return $this->cmsView->display();
+    }
+
     private function eventFromPost()
     {
         $event = new stdClass();
