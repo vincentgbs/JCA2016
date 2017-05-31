@@ -1,3 +1,11 @@
+<p>
+    The form name should correspond to the sheet on the Google Spreadsheet.<br>
+    The email is the email(s) that an alert will be sent to when a form is submitted. You may enter multiple emails separated by a coma but the max character length for the combined emails is 255.<br>
+    The spreadsheet id is the identifier of the Google Spreadsheet where the results are stored. The spreadsheet range is the sheet on the Google Spreadsheet that corresponds to the form.<br>
+    <br>
+    The form creator at the bottom of this page creates an <b>outline</b> for forms on congregation facing pages. That outline may be edited to fit a specific use case. The ajax created will submit the form through the default jca/forms page. It does not create a form on the site, it simply provides the html and js that you can then copy and past to a template in the cms. <br>
+</p>
+<hr class="row col-md-12">
 <h3>FORMS</h3>
 <style>
     #form_creator_html, #form_creator_js {

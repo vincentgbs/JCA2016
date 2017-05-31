@@ -1,3 +1,9 @@
+<p>
+    Please speak with a system administrator before using the page. <br>
+    Every sermon must have a speaker, title and url. <br>
+    In order to update any part of a sermon, you must double-click that section, before editting.<br>
+</p>
+<hr class="row col-md-12">
 <h3>SERMONS</h3>
 <!-- <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/simpleChunking.js"></script> -->
 <style>

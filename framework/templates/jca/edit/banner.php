@@ -1,3 +1,9 @@
+<p>
+    The banner is an alert that will display at the top of all congregation facing pages. <br>
+    You can set a banner ahead of time using the start and end dates. <br>
+    The banner will not display until the start date and will automatically stop displaying after the end date.
+</p>
+<hr class="row col-md-12">
 <h3>BANNER</h3>
 <style>
 #banner_title, #banner_body {

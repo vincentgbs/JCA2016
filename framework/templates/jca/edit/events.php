@@ -1,3 +1,20 @@
+<p>
+    Every event/announcement must be created with an image, date, title and body.<br>
+    You may remove the date after the event is created if it does not apply. <br>
+    Events will automatically hide themselves once the date supplied is past. <br>
+    <br>
+    The events manager will not resize images for you. You must resize images before uploading them. <br>
+    Ideal images should be almost square and less than 2mbs. The maximum size allowed is 5mbs. <br>
+    <br>
+    "Order" is an optional parameter that allows you to put certain events at the top. <br>
+    Remember that the top two announcements display on the website's homepage. <br>
+    <br>
+    In order to update an event date, title or body, you must double-click that section, before editting.<br>
+    An event image cannot be updated, a new event must be created. <br>
+    <br>
+    You can use basic html to add links to the event body using this format: &lt;a href="http://www.jcatlanta.org"&gt;Website&lt;/a&gt;
+</p>
+<hr class="row col-md-12">
 <h3>EVENTS</h3>
 <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/simpleChunking.js"></script>
 <style>
