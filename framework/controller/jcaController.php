@@ -211,7 +211,11 @@ class jcaController extends controller {
                     } else if (isset($_POST['update'])) {
                         $form = (object)['form_id' => $this->post('form_id', 'i')];
                         $update = new stdClass();
-                        $update->email_notification = $this->post('email_notification', 'e', 255);
+                        $emails = explode(',', $_POST['email_notification']);
+                        foreach ($emails as &$email) { // & changes $email variable
+                            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+                        }
+                        $update->email_notification = implode(',', $emails);
                         $update->google_spreadsheet_id = $this->post('google_spreadsheet_id', 's', 255, '_');
                         $update->google_spreadsheet_range = $this->post('google_spreadsheet_range', 's', 255, '!:');
                         if ($this->jcaModel->updateForm($update, $form)) {
