@@ -36,6 +36,12 @@ class userController extends controller {
         }
     }
 
+    // // alias
+    // public function edit()
+    // {
+    //     return $this->home();
+    // }
+
     public function update()
     {
         if ($this->check()) {
