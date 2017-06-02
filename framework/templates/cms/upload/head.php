@@ -1,3 +1,18 @@
+<p>
+    Upload locations: <br>
+    <ul>
+        <li>&lt;link rel="stylesheet" type="text/css" href="/cache/css/style.css"&gt;</li>
+        <li>&lt;script type="text/javascript" src="/cache/js/vanilla.js"&gt;&lt;/script&gt;</li>
+        <li>&lt;img src="/cache/img/example.png"&gt;</li>
+        <li>&lt;audio controls&gt;&lt;source src="/cache/aud/example.mp3" type="audio/mpeg"&gt;&lt;/audio&gt;</li>
+    </ul>
+    Html, css and js uploads can be edited from the "Edit Templates" page. <br>
+    Image and audio files do not always upload consistently on a slow server. <br>
+    You may have to reupload your image or audio if there is an error.<br>
+    <br>
+    Renaming a file on upload is optional. Filenames are restricted to alphanumerics and underscores. <br>
+</p>
+<hr class="row col-md-12">
 <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/simpleChunking.js"></script>
 
 <button class="btn btn-default get_upload_button" load="upload_html">Html</button>
