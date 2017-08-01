@@ -1,4 +1,5 @@
 </div> <!-- </div id="resource_container"> -->
+<div style="min-height:999px;"><!-- Page Spacer --></div>
 
 <script>
 function autocompleteNameAndId(input, url, display_id=false)
