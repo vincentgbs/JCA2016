@@ -1,6 +1,6 @@
 <p>
     Pages are simply a collection of templates. <br>
-    Special pages - such as the index, events and sermons page - are not available through this feature. Those templates must be updated individually or through a special editor. <br>
+    Special pages - the index, events and sermons page - are not available through this feature. Those templates must be updated individually or through a special editor. <br>
     <br>
     To create a page, simple type the name of the page you would like to create. <br>
     You will need to add templates to that page. The standard order and naming convention is: <br>
