@@ -140,7 +140,7 @@ class jcaController extends controller {
                         return $this->jcaModel->deleteBanner();
                     }
                     $banner = new stdClass();
-                    $banner->banner_title = $this->post('banner_title', 'w', 99);
+                    $banner->banner_title = $this->post('banner_title', NULL, 99);
                     $banner->banner_body = $this->post('banner_body', NULL, 999);
                     $banner->commencement = $this->post('commencement', 's', 32, '-');
                     $banner->expiration = $this->post('expiration', 's', 32, '-');
