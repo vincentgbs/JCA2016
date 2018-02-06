@@ -15,8 +15,8 @@
     <div class="col-md-6">
         <br>Start: <input type="text" value="<?php echo date("Y-m-d"); ?>" id="commencement">
         <br>End: <input type="text" value="<?php echo date('Y-m-d', strtotime("+1 week")); ?>" id="expiration">
-        <br>Title: <input type="text" id="banner_title" maxlength="99">
-        <br>Body: <textarea id="banner_body" maxlength="999"></textarea>
+        <br>Title: <input type="text" id="banner_title" maxlength="90">
+        <br>Body: <textarea id="banner_body" maxlength="990"></textarea>
         <br><button class="btn btn-default" id="update_banner_button">Update</button>
         <button class="btn btn-warning" id="delete_banner_button">Remove</button>
     </div> <!-- </div class="col-md-6"> -->
