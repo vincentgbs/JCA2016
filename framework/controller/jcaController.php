@@ -297,8 +297,8 @@ class jcaController extends controller {
         if (isset($banner[0], $banner[0]->banner_title, $banner[0]->banner_body)) {
             if (is_file(FILE . 'html/cache/html/emergencybanner.html')) {
                 $html = file_get_contents(FILE . 'html/cache/html/emergencybanner.html');
-                $html = str_replace("{{{@banner_title}}}", $banner[0]->banner_title, $html);
-                $html = str_replace("{{{@banner_body}}}", $banner[0]->banner_body, $html);
+                $html = htmlspecialchars_decode(str_replace("{{{@banner_title}}}", $banner[0]->banner_title, $html));
+                $html = htmlspecialchars_decode(str_replace("{{{@banner_body}}}", $banner[0]->banner_body, $html));
             } else { // default banner display
                 $html = "<p>{$banner[0]->banner_title}<br>{$banner[0]->banner_body}</p>";
             }
