@@ -11,6 +11,8 @@
     You may have to reupload your image or audio if there is an error.<br>
     <br>
     Renaming a file on upload is optional. Filenames are restricted to alphanumerics and underscores. <br>
+    <br>
+    <a href="/cms/listuploads">view uploaded files</a>
 </p>
 <hr class="row col-md-12">
 <script type="text/javascript" src="<?php echo DOMAIN; ?>/js/library/simpleChunking.js"></script>

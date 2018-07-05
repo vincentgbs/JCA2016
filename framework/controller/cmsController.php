@@ -178,6 +178,22 @@ class cmsController extends controller {
         $this->cmsView->upload();
     }
 
+    public function listUploads()
+    {
+        $filetypes = ['img', 'aud', 'file'];
+        $list = '';
+        foreach ($filetypes as $filetype) {
+            $files = scandir(FILE . 'html/cache/img/');
+            foreach ($files as $file) {
+                if (substr($file, 0, 1) != '.') {
+                    $list .= '<br>' . $file;
+                }
+            }
+        }
+        $this->cmsView->loadTemplate('cms/upload/view', $list);
+        return $this->cmsView->display();
+    }
+
 
 
 
