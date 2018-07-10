@@ -178,18 +178,20 @@ class cmsController extends controller {
         $this->cmsView->upload();
     }
 
+    // Should split template(s) into header, list, and footer
     public function listUploads()
     {
-        $filetypes = ['img', 'aud', 'file'];
-        $list = '';
+        $filetypes = ['img', 'aud', 'files'];
+        $list = '<ul>';
         foreach ($filetypes as $filetype) {
-            $files = scandir(FILE . 'html/cache/img/');
+            $files = scandir(FILE . 'html/cache/' . $filetype . '/');
             foreach ($files as $file) {
                 if (substr($file, 0, 1) != '.') {
-                    $list .= '<br>' . $file;
+                    $list .= '<li><a href="/cache/' . $filetype . '/' . $file . '">' . $file . '</a></li>';
                 }
             }
         }
+        $list .= '</ul>';
         $this->cmsView->loadTemplate('cms/upload/view', $list);
         return $this->cmsView->display();
     }
